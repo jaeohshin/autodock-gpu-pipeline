@@ -32,26 +32,58 @@ This repository contains a fully automated docking pipeline using [AutoDock-GPU]
 
 To install Meeko and RDKit:
 
+To install Meeko and RDKit:
+
 ```bash
 conda install -c conda-forge meeko rdkit
 
 
+<<<<<<< HEAD
 🧠 Notes on Ligand Preparation
+=======
+<<<<<<< HEAD
+### Ligands are first processed using Meeko. If Meeko fails (e.g., due to malformed PDB input), the pipeline automatically falls back to MGLTools' prepare_ligand4.py.
+=======
+🧠 Notes on Ligand Preparation
+>>>>>>> 5c4d8a1 (update)
+>>>>>>> b212ee2 (update)
 
     Ligands are first processed using Meeko for modern chemical handling.
 
     If Meeko fails (e.g., due to malformed or minimal .pdb input), the pipeline automatically falls back to MGLTools' prepare_ligand4.py.
 
+<<<<<<< HEAD
     This ensures robustness across various ligand formats and chemical quality levels.
 
 🧪 Receptor & Grid Preparation
 
     Receptor preparation and grid map generation are still handled by MGLTools and AutoGrid, which provide reliable .pdbqt, .gpf, and .fld generation compatible with AutoDock.
 
+=======
+<<<<<<< HEAD
+
+### This pipeline integrates tools developed by:
+=======
+    This ensures robustness across various ligand formats and chemical quality levels.
+
+🧪 Receptor & Grid Preparation
+>>>>>>> 5c4d8a1 (update)
+
+    Receptor preparation and grid map generation are still handled by MGLTools and AutoGrid, which provide reliable .pdbqt, .gpf, and .fld generation compatible with AutoDock.
+
+<<<<<<< HEAD
+    The Forli Lab (Meeko)
+=======
+>>>>>>> b212ee2 (update)
 🤝 Acknowledgments
 
 This pipeline integrates tools developed by:
 
     The Scripps Research Institute: AutoDock-GPU, AutoGrid, MGLTools
 
+<<<<<<< HEAD
     The Forli Lab: Meeko
+=======
+    The Forli Lab: Meeko
+>>>>>>> 5c4d8a1 (update)
+>>>>>>> b212ee2 (update)
