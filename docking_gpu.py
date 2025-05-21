@@ -6,7 +6,6 @@ Jaeoh Shin, Korea Institute for Advanced Study.
 import os
 import subprocess
 from glob import glob
-
 from rdkit import Chem
 from meeko import MoleculePreparation
 
@@ -25,8 +24,8 @@ PREPARE_GPF      = f"{MGL_HOME}/bin/pythonsh {MGL_HOME}/MGLToolsPckgs/AutoDockTo
 AUTOGRID_BIN     = "autogrid4"
 
 # 👇 Update this to your actual binding site center
-GRID_CENTER = (10.0, 15.0, -5.0)
-GRID_SIZE   = (60, 60, 60)
+GRID_CENTER = (19, 11, 14)
+GRID_SIZE   = (126, 126, 126)
 
 # === COMMAND EXECUTION ===
 def run_cmd(cmd):
@@ -36,8 +35,14 @@ def run_cmd(cmd):
 # === STEP 1: Prepare receptor ===
 def prepare_receptor(pdb_file, output_pdbqt):
     pdb_file_abs = os.path.abspath(pdb_file)
+    pdb_protonated = pdb_file_abs.replace(".pdb", "_protonated.pdb")
     output_pdbqt_abs = os.path.abspath(output_pdbqt)
-    run_cmd(f"{PREPARE_RECEPTOR} -r {pdb_file_abs} -o {output_pdbqt_abs} -A checkhydrogens")
+
+    # Step 1: Add hydrogens using pdb2pqr
+    run_cmd(f"pdb2pqr --ff=PARSE --with-ph=7.0 {pdb_file_abs} {pdb_protonated}")
+
+    # Step 2: Add Gasteiger charges and convert to .pdbqt
+    run_cmd(f"obabel {pdb_protonated} -O {output_pdbqt_abs} --partialcharge gasteiger")
 
 
 
@@ -49,6 +54,10 @@ def prepare_ligand(pdb_file, output_pdbqt, use_meeko=True):
             if mol is None:
                 raise ValueError
             prep = MoleculePreparation()
+            prep.automatic_detection = True
+            prep.add_polar_hydrogens = True
+            prep.assign_charges = True
+            prep.uff_energy_minimize = True  # recommended for consistency
             pdbqt_string = prep.prepare(mol)
             with open(output_pdbqt, "w") as f:
                 f.write(pdbqt_string)
@@ -98,6 +107,10 @@ def run_docking(lig_pdbqt, fld_file, output_basename):
         f"--ffile {fld_file_abs} "
         f"--lfile {lig_pdbqt_abs} "
         f"--nrun 50 "
+        f"--nev 6000000 " 
+        f"--ngen 5000 " 
+        f"--heuristics 0 "
+        f"--autostop 1 "
         f"--resnam {output_base_abs}"
     )
     run_cmd(cmd)
