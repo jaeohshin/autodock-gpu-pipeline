@@ -7,6 +7,9 @@ import os
 import subprocess
 from glob import glob
 
+from rdkit import Chem
+from meeko import MoleculePreparation
+
 # === CONFIGURATION ===
 RECEPTOR_PDB = "receptor.pdb"
 LIGAND_PDB_DIR = "./ligands_pdb"
@@ -14,9 +17,11 @@ OUTPUT_DIR = "./docking_output"
 AUTODOCK_GPU_BIN = "/home/jaeohshin/programs/AutoDock-GPU/bin/autodock_gpu_128wi"
 
 MGL_HOME = os.path.expanduser("~/programs/mgltools_x86_64Linux2_1.5.7")
+
 PREPARE_RECEPTOR = f"{MGL_HOME}/bin/pythonsh {MGL_HOME}/MGLToolsPckgs/AutoDockTools/Utilities24/prepare_receptor4.py"
 PREPARE_LIGAND   = f"{MGL_HOME}/bin/pythonsh {MGL_HOME}/MGLToolsPckgs/AutoDockTools/Utilities24/prepare_ligand4.py"
 PREPARE_GPF      = f"{MGL_HOME}/bin/pythonsh {MGL_HOME}/MGLToolsPckgs/AutoDockTools/Utilities24/prepare_gpf4.py"
+
 AUTOGRID_BIN     = "autogrid4"
 
 # 👇 Update this to your actual binding site center
@@ -34,14 +39,32 @@ def prepare_receptor(pdb_file, output_pdbqt):
     output_pdbqt_abs = os.path.abspath(output_pdbqt)
     run_cmd(f"{PREPARE_RECEPTOR} -r {pdb_file_abs} -o {output_pdbqt_abs} -A checkhydrogens")
 
+
+
 # === STEP 2: Prepare ligand ===
-def prepare_ligand(pdb_file, output_pdbqt):
+def prepare_ligand(pdb_file, output_pdbqt, use_meeko=True):
+    if use_meeko:
+        try:
+            mol = Chem.MolFromPDBFile(pdb_file, removeHs=False)
+            if mol is None:
+                raise ValueError
+            prep = MoleculePreparation()
+            pdbqt_string = prep.prepare(mol)
+            with open(output_pdbqt, "w") as f:
+                f.write(pdbqt_string)
+            print(f"[INFO] Ligand prepared using Meeko: {output_pdbqt}")
+            return
+        except:
+            print(f"[WARN] Meeko failed on {pdb_file}, falling back to MGLTools...")
+
+    # Fallback to MGLTools
     pdb_file_abs = os.path.abspath(pdb_file)
     output_pdbqt_abs = os.path.abspath(output_pdbqt)
     lig_dir = os.path.dirname(pdb_file_abs)
     lig_name = os.path.basename(pdb_file_abs)
     cmd = f"cd {lig_dir} && {PREPARE_LIGAND} -l {lig_name} -o {output_pdbqt_abs}"
     run_cmd(cmd)
+
 
 # === STEP 3: Generate GPF ===
 def generate_gpf(ligand_pdbqt, receptor_pdbqt, output_gpf, center, size):
