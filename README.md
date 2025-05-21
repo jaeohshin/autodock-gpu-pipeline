@@ -34,14 +34,14 @@ Install Meeko and RDKit via:
 conda install -c conda-forge meeko rdkit
 
 
-## Ligands are first processed using Meeko. If Meeko fails (e.g., due to malformed PDB input), the pipeline automatically falls back to MGLTools' prepare_ligand4.py.
+### Ligands are first processed using Meeko. If Meeko fails (e.g., due to malformed PDB input), the pipeline automatically falls back to MGLTools' prepare_ligand4.py.
 
 Receptor and grid preparation are still handled by MGLTools for compatibility with AutoGrid and .fld file generation.
 
 This hybrid setup ensures compatibility while improving robustness and maintainability using modern Python tools.
 
 
-## This pipeline integrates tools developed by:
+### This pipeline integrates tools developed by:
 
     The Scripps Research Institute (AutoDock-GPU, AutoGrid, MGLTools)
 
