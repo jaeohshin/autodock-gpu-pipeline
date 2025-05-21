@@ -30,7 +30,7 @@ This repository contains a fully automated docking pipeline using [AutoDock-GPU]
 
 Install Meeko and RDKit via:
 
-```bash
+
 conda install -c conda-forge meeko rdkit
 
 
@@ -40,7 +40,6 @@ Receptor and grid preparation are still handled by MGLTools for compatibility wi
 
 This hybrid setup ensures compatibility while improving robustness and maintainability using modern Python tools.
 
- Acknowledgments
 
 ## This pipeline integrates tools developed by:
 
