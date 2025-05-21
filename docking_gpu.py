@@ -35,14 +35,8 @@ def run_cmd(cmd):
 # === STEP 1: Prepare receptor ===
 def prepare_receptor(pdb_file, output_pdbqt):
     pdb_file_abs = os.path.abspath(pdb_file)
-    pdb_protonated = pdb_file_abs.replace(".pdb", "_protonated.pdb")
     output_pdbqt_abs = os.path.abspath(output_pdbqt)
-
-    # Step 1: Add hydrogens using pdb2pqr
-    run_cmd(f"pdb2pqr --ff=PARSE --with-ph=7.0 {pdb_file_abs} {pdb_protonated}")
-
-    # Step 2: Add Gasteiger charges and convert to .pdbqt
-    run_cmd(f"obabel {pdb_protonated} -O {output_pdbqt_abs} --partialcharge gasteiger")
+    run_cmd(f"{PREPARE_RECEPTOR} -r {pdb_file_abs} -o {output_pdbqt_abs} -A checkhydrogens")
 
 
 
