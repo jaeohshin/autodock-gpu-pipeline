@@ -18,3 +18,32 @@ This repository contains a fully automated docking pipeline using [AutoDock-GPU]
 
 ## 📁 Repository Structure
 
+
+## ⚙️ Dependencies
+
+- Python 3.x
+- [AutoDock-GPU](https://github.com/ccsb-scripps/AutoDock-GPU)
+- [AutoGrid](https://github.com/ccsb-scripps/AutoGrid)
+- [MGLTools 1.5.7](http://mgltools.scripps.edu/)
+- [RDKit](https://www.rdkit.org/)
+- [Meeko](https://github.com/forlilab/Meeko)
+
+Install Meeko and RDKit via:
+
+```bash
+conda install -c conda-forge meeko rdkit
+
+
+## Ligands are first processed using Meeko. If Meeko fails (e.g., due to malformed PDB input), the pipeline automatically falls back to MGLTools' prepare_ligand4.py.
+
+Receptor and grid preparation are still handled by MGLTools for compatibility with AutoGrid and .fld file generation.
+
+This hybrid setup ensures compatibility while improving robustness and maintainability using modern Python tools.
+
+ Acknowledgments
+
+## This pipeline integrates tools developed by:
+
+    The Scripps Research Institute (AutoDock-GPU, AutoGrid, MGLTools)
+
+    The Forli Lab (Meeko)
