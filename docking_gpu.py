@@ -36,7 +36,7 @@ def run_cmd(cmd):
 def prepare_receptor(pdb_file, output_pdbqt):
     pdb_file_abs = os.path.abspath(pdb_file)
     output_pdbqt_abs = os.path.abspath(output_pdbqt)
-    run_cmd(f"{PREPARE_RECEPTOR} -r {pdb_file_abs} -o {output_pdbqt_abs} -A checkhydrogens")
+    run_cmd(f"{PREPARE_RECEPTOR} -r {pdb_file_abs} -o {output_pdbqt_abs} -A checkhydrogens -U nphs, lps, waters")
 
 
 
@@ -46,13 +46,16 @@ def prepare_ligand(pdb_file, output_pdbqt, use_meeko=True):
         try:
             mol = Chem.MolFromPDBFile(pdb_file, removeHs=False)
             if mol is None:
-                raise ValueError
+                raise ValueError(f"Failed to parse ligand file: {pdb_file}")
+            
             prep = MoleculePreparation()
-            prep.automatic_detection = True
+            prep.automatic_detection = True # detect rotatable bonds, etc.
             prep.add_polar_hydrogens = True
             prep.assign_charges = True
             prep.uff_energy_minimize = True  # recommended for consistency
+            
             pdbqt_string = prep.prepare(mol)
+            
             with open(output_pdbqt, "w") as f:
                 f.write(pdbqt_string)
             print(f"[INFO] Ligand prepared using Meeko: {output_pdbqt}")
@@ -69,14 +72,17 @@ def prepare_ligand(pdb_file, output_pdbqt, use_meeko=True):
     run_cmd(cmd)
 
 
+
 # === STEP 3: Generate GPF ===
 def generate_gpf(ligand_pdbqt, receptor_pdbqt, output_gpf, center, size):
     output_dir = os.path.dirname(os.path.abspath(output_gpf))
     ligand_name = os.path.basename(ligand_pdbqt)
     receptor_name = os.path.basename(receptor_pdbqt)
     gpf_name = os.path.basename(output_gpf)
+    
     center_str = f"{center[0]},{center[1]},{center[2]}"
     size_str = f"{size[0]},{size[1]},{size[2]}"
+    
     cmd = (
         f"cd {output_dir} && {PREPARE_GPF} "
         f"-l {ligand_name} -r {receptor_name} -y -o {gpf_name} "
@@ -84,12 +90,16 @@ def generate_gpf(ligand_pdbqt, receptor_pdbqt, output_gpf, center, size):
     )
     run_cmd(cmd)
 
+
+
 # === STEP 4: Run AutoGrid ===
 def run_autogrid(gpf_file):
     fld_dir = os.path.dirname(os.path.abspath(gpf_file))
     gpf_name = os.path.basename(gpf_file)
     cmd = f"cd {fld_dir} && {AUTOGRID_BIN} -p {gpf_name} -l autogrid.log"
     run_cmd(cmd)
+
+
 
 # === STEP 5: Run AutoDock-GPU ===
 def run_docking(lig_pdbqt, fld_file, output_basename):
@@ -100,7 +110,7 @@ def run_docking(lig_pdbqt, fld_file, output_basename):
         f"{AUTODOCK_GPU_BIN} "
         f"--ffile {fld_file_abs} "
         f"--lfile {lig_pdbqt_abs} "
-        f"--nrun 50 "
+        f"--nrun 20 "
         f"--nev 6000000 " 
         f"--ngen 5000 " 
         f"--heuristics 0 "
