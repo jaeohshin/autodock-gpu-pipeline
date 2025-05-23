@@ -8,36 +8,36 @@ Usage:
 """
 
 import sys
-from pymol import cmd
 import os
+from pymol import cmd
 
-# === Inputs ===
-receptor_pdb = sys.argv[1]       # e.g., ABL1.renum.pdb
-reference_pdb = sys.argv[2]      # e.g., reference_with_ligand.pdb
-ligand_resn = sys.argv[3]        # e.g., JIN
-output_file = sys.argv[4]        # e.g., centers/ABL1.txt
+# Input arguments
+receptor_pdb   = sys.argv[1]  # ABL1.renum.pdb
+reference_pdb  = sys.argv[2]  # reference_with_ligand.pdb
+ligand_resn    = sys.argv[3]  # JIN
+output_file    = sys.argv[4]  # centers/ABL1.txt
 
-# === Load structures ===
+# Load receptor (target of docking)
 cmd.load(receptor_pdb, "receptor")
+
+# Load reference structure with ligand
 cmd.load(reference_pdb, "reference")
 
-# Extract ligand from reference and move it to new object so it follows alignment
+# Align reference to receptor (i.e., transform the ligand!)
+cmd.align("reference and polymer", "receptor and polymer")
+
+# Extract transformed ligand coordinates from the aligned reference
 ligand_sel = f"reference and resn {ligand_resn} and chain A"
-cmd.create("ligand", ligand_sel)
+model = cmd.get_model(ligand_sel)
 
-# Align receptor to reference (transform is applied to "ligand" as well)
-cmd.align("receptor and polymer", "reference and polymer")
-
-# Now ligand is in receptor's frame — extract center
-model = cmd.get_model("ligand")
 if not model.atom:
-    print(f"[ERROR] Ligand {ligand_resn} in chain A not found.")
+    print(f"[ERROR] Ligand {ligand_resn} in chain A not found in reference.")
     sys.exit(1)
 
 coords = [atom.coord for atom in model.atom]
 center = [sum(c[i] for c in coords) / len(coords) for i in range(3)]
 
-# Output directory
+# Ensure directory exists
 os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
 # Save center

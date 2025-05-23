@@ -24,8 +24,8 @@ PREPARE_GPF      = f"{MGL_HOME}/bin/pythonsh {MGL_HOME}/MGLToolsPckgs/AutoDockTo
 AUTOGRID_BIN     = "autogrid4"
 
 # 👇 Update this to your actual binding site center
-GRID_CENTER = (16, 16, 4)
-GRID_SIZE   = (126, 126, 126)
+GRID_CENTER = (43, 35, 47)
+GRID_SIZE   = (150, 150, 150)
 
 # === COMMAND EXECUTION ===
 def run_cmd(cmd):
