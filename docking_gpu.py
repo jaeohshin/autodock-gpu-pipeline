@@ -24,7 +24,7 @@ PREPARE_GPF      = f"{MGL_HOME}/bin/pythonsh {MGL_HOME}/MGLToolsPckgs/AutoDockTo
 AUTOGRID_BIN     = "autogrid4"
 
 # 👇 Update this to your actual binding site center
-GRID_CENTER = (19, 11, 14)
+GRID_CENTER = (16, 16, 4)
 GRID_SIZE   = (126, 126, 126)
 
 # === COMMAND EXECUTION ===
@@ -113,7 +113,7 @@ def run_docking(lig_pdbqt, fld_file, output_basename):
         f"--nrun 20 "
         f"--nev 6000000 " 
         f"--ngen 5000 " 
-        f"--heuristics 0 "
+        f"--heuristics 1 "
         f"--autostop 1 "
         f"--resnam {output_base_abs}"
     )
