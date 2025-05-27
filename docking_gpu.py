@@ -20,23 +20,62 @@ MGL_HOME = os.path.expanduser("~/programs/mgltools_x86_64Linux2_1.5.7")
 PREPARE_RECEPTOR = f"{MGL_HOME}/bin/pythonsh {MGL_HOME}/MGLToolsPckgs/AutoDockTools/Utilities24/prepare_receptor4.py"
 PREPARE_LIGAND   = f"{MGL_HOME}/bin/pythonsh {MGL_HOME}/MGLToolsPckgs/AutoDockTools/Utilities24/prepare_ligand4.py"
 PREPARE_GPF      = f"{MGL_HOME}/bin/pythonsh {MGL_HOME}/MGLToolsPckgs/AutoDockTools/Utilities24/prepare_gpf4.py"
+SPLIT_ALTLOCS    = f"{MGL_HOME}/bin/pythonsh {MGL_HOME}/MGLToolsPckgs/AutoDockTools/Utilities24/prepare_pdb_split_alt_confs.py"
 
 AUTOGRID_BIN     = "autogrid4"
 
 # 👇 Update this to your actual binding site center
-GRID_CENTER = (42.946,34.706,46.793)
+#GRID_CENTER = (42.946,34.706,46.793)
+GRID_CENTER = (16.196, 14.587, 3.938)
 GRID_SIZE   = (60, 60, 60)
 
-# === COMMAND EXECUTION ===
+# === UTILITY ===
 def run_cmd(cmd):
     print(f"[RUN] {cmd}")
     subprocess.run(cmd, shell=True, check=True)
 
+def has_altlocs(pdb_path):
+    with open(pdb_path, 'r') as f:
+        for line in f:
+            if line.startswith(("ATOM", "HETATM")) and line[16] not in (" ", "A"):  # altLoc field (column 17)
+                return True
+    return False  
+
+def remove_waters(pdb_in, pdb_out):
+    with open(pdb_in, 'r') as fin, open(pdb_out, 'w') as fout:
+        for line in fin:
+            if not (line.startswith(("ATOM", "HETATM")) and line[17:20].strip() == "HOH"):
+                fout.write(line)
+
+
 # === STEP 1: Prepare receptor ===
 def prepare_receptor(pdb_file, output_pdbqt):
     pdb_file_abs = os.path.abspath(pdb_file)
+    receptor_dir = os.path.dirname(pdb_file_abs)
+    receptor_stem = os.path.splitext(os.path.basename(pdb_file_abs))[0]
+
+    # Step 1: Remove waters before anything
+    nowat_path = os.path.join(receptor_dir, f"{receptor_stem}_nowat.pdb")
+    remove_waters(pdb_file_abs, nowat_path)
+
+    # Step 2: Use water-free file going forward
+    pdb_file_abs = nowat_path
+
+    # Step 3: If altlocs exist, split conformers
+    if has_altlocs(pdb_file_abs):
+        print(f"[INFO] Alternate locations detected in {pdb_file}. Running split...")
+        split_stem = f"{receptor_stem}_alt"
+        run_cmd(f"cd {receptor_dir} && {SPLIT_ALTLOCS} -r {os.path.basename(pdb_file_abs)} -o {split_stem}")
+        alt_file = os.path.join(receptor_dir, f"{split_stem}_A.pdb")
+        if not os.path.exists(alt_file):
+            raise FileNotFoundError(f"[ERROR] Expected alternate file not found: {alt_file}")
+        pdb_file_abs = alt_file
+        print(f"[INFO] Using alternate structure: {pdb_file_abs}")
+
+    # Step 4: Prepare receptor
     output_pdbqt_abs = os.path.abspath(output_pdbqt)
-    run_cmd(f"{PREPARE_RECEPTOR} -r {pdb_file_abs} -o {output_pdbqt_abs} -A checkhydrogens -U nphs, lps, waters")
+    run_cmd(f"{PREPARE_RECEPTOR} -r {pdb_file_abs} -o {output_pdbqt_abs} -A checkhydrogens -U nphs,lps,waters")
+
 
 
 
@@ -49,11 +88,10 @@ def prepare_ligand(pdb_file, output_pdbqt, use_meeko=True):
                 raise ValueError(f"Failed to parse ligand file: {pdb_file}")
             
             prep = MoleculePreparation()
-            prep.automatic_detection = True # detect rotatable bonds, etc.
+            prep.automatic_detection = True
             prep.add_polar_hydrogens = True
             prep.assign_charges = True
-            prep.uff_energy_minimize = True  # recommended for consistency
-            
+            prep.uff_energy_minimize = True
             pdbqt_string = prep.prepare(mol)
             
             with open(output_pdbqt, "w") as f:
