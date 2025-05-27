@@ -1,0 +1,882 @@
+AutoDock-GPU version: v1.6-7-ga46ab564d2ac5f1a1523f65239b43505a1c29364-dirty
+
+**********************************************************
+**    AutoDock-GPU AUTODOCKTOOLS-COMPATIBLE DLG FILE    **
+**********************************************************
+
+
+    DOCKING PARAMETERS
+    ________________________
+
+
+Ligand file:                               /data/work/dock/docking_output/ligand.pdbqt
+Grid fld file:                             /data/work/dock/docking_output/receptor.maps.fld
+
+Random seed:                               1748315702, 1602833
+Number of runs:                            10
+Number of energy evaluations:              6000000
+Number of generations:                     5000
+Size of population:                        150
+Rate of crossover:                         80.000000%
+Tournament selection probability limit:    60.000000%
+Rate of mutation:                          2.000000%
+Maximal allowed delta movement:            +/- 6.000000A
+Maximal allowed delta angle:               +/- 90.000000
+
+Rate of local search:                      100.000000%
+Maximal number of local search iterations: 300
+Rho lower bound:                           0.010000
+Spread of local search delta movement:     2.000000A
+Spread of local search delta angle:        74.999999
+Limit of consecutive successes/failures:   4
+
+Handle symmetry during clustering:         YES
+RMSD tolerance:                            2.000000A
+
+Program call in command line was:          /home/jaeohshin/programs/AutoDock-GPU/bin/autodock_gpu_128wi --ffile /data/work/dock/docking_output/receptor.maps.fld --lfile /data/work/dock/docking_output/ligand.pdbqt --nrun 10 --nev 6000000 --ngen 5000 --heuristics 0 --autostop 0 --resnam /data/work/dock/docking_output/ligand_docked 
+
+
+    GRID PARAMETERS
+    ________________________
+
+
+Receptor name:                             receptor
+Number of grid points (x, y, z):           61, 61, 61
+Grid center (x, y, z):                     16.195000, 14.587000, 3.938000A
+Grid size (x, y, z):                       22.500000, 22.500000, 22.500000A
+Grid spacing:                              0.375000A
+
+
+    LIGAND PARAMETERS
+    ________________________
+
+
+Ligand name:                               /data/work/dock/docking_output/ligand
+Number of atoms:                           29
+Number of rotatable bonds:                 3
+Number of atom types:                      7
+
+
+    DUMMY DATA (only for ADT-compatibility)
+    ________________________
+
+
+DPF> outlev 1
+DPF> ga_run 10
+DPF> fld /data/work/dock/docking_output/receptor.maps.fld
+DPF> move /data/work/dock/docking_output/ligand.pdbqt
+
+
+    COUNTER STATES
+    ________________________
+
+
+Number of energy evaluations performed:    6004627
+Number of generations used:                576
+
+
+    INPUT LIGAND PDBQT FILE:
+    ________________________
+
+
+INPUT-LIGAND-PDBQT: REMARK  3 active torsions:
+INPUT-LIGAND-PDBQT: REMARK  status: ('A' for Active; 'I' for Inactive)
+INPUT-LIGAND-PDBQT: REMARK    1  A    between atoms: C04_6  and  N08_9 
+INPUT-LIGAND-PDBQT: REMARK    2  A    between atoms: N08_9  and  C27_23 
+INPUT-LIGAND-PDBQT: REMARK    3  A    between atoms: C09_10  and  C19_20 
+INPUT-LIGAND-PDBQT: ROOT
+INPUT-LIGAND-PDBQT: HETATM    1  C01 JIN A 600      17.506  13.853   3.414  1.00 11.06     0.055 A 
+INPUT-LIGAND-PDBQT: HETATM    2  C02 JIN A 600      17.384  12.685   2.640  1.00 14.69     0.121 A 
+INPUT-LIGAND-PDBQT: HETATM    3  N03 JIN A 600      16.163  12.126   2.521  1.00 14.20    -0.058 NA
+INPUT-LIGAND-PDBQT: HETATM    4  C04 JIN A 600      15.136  12.713   3.087  1.00 15.55     0.751 A 
+INPUT-LIGAND-PDBQT: HETATM    5  N05 JIN A 600      15.183  13.830   3.831  1.00 12.60    -0.042 NA
+INPUT-LIGAND-PDBQT: HETATM    6  C06 JIN A 600      16.392  14.407   3.986  1.00 12.00     0.166 A 
+INPUT-LIGAND-PDBQT: HETATM    7  C09 JIN A 600      18.791  15.681   4.335  1.00 15.83     0.058 A 
+INPUT-LIGAND-PDBQT: HETATM    8  C10 JIN A 600      18.718  14.507   3.584  1.00 14.71     0.009 A 
+INPUT-LIGAND-PDBQT: HETATM    9  N11 JIN A 600      16.441  15.494   4.744  1.00 15.54    -0.278 N 
+INPUT-LIGAND-PDBQT: HETATM   10  C12 JIN A 600      17.605  16.133   4.930  1.00 15.38     0.262 A 
+INPUT-LIGAND-PDBQT: HETATM   11  C13 JIN A 600      15.153  16.002   5.311  1.00 17.15     0.135 C 
+INPUT-LIGAND-PDBQT: HETATM   12  O14 JIN A 600      17.586  17.153   5.621  1.00 15.21    -0.267 OA
+INPUT-LIGAND-PDBQT: ENDROOT
+INPUT-LIGAND-PDBQT: BRANCH   4  13
+INPUT-LIGAND-PDBQT: HETATM   13  N08 JIN A 600      13.988  12.055   2.867  1.00 15.25    -0.059 NA
+INPUT-LIGAND-PDBQT: BRANCH  13  14
+INPUT-LIGAND-PDBQT: HETATM   14  C27 JIN A 600      12.721  12.478   3.158  1.00 13.28     0.100 A 
+INPUT-LIGAND-PDBQT: HETATM   15  C26 JIN A 600      12.282  13.403   4.121  1.00 15.35     0.022 A 
+INPUT-LIGAND-PDBQT: HETATM   16  C31 JIN A 600      10.927  13.709   4.343  1.00 15.44     0.031 A 
+INPUT-LIGAND-PDBQT: HETATM   17  C30 JIN A 600       9.942  13.081   3.623  1.00 17.86     0.136 A 
+INPUT-LIGAND-PDBQT: HETATM   18  C29 JIN A 600      10.339  12.155   2.688  1.00 15.39     0.007 A 
+INPUT-LIGAND-PDBQT: HETATM   19  F35 JIN A 600       8.671  13.363   3.887  1.00 20.20    -0.204 F 
+INPUT-LIGAND-PDBQT: HETATM   20  C28 JIN A 600      11.693  11.786   2.486  1.00 14.81     0.018 A 
+INPUT-LIGAND-PDBQT: HETATM   21  C34 JIN A 600       9.222  11.461   1.955  1.00 21.06     0.033 C 
+INPUT-LIGAND-PDBQT: ENDBRANCH  13  14
+INPUT-LIGAND-PDBQT: ENDBRANCH   4  13
+INPUT-LIGAND-PDBQT: BRANCH   7  22
+INPUT-LIGAND-PDBQT: HETATM   22  C19 JIN A 600      20.129  16.320   4.503  1.00 16.07     0.026 A 
+INPUT-LIGAND-PDBQT: HETATM   23  C18 JIN A 600      20.538  17.263   3.544  1.00 17.76     0.059 A 
+INPUT-LIGAND-PDBQT: HETATM   24 CL4  JIN A 600      19.697  17.581   2.047  1.00 18.91    -0.082 Cl
+INPUT-LIGAND-PDBQT: HETATM   25  C17 JIN A 600      21.711  18.023   3.711  1.00 17.85     0.011 A 
+INPUT-LIGAND-PDBQT: HETATM   26  C16 JIN A 600      22.456  17.838   4.911  1.00 20.49     0.002 A 
+INPUT-LIGAND-PDBQT: HETATM   27  C15 JIN A 600      22.052  16.867   5.863  1.00 19.98     0.011 A 
+INPUT-LIGAND-PDBQT: HETATM   28  C20 JIN A 600      20.867  16.145   5.645  1.00 19.81     0.059 A 
+INPUT-LIGAND-PDBQT: HETATM   29 CL5  JIN A 600      20.377  14.917   6.850  1.00 23.21    -0.082 Cl
+INPUT-LIGAND-PDBQT: ENDBRANCH   7  22
+INPUT-LIGAND-PDBQT: TORSDOF 3
+
+
+    FINAL DOCKED STATE:
+    ________________________
+
+
+Run:   1 / 10
+Time taken for this run:   0.160s
+
+DOCKED: MODEL        1
+DOCKED: USER    Run = 1
+DOCKED: USER
+DOCKED: USER    Estimated Free Energy of Binding    = -12.19 kcal/mol  [=(1)+(2)+(3)-(4)]
+DOCKED: USER
+DOCKED: USER    (1) Final Intermolecular Energy     = -13.09 kcal/mol
+DOCKED: USER        vdW + Hbond + desolv Energy     = -12.70 kcal/mol
+DOCKED: USER        Electrostatic Energy            =  -0.39 kcal/mol
+DOCKED: USER        Moving Ligand-Fixed Receptor    = -13.09 kcal/mol
+DOCKED: USER        Moving Ligand-Moving Receptor   =  +0.00 kcal/mol
+DOCKED: USER    (2) Final Total Internal Energy     =  -1.11 kcal/mol
+DOCKED: USER    (3) Torsional Free Energy           =  +0.89 kcal/mol
+DOCKED: USER    (4) Unbound System's Energy         =  -1.11 kcal/mol
+DOCKED: USER
+DOCKED: USER
+DOCKED: REMARK  3 active torsions:
+DOCKED: REMARK  status: ('A' for Active; 'I' for Inactive)
+DOCKED: REMARK    1  A    between atoms: C04_6  and  N08_9 
+DOCKED: REMARK    2  A    between atoms: N08_9  and  C27_23 
+DOCKED: REMARK    3  A    between atoms: C09_10  and  C19_20 
+DOCKED: USER                              x       y       z     vdW  Elec       q    Type
+DOCKED: USER                           _______ _______ _______ _____ _____    ______ ____
+DOCKED: ROOT
+DOCKED: HETATM    1  C01 JIN A 600      18.284  13.882   3.447 -0.41 -0.03    +0.055 A  
+DOCKED: HETATM    2  C02 JIN A 600      18.328  12.622   2.823 -0.45 -0.07    +0.121 A  
+DOCKED: HETATM    3  N03 JIN A 600      17.165  11.969   2.627 -1.09 +0.01    -0.058 NA 
+DOCKED: HETATM    4  C04 JIN A 600      16.043  12.547   2.981 +0.07 -0.21    +0.751 A  
+DOCKED: HETATM    5  N05 JIN A 600      15.931  13.747   3.573 -0.40 +0.01    -0.042 NA 
+DOCKED: HETATM    6  C06 JIN A 600      17.076  14.422   3.800 -0.25 -0.06    +0.166 A  
+DOCKED: HETATM    7  C09 JIN A 600      19.336  15.894   4.274 -0.31 -0.03    +0.058 A  
+DOCKED: HETATM    8  C10 JIN A 600      19.426  14.635   3.679 -0.36 -0.01    +0.009 A  
+DOCKED: HETATM    9  N11 JIN A 600      16.967  15.594   4.410 -0.16 +0.09    -0.278 N  
+DOCKED: HETATM   10  C12 JIN A 600      18.060  16.331   4.654 -0.16 -0.08    +0.262 A  
+DOCKED: HETATM   11  C13 JIN A 600      15.590  16.076   4.742 -0.41 -0.04    +0.135 C  
+DOCKED: HETATM   12  O14 JIN A 600      17.895  17.424   5.198 -0.29 +0.05    -0.267 OA 
+DOCKED: ENDROOT
+DOCKED: BRANCH   4  13
+DOCKED: HETATM   13  N08 JIN A 600      14.971  11.788   2.708 -0.82 +0.02    -0.059 NA 
+DOCKED: BRANCH  13  14
+DOCKED: HETATM   14  C27 JIN A 600      13.657  12.101   2.921 -0.46 -0.05    +0.100 A  
+DOCKED: HETATM   15  C26 JIN A 600      12.551  11.965   2.064 -0.40 -0.01    +0.022 A  
+DOCKED: HETATM   16  C31 JIN A 600      11.250  12.378   2.404 -0.42 -0.02    +0.031 A  
+DOCKED: HETATM   17  C30 JIN A 600      11.000  12.973   3.615 -0.25 -0.04    +0.136 A  
+DOCKED: HETATM   18  C29 JIN A 600      12.066  13.140   4.466 -0.40 -0.00    +0.007 A  
+DOCKED: HETATM   19  F35 JIN A 600       9.768  13.389   3.886 -0.06 +0.07    -0.204 F  
+DOCKED: HETATM   20  C28 JIN A 600      13.396  12.786   4.125 -0.44 -0.01    +0.018 A  
+DOCKED: HETATM   21  C34 JIN A 600      11.751  13.836   5.763 -0.52 -0.01    +0.033 C  
+DOCKED: ENDBRANCH  13  14
+DOCKED: ENDBRANCH   4  13
+DOCKED: BRANCH   7  22
+DOCKED: HETATM   22  C19 JIN A 600      20.604  16.641   4.522 -0.35 -0.01    +0.026 A  
+DOCKED: HETATM   23  C18 JIN A 600      21.018  17.581   3.562 -0.42 -0.02    +0.059 A  
+DOCKED: HETATM   24 CL4  JIN A 600      20.280  17.783   1.992 -0.96 +0.03    -0.082 Cl 
+DOCKED: HETATM   25  C17 JIN A 600      22.113  18.436   3.790 -0.54 -0.00    +0.011 A  
+DOCKED: HETATM   26  C16 JIN A 600      22.769  18.349   5.052 -0.61 -0.00    +0.002 A  
+DOCKED: HETATM   27  C15 JIN A 600      22.363  17.382   6.006 -0.56 -0.01    +0.011 A  
+DOCKED: HETATM   28  C20 JIN A 600      21.258  16.562   5.724 -0.44 -0.04    +0.059 A  
+DOCKED: HETATM   29 CL5  JIN A 600      20.765  15.340   6.934 -0.84 +0.05    -0.082 Cl 
+DOCKED: ENDBRANCH   7  22
+DOCKED: TORSDOF 3
+DOCKED: TER
+DOCKED: ENDMDL
+________________________________________________________________________________
+
+
+    FINAL DOCKED STATE:
+    ________________________
+
+
+Run:   2 / 10
+Time taken for this run:   0.160s
+
+DOCKED: MODEL        2
+DOCKED: USER    Run = 2
+DOCKED: USER
+DOCKED: USER    Estimated Free Energy of Binding    = -12.19 kcal/mol  [=(1)+(2)+(3)-(4)]
+DOCKED: USER
+DOCKED: USER    (1) Final Intermolecular Energy     = -13.08 kcal/mol
+DOCKED: USER        vdW + Hbond + desolv Energy     = -12.69 kcal/mol
+DOCKED: USER        Electrostatic Energy            =  -0.39 kcal/mol
+DOCKED: USER        Moving Ligand-Fixed Receptor    = -13.08 kcal/mol
+DOCKED: USER        Moving Ligand-Moving Receptor   =  +0.00 kcal/mol
+DOCKED: USER    (2) Final Total Internal Energy     =  -1.10 kcal/mol
+DOCKED: USER    (3) Torsional Free Energy           =  +0.89 kcal/mol
+DOCKED: USER    (4) Unbound System's Energy         =  -1.10 kcal/mol
+DOCKED: USER
+DOCKED: USER
+DOCKED: REMARK  3 active torsions:
+DOCKED: REMARK  status: ('A' for Active; 'I' for Inactive)
+DOCKED: REMARK    1  A    between atoms: C04_6  and  N08_9 
+DOCKED: REMARK    2  A    between atoms: N08_9  and  C27_23 
+DOCKED: REMARK    3  A    between atoms: C09_10  and  C19_20 
+DOCKED: USER                              x       y       z     vdW  Elec       q    Type
+DOCKED: USER                           _______ _______ _______ _____ _____    ______ ____
+DOCKED: ROOT
+DOCKED: HETATM    1  C01 JIN A 600      18.272  13.884   3.462 -0.41 -0.03    +0.055 A  
+DOCKED: HETATM    2  C02 JIN A 600      18.317  12.621   2.846 -0.45 -0.06    +0.121 A  
+DOCKED: HETATM    3  N03 JIN A 600      17.154  11.968   2.649 -1.09 +0.01    -0.058 NA 
+DOCKED: HETATM    4  C04 JIN A 600      16.031  12.550   2.994 +0.07 -0.21    +0.751 A  
+DOCKED: HETATM    5  N05 JIN A 600      15.918  13.754   3.579 -0.40 +0.01    -0.042 NA 
+DOCKED: HETATM    6  C06 JIN A 600      17.064  14.428   3.807 -0.25 -0.06    +0.166 A  
+DOCKED: HETATM    7  C09 JIN A 600      19.324  15.900   4.282 -0.31 -0.03    +0.058 A  
+DOCKED: HETATM    8  C10 JIN A 600      19.415  14.637   3.695 -0.37 -0.01    +0.009 A  
+DOCKED: HETATM    9  N11 JIN A 600      16.953  15.605   4.409 -0.16 +0.09    -0.278 N  
+DOCKED: HETATM   10  C12 JIN A 600      18.047  16.341   4.653 -0.16 -0.08    +0.262 A  
+DOCKED: HETATM   11  C13 JIN A 600      15.576  16.091   4.733 -0.41 -0.04    +0.135 C  
+DOCKED: HETATM   12  O14 JIN A 600      17.882  17.438   5.191 -0.29 +0.05    -0.267 OA 
+DOCKED: ENDROOT
+DOCKED: BRANCH   4  13
+DOCKED: HETATM   13  N08 JIN A 600      14.959  11.791   2.722 -0.81 +0.02    -0.059 NA 
+DOCKED: BRANCH  13  14
+DOCKED: HETATM   14  C27 JIN A 600      13.645  12.107   2.929 -0.46 -0.05    +0.100 A  
+DOCKED: HETATM   15  C26 JIN A 600      12.542  11.976   2.067 -0.40 -0.01    +0.022 A  
+DOCKED: HETATM   16  C31 JIN A 600      11.241  12.391   2.402 -0.41 -0.02    +0.031 A  
+DOCKED: HETATM   17  C30 JIN A 600      10.986  12.982   3.614 -0.25 -0.04    +0.136 A  
+DOCKED: HETATM   18  C29 JIN A 600      12.049  13.144   4.471 -0.40 -0.00    +0.007 A  
+DOCKED: HETATM   19  F35 JIN A 600       9.754  13.400   3.881 -0.06 +0.07    -0.204 F  
+DOCKED: HETATM   20  C28 JIN A 600      13.379  12.788   4.135 -0.44 -0.01    +0.018 A  
+DOCKED: HETATM   21  C34 JIN A 600      11.729  13.837   5.769 -0.52 -0.01    +0.033 C  
+DOCKED: ENDBRANCH  13  14
+DOCKED: ENDBRANCH   4  13
+DOCKED: BRANCH   7  22
+DOCKED: HETATM   22  C19 JIN A 600      20.592  16.646   4.530 -0.35 -0.01    +0.026 A  
+DOCKED: HETATM   23  C18 JIN A 600      21.004  17.589   3.573 -0.42 -0.02    +0.059 A  
+DOCKED: HETATM   24 CL4  JIN A 600      20.265  17.796   2.004 -0.96 +0.03    -0.082 Cl 
+DOCKED: HETATM   25  C17 JIN A 600      22.099  18.444   3.803 -0.54 -0.00    +0.011 A  
+DOCKED: HETATM   26  C16 JIN A 600      22.758  18.353   5.063 -0.61 -0.00    +0.002 A  
+DOCKED: HETATM   27  C15 JIN A 600      22.353  17.382   6.015 -0.56 -0.01    +0.011 A  
+DOCKED: HETATM   28  C20 JIN A 600      21.247  16.563   5.731 -0.44 -0.04    +0.059 A  
+DOCKED: HETATM   29 CL5  JIN A 600      20.757  15.337   6.938 -0.84 +0.05    -0.082 Cl 
+DOCKED: ENDBRANCH   7  22
+DOCKED: TORSDOF 3
+DOCKED: TER
+DOCKED: ENDMDL
+________________________________________________________________________________
+
+
+    FINAL DOCKED STATE:
+    ________________________
+
+
+Run:   3 / 10
+Time taken for this run:   0.160s
+
+DOCKED: MODEL        3
+DOCKED: USER    Run = 3
+DOCKED: USER
+DOCKED: USER    Estimated Free Energy of Binding    = -12.18 kcal/mol  [=(1)+(2)+(3)-(4)]
+DOCKED: USER
+DOCKED: USER    (1) Final Intermolecular Energy     = -13.08 kcal/mol
+DOCKED: USER        vdW + Hbond + desolv Energy     = -12.69 kcal/mol
+DOCKED: USER        Electrostatic Energy            =  -0.39 kcal/mol
+DOCKED: USER        Moving Ligand-Fixed Receptor    = -13.08 kcal/mol
+DOCKED: USER        Moving Ligand-Moving Receptor   =  +0.00 kcal/mol
+DOCKED: USER    (2) Final Total Internal Energy     =  -1.11 kcal/mol
+DOCKED: USER    (3) Torsional Free Energy           =  +0.89 kcal/mol
+DOCKED: USER    (4) Unbound System's Energy         =  -1.11 kcal/mol
+DOCKED: USER
+DOCKED: USER
+DOCKED: REMARK  3 active torsions:
+DOCKED: REMARK  status: ('A' for Active; 'I' for Inactive)
+DOCKED: REMARK    1  A    between atoms: C04_6  and  N08_9 
+DOCKED: REMARK    2  A    between atoms: N08_9  and  C27_23 
+DOCKED: REMARK    3  A    between atoms: C09_10  and  C19_20 
+DOCKED: USER                              x       y       z     vdW  Elec       q    Type
+DOCKED: USER                           _______ _______ _______ _____ _____    ______ ____
+DOCKED: ROOT
+DOCKED: HETATM    1  C01 JIN A 600      18.309  13.884   3.460 -0.41 -0.03    +0.055 A  
+DOCKED: HETATM    2  C02 JIN A 600      18.355  12.621   2.843 -0.45 -0.07    +0.121 A  
+DOCKED: HETATM    3  N03 JIN A 600      17.194  11.962   2.657 -1.09 +0.01    -0.058 NA 
+DOCKED: HETATM    4  C04 JIN A 600      16.070  12.539   3.011 +0.08 -0.21    +0.751 A  
+DOCKED: HETATM    5  N05 JIN A 600      15.957  13.743   3.595 -0.40 +0.01    -0.042 NA 
+DOCKED: HETATM    6  C06 JIN A 600      17.101  14.423   3.813 -0.25 -0.06    +0.166 A  
+DOCKED: HETATM    7  C09 JIN A 600      19.358  15.906   4.269 -0.31 -0.03    +0.058 A  
+DOCKED: HETATM    8  C10 JIN A 600      19.450  14.643   3.682 -0.36 -0.01    +0.009 A  
+DOCKED: HETATM    9  N11 JIN A 600      16.990  15.599   4.416 -0.16 +0.09    -0.278 N  
+DOCKED: HETATM   10  C12 JIN A 600      18.082  16.341   4.651 -0.16 -0.08    +0.262 A  
+DOCKED: HETATM   11  C13 JIN A 600      15.613  16.079   4.751 -0.41 -0.04    +0.135 C  
+DOCKED: HETATM   12  O14 JIN A 600      17.915  17.437   5.189 -0.29 +0.05    -0.267 OA 
+DOCKED: ENDROOT
+DOCKED: BRANCH   4  13
+DOCKED: HETATM   13  N08 JIN A 600      15.000  11.775   2.747 -0.82 +0.02    -0.059 NA 
+DOCKED: BRANCH  13  14
+DOCKED: HETATM   14  C27 JIN A 600      13.685  12.096   2.939 -0.46 -0.05    +0.100 A  
+DOCKED: HETATM   15  C26 JIN A 600      12.592  11.968   2.064 -0.39 -0.01    +0.022 A  
+DOCKED: HETATM   16  C31 JIN A 600      11.288  12.388   2.383 -0.42 -0.02    +0.031 A  
+DOCKED: HETATM   17  C30 JIN A 600      11.021  12.981   3.591 -0.26 -0.04    +0.136 A  
+DOCKED: HETATM   18  C29 JIN A 600      12.074  13.140   4.460 -0.41 -0.00    +0.007 A  
+DOCKED: HETATM   19  F35 JIN A 600       9.788  13.404   3.843 -0.06 +0.07    -0.204 F  
+DOCKED: HETATM   20  C28 JIN A 600      13.407  12.779   4.140 -0.44 -0.01    +0.018 A  
+DOCKED: HETATM   21  C34 JIN A 600      11.741  13.835   5.753 -0.52 -0.01    +0.033 C  
+DOCKED: ENDBRANCH  13  14
+DOCKED: ENDBRANCH   4  13
+DOCKED: BRANCH   7  22
+DOCKED: HETATM   22  C19 JIN A 600      20.624  16.658   4.507 -0.35 -0.01    +0.026 A  
+DOCKED: HETATM   23  C18 JIN A 600      21.026  17.601   3.544 -0.42 -0.02    +0.059 A  
+DOCKED: HETATM   24 CL4  JIN A 600      20.274  17.801   1.980 -0.96 +0.03    -0.082 Cl 
+DOCKED: HETATM   25  C17 JIN A 600      22.118  18.461   3.764 -0.54 -0.00    +0.011 A  
+DOCKED: HETATM   26  C16 JIN A 600      22.786  18.376   5.020 -0.61 -0.00    +0.002 A  
+DOCKED: HETATM   27  C15 JIN A 600      22.392  17.406   5.977 -0.56 -0.01    +0.011 A  
+DOCKED: HETATM   28  C20 JIN A 600      21.288  16.582   5.703 -0.44 -0.04    +0.059 A  
+DOCKED: HETATM   29 CL5  JIN A 600      20.812  15.356   6.916 -0.83 +0.05    -0.082 Cl 
+DOCKED: ENDBRANCH   7  22
+DOCKED: TORSDOF 3
+DOCKED: TER
+DOCKED: ENDMDL
+________________________________________________________________________________
+
+
+    FINAL DOCKED STATE:
+    ________________________
+
+
+Run:   4 / 10
+Time taken for this run:   0.160s
+
+DOCKED: MODEL        4
+DOCKED: USER    Run = 4
+DOCKED: USER
+DOCKED: USER    Estimated Free Energy of Binding    = -12.19 kcal/mol  [=(1)+(2)+(3)-(4)]
+DOCKED: USER
+DOCKED: USER    (1) Final Intermolecular Energy     = -13.09 kcal/mol
+DOCKED: USER        vdW + Hbond + desolv Energy     = -12.69 kcal/mol
+DOCKED: USER        Electrostatic Energy            =  -0.39 kcal/mol
+DOCKED: USER        Moving Ligand-Fixed Receptor    = -13.09 kcal/mol
+DOCKED: USER        Moving Ligand-Moving Receptor   =  +0.00 kcal/mol
+DOCKED: USER    (2) Final Total Internal Energy     =  -1.11 kcal/mol
+DOCKED: USER    (3) Torsional Free Energy           =  +0.89 kcal/mol
+DOCKED: USER    (4) Unbound System's Energy         =  -1.11 kcal/mol
+DOCKED: USER
+DOCKED: USER
+DOCKED: REMARK  3 active torsions:
+DOCKED: REMARK  status: ('A' for Active; 'I' for Inactive)
+DOCKED: REMARK    1  A    between atoms: C04_6  and  N08_9 
+DOCKED: REMARK    2  A    between atoms: N08_9  and  C27_23 
+DOCKED: REMARK    3  A    between atoms: C09_10  and  C19_20 
+DOCKED: USER                              x       y       z     vdW  Elec       q    Type
+DOCKED: USER                           _______ _______ _______ _____ _____    ______ ____
+DOCKED: ROOT
+DOCKED: HETATM    1  C01 JIN A 600      18.277  13.883   3.454 -0.41 -0.03    +0.055 A  
+DOCKED: HETATM    2  C02 JIN A 600      18.321  12.621   2.835 -0.45 -0.07    +0.121 A  
+DOCKED: HETATM    3  N03 JIN A 600      17.158  11.968   2.639 -1.09 +0.01    -0.058 NA 
+DOCKED: HETATM    4  C04 JIN A 600      16.035  12.549   2.987 +0.07 -0.21    +0.751 A  
+DOCKED: HETATM    5  N05 JIN A 600      15.923  13.752   3.573 -0.40 +0.01    -0.042 NA 
+DOCKED: HETATM    6  C06 JIN A 600      17.069  14.427   3.801 -0.25 -0.06    +0.166 A  
+DOCKED: HETATM    7  C09 JIN A 600      19.329  15.898   4.275 -0.31 -0.03    +0.058 A  
+DOCKED: HETATM    8  C10 JIN A 600      19.419  14.636   3.686 -0.36 -0.01    +0.009 A  
+DOCKED: HETATM    9  N11 JIN A 600      16.959  15.602   4.405 -0.16 +0.09    -0.278 N  
+DOCKED: HETATM   10  C12 JIN A 600      18.052  16.338   4.649 -0.16 -0.08    +0.262 A  
+DOCKED: HETATM   11  C13 JIN A 600      15.582  16.087   4.731 -0.41 -0.04    +0.135 C  
+DOCKED: HETATM   12  O14 JIN A 600      17.887  17.434   5.188 -0.29 +0.05    -0.267 OA 
+DOCKED: ENDROOT
+DOCKED: BRANCH   4  13
+DOCKED: HETATM   13  N08 JIN A 600      14.963  11.790   2.714 -0.81 +0.02    -0.059 NA 
+DOCKED: BRANCH  13  14
+DOCKED: HETATM   14  C27 JIN A 600      13.650  12.105   2.926 -0.46 -0.05    +0.100 A  
+DOCKED: HETATM   15  C26 JIN A 600      12.544  11.969   2.068 -0.40 -0.01    +0.022 A  
+DOCKED: HETATM   16  C31 JIN A 600      11.243  12.383   2.406 -0.42 -0.02    +0.031 A  
+DOCKED: HETATM   17  C30 JIN A 600      10.992  12.978   3.617 -0.25 -0.04    +0.136 A  
+DOCKED: HETATM   18  C29 JIN A 600      12.057  13.144   4.470 -0.40 -0.00    +0.007 A  
+DOCKED: HETATM   19  F35 JIN A 600       9.760  13.394   3.888 -0.06 +0.07    -0.204 F  
+DOCKED: HETATM   20  C28 JIN A 600      13.387  12.789   4.130 -0.44 -0.01    +0.018 A  
+DOCKED: HETATM   21  C34 JIN A 600      11.741  13.840   5.766 -0.51 -0.01    +0.033 C  
+DOCKED: ENDBRANCH  13  14
+DOCKED: ENDBRANCH   4  13
+DOCKED: BRANCH   7  22
+DOCKED: HETATM   22  C19 JIN A 600      20.597  16.645   4.523 -0.35 -0.01    +0.026 A  
+DOCKED: HETATM   23  C18 JIN A 600      21.009  17.588   3.565 -0.42 -0.02    +0.059 A  
+DOCKED: HETATM   24 CL4  JIN A 600      20.268  17.795   1.998 -0.96 +0.03    -0.082 Cl 
+DOCKED: HETATM   25  C17 JIN A 600      22.104  18.442   3.795 -0.54 -0.00    +0.011 A  
+DOCKED: HETATM   26  C16 JIN A 600      22.763  18.351   5.055 -0.61 -0.00    +0.002 A  
+DOCKED: HETATM   27  C15 JIN A 600      22.359  17.380   6.007 -0.56 -0.01    +0.011 A  
+DOCKED: HETATM   28  C20 JIN A 600      21.253  16.562   5.724 -0.44 -0.04    +0.059 A  
+DOCKED: HETATM   29 CL5  JIN A 600      20.763  15.335   6.930 -0.84 +0.05    -0.082 Cl 
+DOCKED: ENDBRANCH   7  22
+DOCKED: TORSDOF 3
+DOCKED: TER
+DOCKED: ENDMDL
+________________________________________________________________________________
+
+
+    FINAL DOCKED STATE:
+    ________________________
+
+
+Run:   5 / 10
+Time taken for this run:   0.160s
+
+DOCKED: MODEL        5
+DOCKED: USER    Run = 5
+DOCKED: USER
+DOCKED: USER    Estimated Free Energy of Binding    = -12.19 kcal/mol  [=(1)+(2)+(3)-(4)]
+DOCKED: USER
+DOCKED: USER    (1) Final Intermolecular Energy     = -13.08 kcal/mol
+DOCKED: USER        vdW + Hbond + desolv Energy     = -12.69 kcal/mol
+DOCKED: USER        Electrostatic Energy            =  -0.39 kcal/mol
+DOCKED: USER        Moving Ligand-Fixed Receptor    = -13.08 kcal/mol
+DOCKED: USER        Moving Ligand-Moving Receptor   =  +0.00 kcal/mol
+DOCKED: USER    (2) Final Total Internal Energy     =  -1.11 kcal/mol
+DOCKED: USER    (3) Torsional Free Energy           =  +0.89 kcal/mol
+DOCKED: USER    (4) Unbound System's Energy         =  -1.11 kcal/mol
+DOCKED: USER
+DOCKED: USER
+DOCKED: REMARK  3 active torsions:
+DOCKED: REMARK  status: ('A' for Active; 'I' for Inactive)
+DOCKED: REMARK    1  A    between atoms: C04_6  and  N08_9 
+DOCKED: REMARK    2  A    between atoms: N08_9  and  C27_23 
+DOCKED: REMARK    3  A    between atoms: C09_10  and  C19_20 
+DOCKED: USER                              x       y       z     vdW  Elec       q    Type
+DOCKED: USER                           _______ _______ _______ _____ _____    ______ ____
+DOCKED: ROOT
+DOCKED: HETATM    1  C01 JIN A 600      18.287  13.877   3.451 -0.41 -0.03    +0.055 A  
+DOCKED: HETATM    2  C02 JIN A 600      18.328  12.613   2.837 -0.45 -0.07    +0.121 A  
+DOCKED: HETATM    3  N03 JIN A 600      17.162  11.964   2.640 -1.09 +0.01    -0.058 NA 
+DOCKED: HETATM    4  C04 JIN A 600      16.041  12.551   2.982 +0.07 -0.21    +0.751 A  
+DOCKED: HETATM    5  N05 JIN A 600      15.932  13.756   3.563 -0.40 +0.01    -0.042 NA 
+DOCKED: HETATM    6  C06 JIN A 600      17.080  14.427   3.792 -0.25 -0.06    +0.166 A  
+DOCKED: HETATM    7  C09 JIN A 600      19.345  15.891   4.268 -0.31 -0.03    +0.058 A  
+DOCKED: HETATM    8  C10 JIN A 600      19.431  14.626   3.684 -0.36 -0.01    +0.009 A  
+DOCKED: HETATM    9  N11 JIN A 600      16.972  15.605   4.392 -0.16 +0.09    -0.278 N  
+DOCKED: HETATM   10  C12 JIN A 600      18.068  16.338   4.636 -0.16 -0.08    +0.262 A  
+DOCKED: HETATM   11  C13 JIN A 600      15.596  16.097   4.712 -0.41 -0.04    +0.135 C  
+DOCKED: HETATM   12  O14 JIN A 600      17.906  17.436   5.171 -0.29 +0.05    -0.267 OA 
+DOCKED: ENDROOT
+DOCKED: BRANCH   4  13
+DOCKED: HETATM   13  N08 JIN A 600      14.966  11.796   2.708 -0.82 +0.02    -0.059 NA 
+DOCKED: BRANCH  13  14
+DOCKED: HETATM   14  C27 JIN A 600      13.654  12.113   2.922 -0.46 -0.05    +0.100 A  
+DOCKED: HETATM   15  C26 JIN A 600      12.548  11.986   2.064 -0.40 -0.01    +0.022 A  
+DOCKED: HETATM   16  C31 JIN A 600      11.248  12.402   2.405 -0.41 -0.02    +0.031 A  
+DOCKED: HETATM   17  C30 JIN A 600      10.999  12.990   3.619 -0.25 -0.04    +0.136 A  
+DOCKED: HETATM   18  C29 JIN A 600      12.065  13.147   4.473 -0.40 -0.00    +0.007 A  
+DOCKED: HETATM   19  F35 JIN A 600       9.769  13.409   3.893 -0.06 +0.07    -0.204 F  
+DOCKED: HETATM   20  C28 JIN A 600      13.394  12.791   4.131 -0.44 -0.01    +0.018 A  
+DOCKED: HETATM   21  C34 JIN A 600      11.751  13.836   5.774 -0.52 -0.01    +0.033 C  
+DOCKED: ENDBRANCH  13  14
+DOCKED: ENDBRANCH   4  13
+DOCKED: BRANCH   7  22
+DOCKED: HETATM   22  C19 JIN A 600      20.615  16.633   4.517 -0.35 -0.01    +0.026 A  
+DOCKED: HETATM   23  C18 JIN A 600      21.034  17.570   3.557 -0.42 -0.02    +0.059 A  
+DOCKED: HETATM   24 CL4  JIN A 600      20.300  17.773   1.986 -0.97 +0.03    -0.082 Cl 
+DOCKED: HETATM   25  C17 JIN A 600      22.132  18.421   3.787 -0.54 -0.00    +0.011 A  
+DOCKED: HETATM   26  C16 JIN A 600      22.786  18.333   5.050 -0.61 -0.00    +0.002 A  
+DOCKED: HETATM   27  C15 JIN A 600      22.374  17.368   6.005 -0.56 -0.01    +0.011 A  
+DOCKED: HETATM   28  C20 JIN A 600      21.266  16.553   5.721 -0.44 -0.04    +0.059 A  
+DOCKED: HETATM   29 CL5  JIN A 600      20.766  15.334   6.932 -0.84 +0.05    -0.082 Cl 
+DOCKED: ENDBRANCH   7  22
+DOCKED: TORSDOF 3
+DOCKED: TER
+DOCKED: ENDMDL
+________________________________________________________________________________
+
+
+    FINAL DOCKED STATE:
+    ________________________
+
+
+Run:   6 / 10
+Time taken for this run:   0.160s
+
+DOCKED: MODEL        6
+DOCKED: USER    Run = 6
+DOCKED: USER
+DOCKED: USER    Estimated Free Energy of Binding    = -12.19 kcal/mol  [=(1)+(2)+(3)-(4)]
+DOCKED: USER
+DOCKED: USER    (1) Final Intermolecular Energy     = -13.08 kcal/mol
+DOCKED: USER        vdW + Hbond + desolv Energy     = -12.69 kcal/mol
+DOCKED: USER        Electrostatic Energy            =  -0.39 kcal/mol
+DOCKED: USER        Moving Ligand-Fixed Receptor    = -13.08 kcal/mol
+DOCKED: USER        Moving Ligand-Moving Receptor   =  +0.00 kcal/mol
+DOCKED: USER    (2) Final Total Internal Energy     =  -1.10 kcal/mol
+DOCKED: USER    (3) Torsional Free Energy           =  +0.89 kcal/mol
+DOCKED: USER    (4) Unbound System's Energy         =  -1.10 kcal/mol
+DOCKED: USER
+DOCKED: USER
+DOCKED: REMARK  3 active torsions:
+DOCKED: REMARK  status: ('A' for Active; 'I' for Inactive)
+DOCKED: REMARK    1  A    between atoms: C04_6  and  N08_9 
+DOCKED: REMARK    2  A    between atoms: N08_9  and  C27_23 
+DOCKED: REMARK    3  A    between atoms: C09_10  and  C19_20 
+DOCKED: USER                              x       y       z     vdW  Elec       q    Type
+DOCKED: USER                           _______ _______ _______ _____ _____    ______ ____
+DOCKED: ROOT
+DOCKED: HETATM    1  C01 JIN A 600      18.286  13.875   3.449 -0.41 -0.03    +0.055 A  
+DOCKED: HETATM    2  C02 JIN A 600      18.327  12.612   2.831 -0.45 -0.07    +0.121 A  
+DOCKED: HETATM    3  N03 JIN A 600      17.162  11.962   2.636 -1.09 +0.01    -0.058 NA 
+DOCKED: HETATM    4  C04 JIN A 600      16.041  12.547   2.984 +0.07 -0.21    +0.751 A  
+DOCKED: HETATM    5  N05 JIN A 600      15.933  13.750   3.571 -0.40 +0.01    -0.042 NA 
+DOCKED: HETATM    6  C06 JIN A 600      17.080  14.422   3.796 -0.25 -0.06    +0.166 A  
+DOCKED: HETATM    7  C09 JIN A 600      19.345  15.888   4.268 -0.31 -0.03    +0.058 A  
+DOCKED: HETATM    8  C10 JIN A 600      19.431  14.625   3.679 -0.36 -0.01    +0.009 A  
+DOCKED: HETATM    9  N11 JIN A 600      16.973  15.597   4.400 -0.16 +0.09    -0.278 N  
+DOCKED: HETATM   10  C12 JIN A 600      18.069  16.332   4.643 -0.15 -0.08    +0.262 A  
+DOCKED: HETATM   11  C13 JIN A 600      15.598  16.086   4.728 -0.41 -0.04    +0.135 C  
+DOCKED: HETATM   12  O14 JIN A 600      17.907  17.428   5.182 -0.29 +0.05    -0.267 OA 
+DOCKED: ENDROOT
+DOCKED: BRANCH   4  13
+DOCKED: HETATM   13  N08 JIN A 600      14.967  11.790   2.713 -0.81 +0.02    -0.059 NA 
+DOCKED: BRANCH  13  14
+DOCKED: HETATM   14  C27 JIN A 600      13.654  12.108   2.926 -0.46 -0.05    +0.100 A  
+DOCKED: HETATM   15  C26 JIN A 600      12.549  11.980   2.067 -0.40 -0.01    +0.022 A  
+DOCKED: HETATM   16  C31 JIN A 600      11.249  12.397   2.407 -0.41 -0.02    +0.031 A  
+DOCKED: HETATM   17  C30 JIN A 600      10.999  12.987   3.620 -0.25 -0.04    +0.136 A  
+DOCKED: HETATM   18  C29 JIN A 600      12.065  13.145   4.474 -0.40 -0.00    +0.007 A  
+DOCKED: HETATM   19  F35 JIN A 600       9.769  13.406   3.892 -0.06 +0.07    -0.204 F  
+DOCKED: HETATM   20  C28 JIN A 600      13.394  12.788   4.133 -0.44 -0.01    +0.018 A  
+DOCKED: HETATM   21  C34 JIN A 600      11.750  13.837   5.774 -0.52 -0.01    +0.033 C  
+DOCKED: ENDBRANCH  13  14
+DOCKED: ENDBRANCH   4  13
+DOCKED: BRANCH   7  22
+DOCKED: HETATM   22  C19 JIN A 600      20.615  16.631   4.514 -0.35 -0.01    +0.026 A  
+DOCKED: HETATM   23  C18 JIN A 600      21.032  17.567   3.552 -0.42 -0.02    +0.059 A  
+DOCKED: HETATM   24 CL4  JIN A 600      20.296  17.767   1.981 -0.97 +0.03    -0.082 Cl 
+DOCKED: HETATM   25  C17 JIN A 600      22.130  18.419   3.779 -0.54 -0.00    +0.011 A  
+DOCKED: HETATM   26  C16 JIN A 600      22.785  18.334   5.041 -0.61 -0.00    +0.002 A  
+DOCKED: HETATM   27  C15 JIN A 600      22.375  17.370   5.998 -0.56 -0.01    +0.011 A  
+DOCKED: HETATM   28  C20 JIN A 600      21.267  16.554   5.718 -0.44 -0.04    +0.059 A  
+DOCKED: HETATM   29 CL5  JIN A 600      20.769  15.337   6.931 -0.84 +0.05    -0.082 Cl 
+DOCKED: ENDBRANCH   7  22
+DOCKED: TORSDOF 3
+DOCKED: TER
+DOCKED: ENDMDL
+________________________________________________________________________________
+
+
+    FINAL DOCKED STATE:
+    ________________________
+
+
+Run:   7 / 10
+Time taken for this run:   0.160s
+
+DOCKED: MODEL        7
+DOCKED: USER    Run = 7
+DOCKED: USER
+DOCKED: USER    Estimated Free Energy of Binding    = -12.19 kcal/mol  [=(1)+(2)+(3)-(4)]
+DOCKED: USER
+DOCKED: USER    (1) Final Intermolecular Energy     = -13.09 kcal/mol
+DOCKED: USER        vdW + Hbond + desolv Energy     = -12.69 kcal/mol
+DOCKED: USER        Electrostatic Energy            =  -0.39 kcal/mol
+DOCKED: USER        Moving Ligand-Fixed Receptor    = -13.09 kcal/mol
+DOCKED: USER        Moving Ligand-Moving Receptor   =  +0.00 kcal/mol
+DOCKED: USER    (2) Final Total Internal Energy     =  -1.11 kcal/mol
+DOCKED: USER    (3) Torsional Free Energy           =  +0.89 kcal/mol
+DOCKED: USER    (4) Unbound System's Energy         =  -1.11 kcal/mol
+DOCKED: USER
+DOCKED: USER
+DOCKED: REMARK  3 active torsions:
+DOCKED: REMARK  status: ('A' for Active; 'I' for Inactive)
+DOCKED: REMARK    1  A    between atoms: C04_6  and  N08_9 
+DOCKED: REMARK    2  A    between atoms: N08_9  and  C27_23 
+DOCKED: REMARK    3  A    between atoms: C09_10  and  C19_20 
+DOCKED: USER                              x       y       z     vdW  Elec       q    Type
+DOCKED: USER                           _______ _______ _______ _____ _____    ______ ____
+DOCKED: ROOT
+DOCKED: HETATM    1  C01 JIN A 600      18.283  13.882   3.460 -0.41 -0.03    +0.055 A  
+DOCKED: HETATM    2  C02 JIN A 600      18.329  12.618   2.844 -0.45 -0.07    +0.121 A  
+DOCKED: HETATM    3  N03 JIN A 600      17.166  11.965   2.645 -1.09 +0.01    -0.058 NA 
+DOCKED: HETATM    4  C04 JIN A 600      16.042  12.548   2.987 +0.07 -0.21    +0.751 A  
+DOCKED: HETATM    5  N05 JIN A 600      15.929  13.752   3.571 -0.40 +0.01    -0.042 NA 
+DOCKED: HETATM    6  C06 JIN A 600      17.074  14.426   3.801 -0.25 -0.06    +0.166 A  
+DOCKED: HETATM    7  C09 JIN A 600      19.334  15.897   4.281 -0.31 -0.03    +0.058 A  
+DOCKED: HETATM    8  C10 JIN A 600      19.425  14.634   3.695 -0.36 -0.01    +0.009 A  
+DOCKED: HETATM    9  N11 JIN A 600      16.962  15.603   4.403 -0.16 +0.09    -0.278 N  
+DOCKED: HETATM   10  C12 JIN A 600      18.055  16.339   4.649 -0.16 -0.08    +0.262 A  
+DOCKED: HETATM   11  C13 JIN A 600      15.584  16.089   4.723 -0.41 -0.04    +0.135 C  
+DOCKED: HETATM   12  O14 JIN A 600      17.889  17.436   5.186 -0.29 +0.05    -0.267 OA 
+DOCKED: ENDROOT
+DOCKED: BRANCH   4  13
+DOCKED: HETATM   13  N08 JIN A 600      14.971  11.789   2.712 -0.82 +0.02    -0.059 NA 
+DOCKED: BRANCH  13  14
+DOCKED: HETATM   14  C27 JIN A 600      13.657  12.102   2.924 -0.46 -0.05    +0.100 A  
+DOCKED: HETATM   15  C26 JIN A 600      12.552  11.966   2.067 -0.40 -0.01    +0.022 A  
+DOCKED: HETATM   16  C31 JIN A 600      11.250  12.378   2.406 -0.42 -0.02    +0.031 A  
+DOCKED: HETATM   17  C30 JIN A 600      10.999  12.971   3.618 -0.25 -0.04    +0.136 A  
+DOCKED: HETATM   18  C29 JIN A 600      12.064  13.138   4.470 -0.40 -0.00    +0.007 A  
+DOCKED: HETATM   19  F35 JIN A 600       9.767  13.386   3.889 -0.06 +0.07    -0.204 F  
+DOCKED: HETATM   20  C28 JIN A 600      13.395  12.785   4.129 -0.44 -0.01    +0.018 A  
+DOCKED: HETATM   21  C34 JIN A 600      11.748  13.832   5.768 -0.52 -0.01    +0.033 C  
+DOCKED: ENDBRANCH  13  14
+DOCKED: ENDBRANCH   4  13
+DOCKED: BRANCH   7  22
+DOCKED: HETATM   22  C19 JIN A 600      20.601  16.644   4.532 -0.35 -0.01    +0.026 A  
+DOCKED: HETATM   23  C18 JIN A 600      21.015  17.588   3.577 -0.42 -0.02    +0.059 A  
+DOCKED: HETATM   24 CL4  JIN A 600      20.278  17.796   2.007 -0.96 +0.03    -0.082 Cl 
+DOCKED: HETATM   25  C17 JIN A 600      22.109  18.442   3.810 -0.54 -0.00    +0.011 A  
+DOCKED: HETATM   26  C16 JIN A 600      22.765  18.350   5.071 -0.61 -0.00    +0.002 A  
+DOCKED: HETATM   27  C15 JIN A 600      22.359  17.378   6.021 -0.56 -0.01    +0.011 A  
+DOCKED: HETATM   28  C20 JIN A 600      21.254  16.560   5.735 -0.44 -0.04    +0.059 A  
+DOCKED: HETATM   29 CL5  JIN A 600      20.761  15.332   6.939 -0.84 +0.05    -0.082 Cl 
+DOCKED: ENDBRANCH   7  22
+DOCKED: TORSDOF 3
+DOCKED: TER
+DOCKED: ENDMDL
+________________________________________________________________________________
+
+
+    FINAL DOCKED STATE:
+    ________________________
+
+
+Run:   8 / 10
+Time taken for this run:   0.160s
+
+DOCKED: MODEL        8
+DOCKED: USER    Run = 8
+DOCKED: USER
+DOCKED: USER    Estimated Free Energy of Binding    = -12.18 kcal/mol  [=(1)+(2)+(3)-(4)]
+DOCKED: USER
+DOCKED: USER    (1) Final Intermolecular Energy     = -13.08 kcal/mol
+DOCKED: USER        vdW + Hbond + desolv Energy     = -12.69 kcal/mol
+DOCKED: USER        Electrostatic Energy            =  -0.39 kcal/mol
+DOCKED: USER        Moving Ligand-Fixed Receptor    = -13.08 kcal/mol
+DOCKED: USER        Moving Ligand-Moving Receptor   =  +0.00 kcal/mol
+DOCKED: USER    (2) Final Total Internal Energy     =  -1.11 kcal/mol
+DOCKED: USER    (3) Torsional Free Energy           =  +0.89 kcal/mol
+DOCKED: USER    (4) Unbound System's Energy         =  -1.11 kcal/mol
+DOCKED: USER
+DOCKED: USER
+DOCKED: REMARK  3 active torsions:
+DOCKED: REMARK  status: ('A' for Active; 'I' for Inactive)
+DOCKED: REMARK    1  A    between atoms: C04_6  and  N08_9 
+DOCKED: REMARK    2  A    between atoms: N08_9  and  C27_23 
+DOCKED: REMARK    3  A    between atoms: C09_10  and  C19_20 
+DOCKED: USER                              x       y       z     vdW  Elec       q    Type
+DOCKED: USER                           _______ _______ _______ _____ _____    ______ ____
+DOCKED: ROOT
+DOCKED: HETATM    1  C01 JIN A 600      18.298  13.882   3.459 -0.41 -0.03    +0.055 A  
+DOCKED: HETATM    2  C02 JIN A 600      18.342  12.617   2.845 -0.45 -0.07    +0.121 A  
+DOCKED: HETATM    3  N03 JIN A 600      17.179  11.963   2.654 -1.09 +0.01    -0.058 NA 
+DOCKED: HETATM    4  C04 JIN A 600      16.057  12.544   3.002 +0.08 -0.21    +0.751 A  
+DOCKED: HETATM    5  N05 JIN A 600      15.945  13.749   3.585 -0.40 +0.01    -0.042 NA 
+DOCKED: HETATM    6  C06 JIN A 600      17.091  14.425   3.807 -0.25 -0.06    +0.166 A  
+DOCKED: HETATM    7  C09 JIN A 600      19.351  15.901   4.270 -0.31 -0.03    +0.058 A  
+DOCKED: HETATM    8  C10 JIN A 600      19.441  14.637   3.686 -0.36 -0.01    +0.009 A  
+DOCKED: HETATM    9  N11 JIN A 600      16.981  15.603   4.407 -0.16 +0.09    -0.278 N  
+DOCKED: HETATM   10  C12 JIN A 600      18.074  16.341   4.646 -0.16 -0.08    +0.262 A  
+DOCKED: HETATM   11  C13 JIN A 600      15.604  16.088   4.735 -0.41 -0.04    +0.135 C  
+DOCKED: HETATM   12  O14 JIN A 600      17.910  17.438   5.181 -0.29 +0.05    -0.267 OA 
+DOCKED: ENDROOT
+DOCKED: BRANCH   4  13
+DOCKED: HETATM   13  N08 JIN A 600      14.985  11.783   2.735 -0.82 +0.02    -0.059 NA 
+DOCKED: BRANCH  13  14
+DOCKED: HETATM   14  C27 JIN A 600      13.671  12.103   2.934 -0.46 -0.05    +0.100 A  
+DOCKED: HETATM   15  C26 JIN A 600      12.574  11.977   2.064 -0.39 -0.01    +0.022 A  
+DOCKED: HETATM   16  C31 JIN A 600      11.271  12.396   2.391 -0.41 -0.02    +0.031 A  
+DOCKED: HETATM   17  C30 JIN A 600      11.010  12.986   3.602 -0.26 -0.04    +0.136 A  
+DOCKED: HETATM   18  C29 JIN A 600      12.068  13.143   4.467 -0.40 -0.00    +0.007 A  
+DOCKED: HETATM   19  F35 JIN A 600       9.778  13.408   3.862 -0.06 +0.07    -0.204 F  
+DOCKED: HETATM   20  C28 JIN A 600      13.399  12.784   4.139 -0.44 -0.01    +0.018 A  
+DOCKED: HETATM   21  C34 JIN A 600      11.742  13.835   5.764 -0.52 -0.01    +0.033 C  
+DOCKED: ENDBRANCH  13  14
+DOCKED: ENDBRANCH   4  13
+DOCKED: BRANCH   7  22
+DOCKED: HETATM   22  C19 JIN A 600      20.619  16.649   4.513 -0.35 -0.01    +0.026 A  
+DOCKED: HETATM   23  C18 JIN A 600      21.027  17.589   3.551 -0.42 -0.02    +0.059 A  
+DOCKED: HETATM   24 CL4  JIN A 600      20.283  17.790   1.984 -0.96 +0.03    -0.082 Cl 
+DOCKED: HETATM   25  C17 JIN A 600      22.122  18.445   3.775 -0.54 -0.00    +0.011 A  
+DOCKED: HETATM   26  C16 JIN A 600      22.784  18.360   5.033 -0.61 -0.00    +0.002 A  
+DOCKED: HETATM   27  C15 JIN A 600      22.383  17.392   5.990 -0.56 -0.01    +0.011 A  
+DOCKED: HETATM   28  C20 JIN A 600      21.278  16.571   5.712 -0.44 -0.04    +0.059 A  
+DOCKED: HETATM   29 CL5  JIN A 600      20.791  15.349   6.924 -0.83 +0.05    -0.082 Cl 
+DOCKED: ENDBRANCH   7  22
+DOCKED: TORSDOF 3
+DOCKED: TER
+DOCKED: ENDMDL
+________________________________________________________________________________
+
+
+    FINAL DOCKED STATE:
+    ________________________
+
+
+Run:   9 / 10
+Time taken for this run:   0.160s
+
+DOCKED: MODEL        9
+DOCKED: USER    Run = 9
+DOCKED: USER
+DOCKED: USER    Estimated Free Energy of Binding    = -12.19 kcal/mol  [=(1)+(2)+(3)-(4)]
+DOCKED: USER
+DOCKED: USER    (1) Final Intermolecular Energy     = -13.08 kcal/mol
+DOCKED: USER        vdW + Hbond + desolv Energy     = -12.69 kcal/mol
+DOCKED: USER        Electrostatic Energy            =  -0.39 kcal/mol
+DOCKED: USER        Moving Ligand-Fixed Receptor    = -13.08 kcal/mol
+DOCKED: USER        Moving Ligand-Moving Receptor   =  +0.00 kcal/mol
+DOCKED: USER    (2) Final Total Internal Energy     =  -1.11 kcal/mol
+DOCKED: USER    (3) Torsional Free Energy           =  +0.89 kcal/mol
+DOCKED: USER    (4) Unbound System's Energy         =  -1.11 kcal/mol
+DOCKED: USER
+DOCKED: USER
+DOCKED: REMARK  3 active torsions:
+DOCKED: REMARK  status: ('A' for Active; 'I' for Inactive)
+DOCKED: REMARK    1  A    between atoms: C04_6  and  N08_9 
+DOCKED: REMARK    2  A    between atoms: N08_9  and  C27_23 
+DOCKED: REMARK    3  A    between atoms: C09_10  and  C19_20 
+DOCKED: USER                              x       y       z     vdW  Elec       q    Type
+DOCKED: USER                           _______ _______ _______ _____ _____    ______ ____
+DOCKED: ROOT
+DOCKED: HETATM    1  C01 JIN A 600      18.296  13.886   3.461 -0.41 -0.03    +0.055 A  
+DOCKED: HETATM    2  C02 JIN A 600      18.341  12.623   2.845 -0.45 -0.07    +0.121 A  
+DOCKED: HETATM    3  N03 JIN A 600      17.178  11.969   2.649 -1.09 +0.01    -0.058 NA 
+DOCKED: HETATM    4  C04 JIN A 600      16.055  12.551   2.994 +0.07 -0.21    +0.751 A  
+DOCKED: HETATM    5  N05 JIN A 600      15.942  13.755   3.578 -0.40 +0.01    -0.042 NA 
+DOCKED: HETATM    6  C06 JIN A 600      17.087  14.430   3.805 -0.25 -0.06    +0.166 A  
+DOCKED: HETATM    7  C09 JIN A 600      19.347  15.903   4.279 -0.31 -0.03    +0.058 A  
+DOCKED: HETATM    8  C10 JIN A 600      19.438  14.640   3.693 -0.36 -0.01    +0.009 A  
+DOCKED: HETATM    9  N11 JIN A 600      16.976  15.606   4.407 -0.16 +0.09    -0.278 N  
+DOCKED: HETATM   10  C12 JIN A 600      18.069  16.344   4.651 -0.16 -0.08    +0.262 A  
+DOCKED: HETATM   11  C13 JIN A 600      15.598  16.092   4.730 -0.41 -0.04    +0.135 C  
+DOCKED: HETATM   12  O14 JIN A 600      17.903  17.440   5.187 -0.29 +0.05    -0.267 OA 
+DOCKED: ENDROOT
+DOCKED: BRANCH   4  13
+DOCKED: HETATM   13  N08 JIN A 600      14.983  11.792   2.721 -0.82 +0.02    -0.059 NA 
+DOCKED: BRANCH  13  14
+DOCKED: HETATM   14  C27 JIN A 600      13.669  12.106   2.931 -0.46 -0.05    +0.100 A  
+DOCKED: HETATM   15  C26 JIN A 600      12.566  11.973   2.070 -0.39 -0.01    +0.022 A  
+DOCKED: HETATM   16  C31 JIN A 600      11.264  12.387   2.407 -0.42 -0.02    +0.031 A  
+DOCKED: HETATM   17  C30 JIN A 600      11.011  12.978   3.620 -0.25 -0.04    +0.136 A  
+DOCKED: HETATM   18  C29 JIN A 600      12.074  13.141   4.475 -0.40 -0.00    +0.007 A  
+DOCKED: HETATM   19  F35 JIN A 600       9.778  13.394   3.889 -0.06 +0.07    -0.204 F  
+DOCKED: HETATM   20  C28 JIN A 600      13.405  12.787   4.136 -0.44 -0.01    +0.018 A  
+DOCKED: HETATM   21  C34 JIN A 600      11.756  13.834   5.773 -0.52 -0.01    +0.033 C  
+DOCKED: ENDBRANCH  13  14
+DOCKED: ENDBRANCH   4  13
+DOCKED: BRANCH   7  22
+DOCKED: HETATM   22  C19 JIN A 600      20.614  16.650   4.528 -0.35 -0.01    +0.026 A  
+DOCKED: HETATM   23  C18 JIN A 600      21.027  17.592   3.569 -0.42 -0.02    +0.059 A  
+DOCKED: HETATM   24 CL4  JIN A 600      20.288  17.796   2.000 -0.96 +0.03    -0.082 Cl 
+DOCKED: HETATM   25  C17 JIN A 600      22.121  18.447   3.799 -0.54 -0.00    +0.011 A  
+DOCKED: HETATM   26  C16 JIN A 600      22.779  18.358   5.060 -0.61 -0.00    +0.002 A  
+DOCKED: HETATM   27  C15 JIN A 600      22.374  17.388   6.013 -0.56 -0.01    +0.011 A  
+DOCKED: HETATM   28  C20 JIN A 600      21.269  16.569   5.730 -0.44 -0.04    +0.059 A  
+DOCKED: HETATM   29 CL5  JIN A 600      20.778  15.344   6.937 -0.83 +0.05    -0.082 Cl 
+DOCKED: ENDBRANCH   7  22
+DOCKED: TORSDOF 3
+DOCKED: TER
+DOCKED: ENDMDL
+________________________________________________________________________________
+
+
+    FINAL DOCKED STATE:
+    ________________________
+
+
+Run:   10 / 10
+Time taken for this run:   0.160s
+
+DOCKED: MODEL        10
+DOCKED: USER    Run = 10
+DOCKED: USER
+DOCKED: USER    Estimated Free Energy of Binding    = -12.19 kcal/mol  [=(1)+(2)+(3)-(4)]
+DOCKED: USER
+DOCKED: USER    (1) Final Intermolecular Energy     = -13.08 kcal/mol
+DOCKED: USER        vdW + Hbond + desolv Energy     = -12.69 kcal/mol
+DOCKED: USER        Electrostatic Energy            =  -0.39 kcal/mol
+DOCKED: USER        Moving Ligand-Fixed Receptor    = -13.08 kcal/mol
+DOCKED: USER        Moving Ligand-Moving Receptor   =  +0.00 kcal/mol
+DOCKED: USER    (2) Final Total Internal Energy     =  -1.11 kcal/mol
+DOCKED: USER    (3) Torsional Free Energy           =  +0.89 kcal/mol
+DOCKED: USER    (4) Unbound System's Energy         =  -1.11 kcal/mol
+DOCKED: USER
+DOCKED: USER
+DOCKED: REMARK  3 active torsions:
+DOCKED: REMARK  status: ('A' for Active; 'I' for Inactive)
+DOCKED: REMARK    1  A    between atoms: C04_6  and  N08_9 
+DOCKED: REMARK    2  A    between atoms: N08_9  and  C27_23 
+DOCKED: REMARK    3  A    between atoms: C09_10  and  C19_20 
+DOCKED: USER                              x       y       z     vdW  Elec       q    Type
+DOCKED: USER                           _______ _______ _______ _____ _____    ______ ____
+DOCKED: ROOT
+DOCKED: HETATM    1  C01 JIN A 600      18.296  13.880   3.458 -0.41 -0.03    +0.055 A  
+DOCKED: HETATM    2  C02 JIN A 600      18.339  12.616   2.842 -0.45 -0.07    +0.121 A  
+DOCKED: HETATM    3  N03 JIN A 600      17.176  11.963   2.648 -1.09 +0.01    -0.058 NA 
+DOCKED: HETATM    4  C04 JIN A 600      16.053  12.546   2.995 +0.07 -0.21    +0.751 A  
+DOCKED: HETATM    5  N05 JIN A 600      15.943  13.750   3.579 -0.40 +0.01    -0.042 NA 
+DOCKED: HETATM    6  C06 JIN A 600      17.088  14.424   3.804 -0.25 -0.06    +0.166 A  
+DOCKED: HETATM    7  C09 JIN A 600      19.350  15.896   4.273 -0.31 -0.03    +0.058 A  
+DOCKED: HETATM    8  C10 JIN A 600      19.439  14.632   3.687 -0.36 -0.01    +0.009 A  
+DOCKED: HETATM    9  N11 JIN A 600      16.979  15.601   4.406 -0.16 +0.09    -0.278 N  
+DOCKED: HETATM   10  C12 JIN A 600      18.073  16.337   4.647 -0.16 -0.08    +0.262 A  
+DOCKED: HETATM   11  C13 JIN A 600      15.603  16.087   4.732 -0.41 -0.04    +0.135 C  
+DOCKED: HETATM   12  O14 JIN A 600      17.909  17.434   5.184 -0.29 +0.05    -0.267 OA 
+DOCKED: ENDROOT
+DOCKED: BRANCH   4  13
+DOCKED: HETATM   13  N08 JIN A 600      14.981  11.787   2.725 -0.82 +0.02    -0.059 NA 
+DOCKED: BRANCH  13  14
+DOCKED: HETATM   14  C27 JIN A 600      13.667  12.106   2.929 -0.46 -0.05    +0.100 A  
+DOCKED: HETATM   15  C26 JIN A 600      12.567  11.979   2.063 -0.39 -0.01    +0.022 A  
+DOCKED: HETATM   16  C31 JIN A 600      11.265  12.397   2.394 -0.41 -0.02    +0.031 A  
+DOCKED: HETATM   17  C30 JIN A 600      11.008  12.986   3.606 -0.26 -0.04    +0.136 A  
+DOCKED: HETATM   18  C29 JIN A 600      12.068  13.144   4.467 -0.40 -0.00    +0.007 A  
+DOCKED: HETATM   19  F35 JIN A 600       9.776  13.407   3.870 -0.06 +0.07    -0.204 F  
+DOCKED: HETATM   20  C28 JIN A 600      13.399  12.785   4.135 -0.44 -0.01    +0.018 A  
+DOCKED: HETATM   21  C34 JIN A 600      11.746  13.835   5.765 -0.52 -0.01    +0.033 C  
+DOCKED: ENDBRANCH  13  14
+DOCKED: ENDBRANCH   4  13
+DOCKED: BRANCH   7  22
+DOCKED: HETATM   22  C19 JIN A 600      20.619  16.642   4.519 -0.35 -0.01    +0.026 A  
+DOCKED: HETATM   23  C18 JIN A 600      21.031  17.581   3.557 -0.42 -0.02    +0.059 A  
+DOCKED: HETATM   24 CL4  JIN A 600      20.291  17.782   1.989 -0.96 +0.03    -0.082 Cl 
+DOCKED: HETATM   25  C17 JIN A 600      22.127  18.435   3.784 -0.54 -0.00    +0.011 A  
+DOCKED: HETATM   26  C16 JIN A 600      22.785  18.349   5.045 -0.61 -0.00    +0.002 A  
+DOCKED: HETATM   27  C15 JIN A 600      22.380  17.383   6.000 -0.56 -0.01    +0.011 A  
+DOCKED: HETATM   28  C20 JIN A 600      21.274  16.564   5.720 -0.44 -0.04    +0.059 A  
+DOCKED: HETATM   29 CL5  JIN A 600      20.782  15.343   6.932 -0.83 +0.05    -0.082 Cl 
+DOCKED: ENDBRANCH   7  22
+DOCKED: TORSDOF 3
+DOCKED: TER
+DOCKED: ENDMDL
+________________________________________________________________________________
+
+
+    CLUSTERING HISTOGRAM
+    ____________________
+
+
+________________________________________________________________________________
+     |           |     |           |     |
+Clus | Lowest    | Run | Mean      | Num | Histogram
+-ter | Binding   |     | Binding   | in  |
+Rank | Energy    |     | Energy    | Clus|    5    10   15   20   25   30   35
+_____|___________|_____|___________|_____|____:____|____:____|____:____|____:___
+   1 |    -12.19 |   1 |    -12.19 |  10 |##########
+_____|___________|_____|___________|_____|______________________________________
+
+
+    RMSD TABLE
+    __________
+
+
+_______________________________________________________________________
+     |      |      |           |         |                 |
+Rank | Sub- | Run  | Binding   | Cluster | Reference       | Grep
+     | Rank |      | Energy    | RMSD    | RMSD            | Pattern
+_____|______|______|___________|_________|_________________|___________
+   1      1      1      -12.19      0.00      1.08           RANKING
+   1      2      4      -12.19      0.01      1.08           RANKING
+   1      3      7      -12.19      0.01      1.08           RANKING
+   1      4      2      -12.19      0.02      1.08           RANKING
+   1      5      6      -12.19      0.02      1.08           RANKING
+   1      6      9      -12.19      0.02      1.09           RANKING
+   1      7     10      -12.19      0.02      1.09           RANKING
+   1      8      5      -12.19      0.02      1.08           RANKING
+   1      9      8      -12.18      0.02      1.09           RANKING
+   1     10      3      -12.18      0.03      1.10           RANKING
+
+Run time 1.602 sec
+Idle time 0.194 sec

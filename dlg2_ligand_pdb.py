@@ -1,5 +1,5 @@
 """
-transform_ligand_auto_detect.py
+dlg2_ligand_pdb.py
 
 Author: Jaeoh Shin (KIAS)
 Date: 2025/05/26
@@ -13,10 +13,8 @@ coordinate frame for cognate docking.
 
 Usage:
 ------
-pymol -cq transform_ligand_auto_detect.py -- \
-    crystal_complex.pdb \
-    generated_model.pdb \
-    transformed_ligand.pdb
+pymol -cq transform_ligand_auto_detect.py -- crystal_complex.pdb generated_model.pdb transformed_ligand.pdb
+
 """
 
 import sys

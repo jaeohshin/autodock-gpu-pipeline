@@ -28,7 +28,7 @@ AUTOGRID_BIN     = "autogrid4"
 #GRID_CENTER = (42.946,34.706,46.793)
 GRID_CENTER = (16.196, 14.587, 3.938)
 GRID_SIZE   = (60, 60, 60)
-
+#GRID_SIZE   = (120, 120, 120)
 # === UTILITY ===
 def run_cmd(cmd):
     print(f"[RUN] {cmd}")
@@ -148,10 +148,10 @@ def run_docking(lig_pdbqt, fld_file, output_basename):
         f"{AUTODOCK_GPU_BIN} "
         f"--ffile {fld_file_abs} "
         f"--lfile {lig_pdbqt_abs} "
-        f"--nrun 50 "
+        f"--nrun 10 "
         f"--nev 6000000 " 
         f"--ngen 5000 " 
-        f"--heuristics 1 "
+        f"--heuristics 0 "
         f"--autostop 0 "
         f"--resnam {output_base_abs}"
     )
