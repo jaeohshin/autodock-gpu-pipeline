@@ -25,10 +25,10 @@ SPLIT_ALTLOCS    = f"{MGL_HOME}/bin/pythonsh {MGL_HOME}/MGLToolsPckgs/AutoDockTo
 AUTOGRID_BIN     = "autogrid4"
 
 # 👇 Update this to your actual binding site center
-#GRID_CENTER = (42.946,34.706,46.793)
 GRID_CENTER = (16.196, 14.587, 3.938)
+
 GRID_SIZE   = (60, 60, 60)
-#GRID_SIZE   = (120, 120, 120)
+
 # === UTILITY ===
 def run_cmd(cmd):
     print(f"[RUN] {cmd}")
@@ -78,30 +78,58 @@ def prepare_receptor(pdb_file, output_pdbqt):
 
 
 
-
 # === STEP 2: Prepare ligand ===
 def prepare_ligand(pdb_file, output_pdbqt, use_meeko=True):
-    if use_meeko:
+    import os
+    import shutil
+    import tempfile
+    from rdkit import Chem
+    from meeko import MoleculePreparation
+
+    def try_meeko(mol, label=""):
         try:
-            mol = Chem.MolFromPDBFile(pdb_file, removeHs=False)
-            if mol is None:
-                raise ValueError(f"Failed to parse ligand file: {pdb_file}")
-            
             prep = MoleculePreparation()
             prep.automatic_detection = True
             prep.add_polar_hydrogens = True
             prep.assign_charges = True
             prep.uff_energy_minimize = True
             pdbqt_string = prep.prepare(mol)
-            
             with open(output_pdbqt, "w") as f:
                 f.write(pdbqt_string)
-            print(f"[INFO] Ligand prepared using Meeko: {output_pdbqt}")
-            return
-        except:
-            print(f"[WARN] Meeko failed on {pdb_file}, falling back to MGLTools...")
+            print(f"[INFO] Ligand prepared using Meeko ({label}): {output_pdbqt}")
+            return True
+        except Exception as e:
+            print(f"[WARN] Meeko failed ({label}): {e}")
+            return False
 
-    # Fallback to MGLTools
+    if use_meeko:
+        # === Attempt 1: Raw PDB ===
+        mol = Chem.MolFromPDBFile(pdb_file, removeHs=False)
+        if mol is not None and try_meeko(mol, "raw PDB"):
+            return
+
+        # === Attempt 2: .mol2 preprocessing ===
+        print(f"[INFO] Attempting Open Babel preprocessing to .mol2 for Meeko...")
+        tmpdir = tempfile.mkdtemp()
+        mol2_path = os.path.join(tmpdir, "ligand_fixed.mol2")
+        os.system(f"obabel {pdb_file} -O {mol2_path} --gen3D --addh")
+
+        if os.path.exists(mol2_path):
+            mol2_mol = Chem.MolFromMol2File(mol2_path, sanitize=True, removeHs=False)
+            if mol2_mol is not None and try_meeko(mol2_mol, ".mol2"):
+                shutil.rmtree(tmpdir)
+                return
+
+            # === Attempt 3: Full Open Babel → PDBQT fallback ===
+            print("[WARN] RDKit failed on MOL2. Using Open Babel to convert directly to PDBQT.")
+            os.system(f"obabel {pdb_file} -O {output_pdbqt} --gen3D --addh --partialcharge gasteiger")
+            shutil.rmtree(tmpdir)
+            return
+
+        shutil.rmtree(tmpdir)
+
+    # === Final fallback: MGLTools ===
+    print("[WARN] Meeko failed completely. Falling back to MGLTools...")
     pdb_file_abs = os.path.abspath(pdb_file)
     output_pdbqt_abs = os.path.abspath(output_pdbqt)
     lig_dir = os.path.dirname(pdb_file_abs)
@@ -141,19 +169,21 @@ def run_autogrid(gpf_file):
 
 # === STEP 5: Run AutoDock-GPU ===
 def run_docking(lig_pdbqt, fld_file, output_basename):
-    fld_file_abs = os.path.abspath(fld_file)
     lig_pdbqt_abs = os.path.abspath(lig_pdbqt)
+    fld_file_abs = os.path.abspath(fld_file)
     output_base_abs = os.path.abspath(output_basename)
+    
     cmd = (
         f"{AUTODOCK_GPU_BIN} "
         f"--ffile {fld_file_abs} "
         f"--lfile {lig_pdbqt_abs} "
         f"--nrun 10 "
-        f"--nev 6000000 " 
-        f"--ngen 5000 " 
-        f"--heuristics 0 "
-        f"--autostop 0 "
-        f"--resnam {output_base_abs}"
+        f"--nev 2500000 " 
+        f"--ngen 42000 " 
+        f"--heuristics 1 "
+        f"--autostop 1 "
+        f"--lsrat 100 "
+        f"--resnam {output_base_abs} "    
     )
     run_cmd(cmd)
 
