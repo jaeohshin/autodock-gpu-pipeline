@@ -94,7 +94,7 @@ def run_docking(lig_pdbqt, fld_file, output_basename):
 # === Optional: Ligand center for docking box ===
 def calc_ligand_center(pdb_file):
     parser = PDBParser(QUIET=True)
-    structure = parser.get_structure("LIG", pdb_file)
+    structure = parser.get_structure("JIN", pdb_file)
     coords = [atom.coord for atom in structure.get_atoms()]
     center = sum(coords) / len(coords)
     return tuple(center)

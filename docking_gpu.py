@@ -79,6 +79,18 @@ def prepare_receptor(pdb_file, output_pdbqt):
 
 
 # === STEP 2: Prepare ligand ===
+
+def prepare_ligand(pdb_file, output_pdbqt):
+    pdb_file_abs = os.path.abspath(pdb_file)
+    output_pdbqt_abs = os.path.abspath(output_pdbqt)
+    lig_dir = os.path.dirname(pdb_file_abs)
+    lig_name = os.path.basename(pdb_file_abs)
+    
+    cmd = f"cd {lig_dir} && {PREPARE_LIGAND} -l {lig_name} -o {output_pdbqt_abs} -A hydrogens"
+    run_cmd(cmd)
+
+"""
+
 def prepare_ligand(pdb_file, output_pdbqt, use_meeko=True):
     import os
     import shutil
@@ -137,7 +149,7 @@ def prepare_ligand(pdb_file, output_pdbqt, use_meeko=True):
     cmd = f"cd {lig_dir} && {PREPARE_LIGAND} -l {lig_name} -o {output_pdbqt_abs}"
     run_cmd(cmd)
 
-
+"""
 
 # === STEP 3: Generate GPF ===
 def generate_gpf(ligand_pdbqt, receptor_pdbqt, output_gpf, center, size):
@@ -177,7 +189,7 @@ def run_docking(lig_pdbqt, fld_file, output_basename):
         f"{AUTODOCK_GPU_BIN} "
         f"--ffile {fld_file_abs} "
         f"--lfile {lig_pdbqt_abs} "
-        f"--nrun 10 "
+        f"--nrun 50 "
         f"--nev 2500000 " 
         f"--ngen 42000 " 
         f"--heuristics 1 "
