@@ -51,9 +51,10 @@ def prepare_receptor(pdb_file, output_pdbqt):
     pdb_file_abs = os.path.abspath(pdb_file)
     receptor_dir = os.path.dirname(pdb_file_abs)
     receptor_stem = os.path.splitext(os.path.basename(pdb_file_abs))[0]
-    nowat_path = os.path.join(receptor_dir, f"{receptor_stem}_nowat.pdb")
-    remove_waters(pdb_file_abs, nowat_path)
-    pdb_file_abs = nowat_path
+    
+    #nowat_path = os.path.join(receptor_dir, f"{receptor_stem}_nowat.pdb") # not need for bioemu generated structures.
+    #remove_waters(pdb_file_abs, nowat_path)
+    #pdb_file_abs = nowat_path
 
     if has_altlocs(pdb_file_abs):
         print(f"[INFO] Alternate locations detected in {pdb_file}. Running split...")
@@ -96,7 +97,7 @@ def run_docking(lig_pdbqt, fld_file, output_basename):
         f"{AUTODOCK_GPU_BIN} "
         f"--ffile {fld_file} "
         f"--lfile {lig_pdbqt} "
-        f"--nrun 5 --nev 2500000 "
+        f"--nrun 50 --nev 2500000 "
         f"--ngen 42000 --heuristics 1 --autostop 1 --lsrat 100 "
         f"--resnam {output_basename}"
     )
