@@ -21,7 +21,7 @@ def run_ensemble_docking(kinase_dir):
     ligand_dir = os.path.join(kinase_dir, "ligands")
     output_base = os.path.join(kinase_dir, "output")
 
-    for i in range(1, 11):
+    for i in range(1, 3):
         idx = f"{i:04d}"
 
         receptor_pdb = os.path.join(receptor_dir, f"receptor_{idx}.pdb")
