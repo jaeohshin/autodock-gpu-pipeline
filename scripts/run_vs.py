@@ -11,16 +11,14 @@ import os
 import sys
 import argparse
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../scripts")))
-
 from docking_utils import (
     prepare_receptor, generate_gpf, run_autogrid, run_docking, read_grid_center, GRID_SIZE
 )
 
-INPUT_DIR = "../input"
-PREPROCESS_DIR = "../preprocessed"
-GRID_DIR = "../grids"
-OUT_DIR = "../docking_output"
+INPUT_DIR = "../virtual_screening/input"
+PREPROCESS_DIR = "../virtual_screening/preprocessed"
+GRID_DIR = "../virtual_screening/grids"
+OUT_DIR = "../virtual_screening/docking_output"
 
 
 def run_vs_for_kinase(kinase):
@@ -66,7 +64,8 @@ def run_vs_for_kinase(kinase):
             # Generate GPF and Grid maps
             gpf_file = fld_file.replace(".maps.fld", ".gpf")
             if not os.path.exists(fld_file):
-                generate_gpf(ligand_names[0], receptor_pdbqt, gpf_file, center, GRID_SIZE)  # dummy ligand
+                ligand_path = os.path.join(lig_pdbqt_dir, ligand_names[0])
+                generate_gpf(ligand_path, receptor_pdbqt, gpf_file, center, GRID_SIZE)
                 run_autogrid(gpf_file)
 
             for ligand_name in ligand_names:

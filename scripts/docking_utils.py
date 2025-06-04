@@ -6,6 +6,7 @@ Jaeoh Shin, Korea Institute for Advanced Study.
 import os
 import subprocess
 import numpy as np
+import shutil 
 from Bio.PDB import PDBParser
 
 # === CONFIGURATION ===
@@ -51,10 +52,6 @@ def prepare_receptor(pdb_file, output_pdbqt):
     pdb_file_abs = os.path.abspath(pdb_file)
     receptor_dir = os.path.dirname(pdb_file_abs)
     receptor_stem = os.path.splitext(os.path.basename(pdb_file_abs))[0]
-    
-    #nowat_path = os.path.join(receptor_dir, f"{receptor_stem}_nowat.pdb") # not need for bioemu generated structures.
-    #remove_waters(pdb_file_abs, nowat_path)
-    #pdb_file_abs = nowat_path
 
     if has_altlocs(pdb_file_abs):
         print(f"[INFO] Alternate locations detected in {pdb_file}. Running split...")
@@ -76,16 +73,33 @@ def prepare_ligand(pdb_file, output_pdbqt):
 
 def generate_gpf(ligand_pdbqt, receptor_pdbqt, output_gpf, center, size):
     output_dir = os.path.dirname(output_gpf)
-    ligand_name = os.path.basename(ligand_pdbqt)
-    receptor_name = os.path.basename(receptor_pdbqt)
+    os.makedirs(output_dir, exist_ok=True)
+
+    # === Prepare Ligand ===
+    ligand_src = os.path.abspath(ligand_pdbqt)
+    ligand_dst = os.path.join(output_dir, os.path.basename(ligand_pdbqt))
+    if not os.path.exists(ligand_dst):
+        shutil.copy(ligand_src, ligand_dst)
+
+    # === Prepare Receptor ===
+    receptor_src = os.path.abspath(receptor_pdbqt)
+    receptor_dst = os.path.join(output_dir, os.path.basename(receptor_pdbqt))
+    if not os.path.exists(receptor_dst):
+        shutil.copy(receptor_src, receptor_dst)
+
+    # === Run GPF Generation ===
+    ligand_name = os.path.basename(ligand_dst)
+    receptor_name = os.path.basename(receptor_dst)
     gpf_name = os.path.basename(output_gpf)
     center_str = ",".join(map(str, center))
     size_str = ",".join(map(str, size))
+
     run_cmd(
         f"cd {output_dir} && {PREPARE_GPF} "
         f"-l {ligand_name} -r {receptor_name} -y -o {gpf_name} "
         f"-p npts={size_str} -p gridcenter={center_str}"
     )
+
 
 def run_autogrid(gpf_file):
     fld_dir = os.path.dirname(gpf_file)
