@@ -1,0 +1,43 @@
+REMARK  Name = ZINC40546055
+REMARK  5 active torsions:
+REMARK  status: ('A' for Active; 'I' for Inactive)
+REMARK    1  A    between atoms: C_5  and  N_7
+REMARK    2  A    between atoms: N_10  and  CA_11
+REMARK    3  A    between atoms: CA_11  and  CB_13
+REMARK    4  A    between atoms: CA_11  and  C_15
+REMARK    5  A    between atoms: CB_13  and  OG_14
+REMARK                            x       y       z     vdW  Elec       q    Type
+REMARK                         _______ _______ _______ _____ _____    ______ ____
+ROOT
+ATOM      1  N   UNK A   0       1.237  -2.080  -0.021  0.00  0.00    -0.269 N 
+ATOM      2  C   UNK A   0       0.086  -2.773   0.088  0.00  0.00    +0.305 C 
+ATOM      3  O   UNK A   0      -0.978  -2.186   0.102  0.00  0.00    -0.252 OA
+ATOM      4  N   SER A   1       0.115  -4.117   0.181  0.00  0.00    -0.284 N 
+ATOM      5  H   UNK A   0       2.080  -2.551  -0.114  0.00  0.00    +0.156 HD
+ATOM      6  H   SER A   1       0.964  -4.586   0.170  0.00  0.00    +0.151 HD
+ENDROOT
+BRANCH   1  11
+ATOM      7  C   UNK A   0       0.154   1.371   0.642  0.00  0.00    +0.002 A 
+ATOM      8  C   UNK A   0       1.174   2.086   0.041  0.00  0.00    +0.001 A 
+ATOM      9  C   UNK A   0       2.215   1.421  -0.581  0.00  0.00    +0.016 A 
+ATOM     10  C   UNK A   0       2.239   0.040  -0.603  0.00  0.00    +0.035 A 
+ATOM     11  C   UNK A   0       1.216  -0.681  -0.000  0.00  0.00    +0.048 A 
+ATOM     12  C   UNK A   0       0.172  -0.010   0.624  0.00  0.00    +0.024 A 
+ATOM     13  I   UNK A   0       3.816  -0.966  -1.546  0.00  0.00    -0.042 I 
+ENDBRANCH   1  11
+BRANCH   4  14
+ATOM     14  CA  SER A   1      -1.136  -4.870   0.300  0.00  0.00    +0.213 C 
+BRANCH  14  15
+ATOM     15  C   SER A   1      -1.702  -5.123  -1.074  0.00  0.00    +0.378 C 
+ATOM     16  O   SER A   1      -1.034  -4.876  -2.063  0.00  0.00    -0.244 OA
+ATOM     17  OXT SER A   1      -2.829  -5.573  -1.195  0.00  0.00    -0.244 OA
+ENDBRANCH  14  15
+BRANCH  14  18
+ATOM     18  CB  SER A   1      -0.863  -6.207   0.992  0.00  0.00    +0.189 C 
+BRANCH  18  19
+ATOM     19  OG  SER A   1      -0.016  -7.008   0.165  0.00  0.00    -0.393 OA
+ATOM     20  H   SER A   1       0.199  -7.872   0.542  0.00  0.00    +0.209 HD
+ENDBRANCH  18  19
+ENDBRANCH  14  18
+ENDBRANCH   4  14
+TORSDOF 5

@@ -1,0 +1,79 @@
+REMARK  Name = ZINC22109251
+REMARK  14 active torsions:
+REMARK  status: ('A' for Active; 'I' for Inactive)
+REMARK    1  A    between atoms: C_1  and  C_2
+REMARK    2  A    between atoms: C_2  and  O_3
+REMARK    3  A    between atoms: O_3  and  C_4
+REMARK    4  A    between atoms: C_6  and  C_20
+REMARK    5  A    between atoms: C_9  and  O_10
+REMARK    6  A    between atoms: O_10  and  C_11
+REMARK    7  A    between atoms: C_11  and  C_12
+REMARK    8  A    between atoms: C_20  and  N_21
+REMARK    9  A    between atoms: N_21  and  C_22
+REMARK   10  A    between atoms: C_22  and  C_23
+REMARK   11  A    between atoms: C_23  and  C_24
+REMARK   12  A    between atoms: C_24  and  S_25
+REMARK   13  A    between atoms: S_25  and  C_26
+REMARK   14  A    between atoms: N_30  and  C_31
+REMARK                            x       y       z     vdW  Elec       q    Type
+REMARK                         _______ _______ _______ _____ _____    ______ ____
+ROOT
+ATOM      1  C   UNL     1       1.218  -0.680  -0.013  0.00  0.00    +0.163 A 
+ATOM      2  C   UNL     1       2.405   0.035  -0.021  0.00  0.00    +0.051 A 
+ATOM      3  C   UNL     1       2.380   1.417  -0.013  0.00  0.00    -0.060 A 
+ATOM      4  C   UNL     1       1.172   2.090   0.002  0.00  0.00    +0.021 A 
+ATOM      5  C   UNL     1      -0.017   1.382   0.010  0.00  0.00    +0.063 A 
+ATOM      6  C   UNL     1       0.002  -0.004   0.002  0.00  0.00    +0.176 A 
+ATOM      7 BR   UNL     1      -1.667   2.306   0.022  0.00  0.00    -0.046 Br
+ENDROOT
+BRANCH   1   8
+ATOM      8  O   UNL     1       1.242  -2.040  -0.020  0.00  0.00    -0.489 OA
+BRANCH   8  10
+ATOM      9  C   UNL     1       2.352  -4.186  -0.042  0.00  0.00    +0.048 C 
+ATOM     10  C   UNL     1       2.526  -2.666  -0.036  0.00  0.00    +0.226 C 
+ENDBRANCH   8  10
+ENDBRANCH   1   8
+BRANCH   6  11
+ATOM     11  O   UNL     1      -1.165  -0.702   0.010  0.00  0.00    -0.483 OA
+BRANCH  11  12
+ATOM     12  C   UNL     1      -1.735  -1.028  -1.260  0.00  0.00    +0.267 C 
+BRANCH  12  13
+ATOM     13  C   UNL     1      -3.016  -1.795  -1.054  0.00  0.00    +0.025 A 
+ATOM     14  C   UNL     1      -3.454  -2.078   0.227  0.00  0.00    +0.010 A 
+ATOM     15  C   UNL     1      -4.631  -2.776   0.416  0.00  0.00    +0.001 A 
+ATOM     16  C   UNL     1      -5.366  -3.203  -0.675  0.00  0.00    +0.003 A 
+ATOM     17  C   UNL     1      -4.927  -2.926  -1.955  0.00  0.00    +0.039 A 
+ATOM     18  C   UNL     1      -3.751  -2.222  -2.146  0.00  0.00    +0.130 A 
+ATOM     19  F   UNL     1      -3.320  -1.951  -3.398  0.00  0.00    -0.205 F 
+ENDBRANCH  12  13
+ENDBRANCH  11  12
+ENDBRANCH   6  11
+BRANCH   3  20
+ATOM     20  C   UNL     1       3.672   2.193  -0.022  0.00  0.00    -0.047 C 
+BRANCH  20  21
+ATOM     21  N   UNL     1       4.078   2.452  -1.410  0.00  0.00    +0.382 N 
+ATOM     22  H   UNL     1       4.221   1.496  -1.935  0.00  0.00    -0.085 HD
+ATOM     23  H   UNL     1       3.296   3.036  -1.918  0.00  0.00    -0.085 HD
+BRANCH  21  24
+ATOM     24  C   UNL     1       5.337   3.208  -1.458  0.00  0.00    -0.081 C 
+BRANCH  24  25
+ATOM     25  C   UNL     1       5.727   3.458  -2.916  0.00  0.00    -0.008 C 
+BRANCH  25  26
+ATOM     26  C   UNL     1       7.038   4.245  -2.965  0.00  0.00    +0.075 C 
+BRANCH  26  27
+ATOM     27  S   UNL     1       7.499   4.541  -4.691  0.00  0.00    -0.085 S 
+BRANCH  27  28
+ATOM     28  C   UNL     1       8.997   5.438  -4.457  0.00  0.00    +0.209 A 
+ATOM     29  N   UNL     1       9.547   5.755  -3.305  0.00  0.00    -0.102 NA
+ATOM     30  N   UNL     1      10.636   6.410  -3.491  0.00  0.00    -0.022 NA
+ATOM     31  N   UNL     1      10.859   6.559  -4.752  0.00  0.00    -0.043 NA
+ATOM     32  N   UNL     1       9.803   5.925  -5.430  0.00  0.00    -0.223 N 
+ATOM     33  C   UNL     1       9.613   5.819  -6.879  0.00  0.00    +0.177 C 
+ENDBRANCH  27  28
+ENDBRANCH  26  27
+ENDBRANCH  25  26
+ENDBRANCH  24  25
+ENDBRANCH  21  24
+ENDBRANCH  20  21
+ENDBRANCH   3  20
+TORSDOF 12

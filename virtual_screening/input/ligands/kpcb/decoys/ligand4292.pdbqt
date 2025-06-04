@@ -1,0 +1,31 @@
+REMARK  Name = ZINC61517674
+REMARK  3 active torsions:
+REMARK  status: ('A' for Active; 'I' for Inactive)
+REMARK    1  A    between atoms: C_1  and  C_2
+REMARK    2  A    between atoms: C_1  and  O_6
+REMARK    3  A    between atoms: O_6  and  C_7
+REMARK                            x       y       z     vdW  Elec       q    Type
+REMARK                         _______ _______ _______ _____ _____    ______ ____
+ROOT
+ATOM      1  C   UNL     1       1.481   3.364   0.006  0.00  0.00    +0.323 A 
+ATOM      2  N   UNL     1       0.418   4.160   0.026  0.00  0.00    -0.164 NA
+ATOM      3  C   UNL     1       0.576   5.473   0.031  0.00  0.00    +0.230 A 
+ATOM      4  N   UNL     1       1.792   5.995   0.017  0.00  0.00    -0.187 NA
+ATOM      5  C   UNL     1       2.854   5.203  -0.003  0.00  0.00    +0.230 A 
+ATOM      6  N   UNL     1       2.701   3.889  -0.003  0.00  0.00    -0.164 NA
+ATOM      7 CL   UNL     1       4.448   5.891  -0.023  0.00  0.00    -0.041 Cl
+ATOM      8 CL   UNL     1      -0.814   6.513   0.057  0.00  0.00    -0.041 Cl
+ENDROOT
+BRANCH   1   9
+ATOM      9  O   UNL     1       1.322   2.020   0.000  0.00  0.00    -0.453 OA
+BRANCH   9  10
+ATOM     10  C   UNL     1      -0.019   1.526   0.010  0.00  0.00    +0.345 C 
+BRANCH  10  11
+ATOM     11  C   UNL     1       0.002  -0.004   0.002  0.00  0.00    +0.424 C 
+ATOM     12  F   UNL     1       0.679  -0.468   1.135  0.00  0.00    -0.167 F 
+ATOM     13  F   UNL     1      -1.310  -0.488   0.012  0.00  0.00    -0.167 F 
+ATOM     14  F   UNL     1       0.657  -0.455  -1.149  0.00  0.00    -0.167 F 
+ENDBRANCH  10  11
+ENDBRANCH   9  10
+ENDBRANCH   1   9
+TORSDOF 3

@@ -1,0 +1,54 @@
+REMARK  Name = ZINC42170688
+REMARK  7 active torsions:
+REMARK  status: ('A' for Active; 'I' for Inactive)
+REMARK    1  A    between atoms: CZ_3  and  OH_23
+REMARK    2  A    between atoms: CG_6  and  CB_7
+REMARK    3  A    between atoms: CB_7  and  CA_8
+REMARK    4  A    between atoms: CA_8  and  C_10
+REMARK    5  A    between atoms: CA_8  and  N_13
+REMARK    6  A    between atoms: C_14  and  C_16
+REMARK    7  A    between atoms: C_16  and  C_17
+REMARK                            x       y       z     vdW  Elec       q    Type
+REMARK                         _______ _______ _______ _____ _____    ______ ____
+ROOT
+ATOM      1  CA  TYR A   1      -1.746  -1.027  -1.429  0.00  0.00    +0.191 C 
+ENDROOT
+BRANCH   1   2
+ATOM      2  N   TYR A   1      -0.780  -1.901  -2.098  0.00  0.00    -0.302 N 
+ATOM      3  C   UNK A   0      -0.660  -1.870  -3.440  0.00  0.00    +0.212 C 
+ATOM      4  O   UNK A   0      -1.351  -1.119  -4.094  0.00  0.00    -0.276 OA
+ATOM      5  H   TYR A   1      -0.227  -2.503  -1.575  0.00  0.00    +0.150 HD
+BRANCH   3   6
+ATOM      6  C   UNK A   0       0.334  -2.770  -4.128  0.00  0.00    +0.080 C 
+BRANCH   6   7
+ATOM      7  C   UNK A   0       0.270  -2.539  -5.640  0.00  0.00    -0.063 C 
+ATOM      8  C   UNK A   0       1.225  -3.513  -6.361  0.00  0.00    -0.017 C 
+ATOM      9  C   UNK A   0       1.814  -2.644  -7.503  0.00  0.00    -0.021 C 
+ATOM     10  C   UNK A   0       1.917  -1.258  -6.819  0.00  0.00    -0.082 C 
+ATOM     11  N   UNK A   0       0.715  -1.170  -5.957  0.00  0.00    +0.381 N 
+ATOM     12  H   UNK A   0      -0.019  -0.678  -6.444  0.00  0.00    -0.086 HD
+ATOM     13  H   UNK A   0       0.943  -0.680  -5.105  0.00  0.00    -0.086 HD
+ENDBRANCH   6   7
+ENDBRANCH   3   6
+ENDBRANCH   1   2
+BRANCH   1  14
+ATOM     14  C   TYR A   1      -3.100  -1.688  -1.421  0.00  0.00    +0.376 C 
+ATOM     15  O   TYR A   1      -4.085  -1.056  -1.076  0.00  0.00    -0.244 OA
+ATOM     16  OXT TYR A   1      -3.212  -2.854  -1.759  0.00  0.00    -0.244 OA
+ENDBRANCH   1  14
+BRANCH   1  17
+ATOM     17  CB  TYR A   1      -1.293  -0.774   0.011  0.00  0.00    +0.069 C 
+BRANCH  17  23
+ATOM     18  CD1 TYR A   1      -0.017   1.378   0.010  0.00  0.00    +0.007 A 
+ATOM     19  CE1 TYR A   1       1.169   2.087   0.002  0.00  0.00    +0.045 A 
+ATOM     20  CZ  TYR A   1       2.380   1.409  -0.013  0.00  0.00    +0.117 A 
+ATOM     21  CE2 TYR A   1       2.396   0.022  -0.021  0.00  0.00    +0.045 A 
+ATOM     22  CD2 TYR A   1       1.207  -0.681  -0.013  0.00  0.00    +0.007 A 
+ATOM     23  CG  TYR A   1       0.002  -0.004   0.002  0.00  0.00    -0.045 A 
+BRANCH  20  24
+ATOM     24  OH  TYR A   1       3.548   2.104  -0.021  0.00  0.00    -0.507 OA
+ATOM     25  HH  TYR A   1       3.895   2.300   0.860  0.00  0.00    +0.292 HD
+ENDBRANCH  20  24
+ENDBRANCH  17  23
+ENDBRANCH   1  17
+TORSDOF 7

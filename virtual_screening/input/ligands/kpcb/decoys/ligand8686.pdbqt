@@ -1,0 +1,32 @@
+REMARK  Name = ZINC02331818
+REMARK  3 active torsions:
+REMARK  status: ('A' for Active; 'I' for Inactive)
+REMARK    1  A    between atoms: C_7  and  S_9
+REMARK    2  A    between atoms: S_9  and  C_10
+REMARK    3  A    between atoms: C_10  and  C_11
+REMARK                            x       y       z     vdW  Elec       q    Type
+REMARK                         _______ _______ _______ _____ _____    ______ ____
+ROOT
+ATOM      1  C   UNL     1      -0.017   1.375   0.010  0.00  0.00    +0.249 A 
+ATOM      2  N   UNL     1       1.218   1.795   0.000  0.00  0.00    -0.135 NA
+ATOM      3  N   UNL     1       2.024   0.791  -0.013  0.00  0.00    -0.121 NA
+ATOM      4  C   UNL     1       1.338  -0.311  -0.012  0.00  0.00    +0.218 A 
+ATOM      5  N   UNL     1       0.002  -0.004   0.002  0.00  0.00    -0.193 N 
+ATOM      6  N   UNL     1      -0.882  -1.075   0.004  0.00  0.00    -0.149 NA
+ATOM      7  C   UNL     1      -0.450  -2.309  -0.007  0.00  0.00    +0.159 A 
+ATOM      8  S   UNL     1       1.322  -2.087  -0.022  0.00  0.00    -0.020 S 
+ENDROOT
+BRANCH   7   9
+ATOM      9  S   UNL     1      -1.378  -3.807  -0.006  0.00  0.00    -0.097 S 
+BRANCH   9  10
+ATOM     10  C   UNL     1      -3.105  -3.253   0.014  0.00  0.00    +0.083 C 
+BRANCH  10  11
+ATOM     11  C   UNL     1      -4.032  -4.471   0.016  0.00  0.00    +0.038 C 
+ATOM     12  C   UNL     1      -4.949  -4.663  -1.193  0.00  0.00    +0.046 C 
+ATOM     13  C   UNL     1      -5.534  -4.216   0.149  0.00  0.00    +0.122 C 
+ATOM     14 CL   UNL     1      -6.505  -5.419   1.076  0.00  0.00    -0.101 Cl
+ATOM     15 CL   UNL     1      -6.078  -2.502   0.290  0.00  0.00    -0.101 Cl
+ENDBRANCH  10  11
+ENDBRANCH   9  10
+ENDBRANCH   7   9
+TORSDOF 3

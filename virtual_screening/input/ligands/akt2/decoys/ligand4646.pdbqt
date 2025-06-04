@@ -1,0 +1,36 @@
+REMARK  Name = ZINC35786729
+REMARK  5 active torsions:
+REMARK  status: ('A' for Active; 'I' for Inactive)
+REMARK    1  A    between atoms: C_1  and  C_2
+REMARK    2  A    between atoms: N_5  and  C_11
+REMARK    3  A    between atoms: C_6  and  C_10
+REMARK    4  A    between atoms: C_11  and  C_12
+REMARK    5  A    between atoms: C_12  and  C_13
+REMARK                            x       y       z     vdW  Elec       q    Type
+REMARK                         _______ _______ _______ _____ _____    ______ ____
+ROOT
+ATOM      1  C   UNL     1       1.439  -2.486  -2.440  0.00  0.00    +0.092 C 
+ENDROOT
+BRANCH   1   5
+ATOM      2  C   UNL     1      -0.019   1.526   0.010  0.00  0.00    +0.039 C 
+ATOM      3  C   UNL     1       0.002  -0.004   0.002  0.00  0.00    +0.129 C 
+ATOM      4  C   UNL     1       0.720  -0.499  -1.256  0.00  0.00    +0.116 C 
+ATOM      5  N   UNL     1       0.805  -1.966  -1.221  0.00  0.00    -0.295 NA
+ATOM      6  C   UNL     1       1.523  -2.417  -0.020  0.00  0.00    +0.079 C 
+ATOM      7  C   UNL     1       0.797  -1.904   1.226  0.00  0.00    +0.178 C 
+ATOM      8  O   UNL     1       0.695  -0.479   1.159  0.00  0.00    -0.374 OA
+ATOM      9  C   UNL     1       1.565  -3.947   0.005  0.00  0.00    +0.026 C 
+ENDBRANCH   1   5
+BRANCH   1  10
+ATOM     10  C   UNL     1       0.538  -2.202  -3.644  0.00  0.00    +0.084 C 
+BRANCH  10  11
+ATOM     11  C   UNL     1       1.188  -2.736  -4.894  0.00  0.00    +0.064 C 
+ATOM     12  N   UNL     1       1.998  -1.965  -5.599  0.00  0.00    -0.391 N 
+ATOM     13  N   UNL     1       0.948  -3.975  -5.287  0.00  0.00    -0.348 N 
+ATOM     14  H   UNL     1       2.174  -1.055  -5.311  0.00  0.00    +0.157 HD
+ATOM     15  H   UNL     1       0.354  -4.541  -4.770  0.00  0.00    +0.143 HD
+ATOM     16  H   UNL     1       1.367  -4.319  -6.092  0.00  0.00    +0.143 HD
+ATOM     17  H   UNL     1       2.417  -2.308  -6.404  0.00  0.00    +0.157 HD
+ENDBRANCH  10  11
+ENDBRANCH   1  10
+TORSDOF 3

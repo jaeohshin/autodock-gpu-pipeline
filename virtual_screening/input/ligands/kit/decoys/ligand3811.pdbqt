@@ -1,0 +1,57 @@
+REMARK  Name = ZINC40774936
+REMARK  10 active torsions:
+REMARK  status: ('A' for Active; 'I' for Inactive)
+REMARK    1  A    between atoms: C_1  and  C_2
+REMARK    2  A    between atoms: C_2  and  C_4
+REMARK    3  A    between atoms: C_2  and  N_16
+REMARK    4  A    between atoms: N_16  and  CA_17
+REMARK    5  A    between atoms: CA_17  and  CB_19
+REMARK    6  A    between atoms: CA_17  and  C_23
+REMARK    7  A    between atoms: CB_19  and  CG_20
+REMARK    8  A    between atoms: CG_20  and  CD1_21
+REMARK    9  A    between atoms: CG_20  and  CD2_22
+REMARK   10  A    between atoms: C_23  and  O_24
+REMARK                            x       y       z     vdW  Elec       q    Type
+REMARK                         _______ _______ _______ _____ _____    ______ ____
+ROOT
+ATOM      1  C   UNK A   0       0.327   1.996  -0.155  0.00  0.00    -0.009 C 
+ATOM      2  C   UNK A   0       0.120   0.485  -0.032  0.00  0.00    -0.044 C 
+ENDROOT
+BRANCH   2   3
+ATOM      3  C   UNK A   0      -1.355   0.181  -0.003  0.00  0.00    -0.060 A 
+ATOM      4  C   UNK A   0      -2.075   0.144  -1.185  0.00  0.00    +0.004 A 
+ATOM      5  C   UNK A   0      -3.428  -0.134  -1.169  0.00  0.00    +0.028 A 
+ATOM      6  C   UNK A   0      -4.067  -0.378   0.037  0.00  0.00    +0.067 A 
+ATOM      7  C   UNK A   0      -3.342  -0.341   1.229  0.00  0.00    +0.067 A 
+ATOM      8  C   UNK A   0      -1.983  -0.066   1.202  0.00  0.00    +0.029 A 
+ATOM      9  N   UNK A   0      -4.240  -0.621   2.256  0.00  0.00    -0.306 N 
+ATOM     10  H   UNK A   0      -4.026  -0.665   3.201  0.00  0.00    +0.170 HD
+ATOM     11  C   UNK A   0      -5.456  -0.820   1.713  0.00  0.00    +0.325 A 
+ATOM     12  O   UNK A   0      -6.467  -1.085   2.337  0.00  0.00    -0.247 OA
+ATOM     13  N   UNK A   0      -5.384  -0.680   0.376  0.00  0.00    -0.306 N 
+ATOM     14  H   UNK A   0      -6.123  -0.773  -0.245  0.00  0.00    +0.170 HD
+ENDBRANCH   2   3
+BRANCH   2  15
+ATOM     15  N   LEU A   1       0.737  -0.188  -1.183  0.00  0.00    +0.387 N 
+ATOM     16  H1  LEU A   1       0.530  -1.175  -1.145  0.00  0.00    -0.085 HD
+ATOM     17  H2  LEU A   1       0.367   0.200  -2.038  0.00  0.00    -0.085 HD
+BRANCH  15  18
+ATOM     18  CA  LEU A   1       2.192   0.009  -1.144  0.00  0.00    -0.045 C 
+BRANCH  18  19
+ATOM     19  CB  LEU A   1       2.818  -0.562  -2.418  0.00  0.00    -0.011 C 
+BRANCH  19  20
+ATOM     20  CG  LEU A   1       2.321   0.228  -3.630  0.00  0.00    -0.019 C 
+ATOM     21  CD1 LEU A   1       2.832   1.668  -3.545  0.00  0.00    +0.007 C 
+ATOM     22  CD2 LEU A   1       2.843  -0.423  -4.912  0.00  0.00    +0.007 C 
+ENDBRANCH  19  20
+ENDBRANCH  18  19
+BRANCH  18  23
+ATOM     23  C   LEU A   1       2.772  -0.709   0.076  0.00  0.00    +0.140 C 
+BRANCH  23  24
+ATOM     24  O   LEU A   1       2.586  -2.118  -0.068  0.00  0.00    -0.397 OA
+ATOM     25  H   LEU A   1       2.930  -2.638   0.672  0.00  0.00    +0.209 HD
+ENDBRANCH  23  24
+ENDBRANCH  18  23
+ENDBRANCH  15  18
+ENDBRANCH   2  15
+TORSDOF 7

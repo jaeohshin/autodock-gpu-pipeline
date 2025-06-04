@@ -1,0 +1,46 @@
+REMARK  Name = ZINC40471393
+REMARK  7 active torsions:
+REMARK  status: ('A' for Active; 'I' for Inactive)
+REMARK    1  A    between atoms: CG1_1  and  CB_2
+REMARK    2  A    between atoms: CB_2  and  CG2_3
+REMARK    3  A    between atoms: CB_2  and  CA_4
+REMARK    4  A    between atoms: CA_4  and  C_6
+REMARK    5  A    between atoms: CA_4  and  N_9
+REMARK    6  A    between atoms: C_10  and  C_12
+REMARK    7  A    between atoms: C_12  and  N_18
+REMARK                            x       y       z     vdW  Elec       q    Type
+REMARK                         _______ _______ _______ _____ _____    ______ ____
+ROOT
+ATOM      1  N   VAL A   1      -1.412  -1.998   0.008  0.00  0.00    -0.303 N 
+ATOM      2  C   UNK A   0      -2.457  -2.689   0.504  0.00  0.00    +0.202 C 
+ATOM      3  O   UNK A   0      -3.414  -2.098   0.958  0.00  0.00    -0.277 OA
+ATOM      4  H   VAL A   1      -0.646  -2.471  -0.354  0.00  0.00    +0.149 HD
+ENDROOT
+BRANCH   2   5
+ATOM      5  C   UNK A   0      -2.437  -4.196   0.496  0.00  0.00    +0.007 C 
+ATOM      6  C   UNK A   0      -1.591  -4.701   1.667  0.00  0.00    -0.004 C 
+ATOM      7  C   UNK A   0      -2.195  -4.207   2.983  0.00  0.00    -0.001 C 
+ATOM      8  C   UNK A   0      -3.624  -4.737   3.119  0.00  0.00    -0.000 C 
+ATOM      9  C   UNK A   0      -4.470  -4.232   1.948  0.00  0.00    -0.001 C 
+ATOM     10  C   UNK A   0      -3.865  -4.726   0.633  0.00  0.00    -0.004 C 
+BRANCH   5  11
+ATOM     11  N   UNK A   0      -1.857  -4.671  -0.767  0.00  0.00    +0.388 N 
+ATOM     12  H   UNK A   0      -0.915  -4.322  -0.857  0.00  0.00    -0.089 HD
+ATOM     13  H   UNK A   0      -1.843  -5.680  -0.773  0.00  0.00    -0.089 HD
+ATOM     14  H   UNK A   0      -2.414  -4.338  -1.540  0.00  0.00    -0.089 HD
+ENDBRANCH   5  11
+ENDBRANCH   2   5
+BRANCH   1  15
+ATOM     15  CA  VAL A   1      -1.432  -0.534   0.016  0.00  0.00    +0.189 C 
+BRANCH  15  17
+ATOM     16  CG1 VAL A   1      -0.017   1.526   0.018  0.00  0.00    +0.009 C 
+ATOM     17  CB  VAL A   1       0.004  -0.004   0.010  0.00  0.00    +0.014 C 
+ATOM     18  CG2 VAL A   1       0.740  -0.511   1.252  0.00  0.00    +0.009 C 
+ENDBRANCH  15  17
+BRANCH  15  19
+ATOM     19  C   VAL A   1      -2.157  -0.034  -1.207  0.00  0.00    +0.376 C 
+ATOM     20  O   VAL A   1      -2.137  -0.687  -2.236  0.00  0.00    -0.244 OA
+ATOM     21  OXT VAL A   1      -2.763   1.023  -1.167  0.00  0.00    -0.244 OA
+ENDBRANCH  15  19
+ENDBRANCH   1  15
+TORSDOF 5
