@@ -1,0 +1,17 @@
+name: dock
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.10
+  - openbabel
+  - rdkit
+  - mgltools  # for prepare_ligand4.py and prepare_receptor4.py
+  - numpy
+  - pandas
+  - matplotlib
+  - pdbfixer
+  - pip
+  - pip:
+      - meeko  # SMILES to PDBQT using RDKit, works well with AutoDock-GPU
