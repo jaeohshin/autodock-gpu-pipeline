@@ -39,6 +39,11 @@ def run_vs_for_kinase(kinase):
 
         with open(list_path) as f:
             ligand_names = [x.strip() for x in f if x.strip()]
+            
+        receptor_files = sorted(os.listdir(receptor_pdb_dir))
+        print("[DEBUG] Receptor files found:")
+        for f in receptor_files:
+            print(" →", f)
 
         for receptor_file in sorted(os.listdir(receptor_pdb_dir)):
             if not receptor_file.endswith(".pdb"):
@@ -50,6 +55,9 @@ def run_vs_for_kinase(kinase):
             receptor_pdbqt = os.path.join(receptor_pdbqt_dir, f"receptor_{receptor_idx}.pdbqt")
             center_file = os.path.join(grid_center_dir, f"receptor_{receptor_idx}.txt")
             fld_file = os.path.join(fld_dir, f"receptor_{receptor_idx}.maps.fld")
+            
+            print(f"[CHECK] Receptor: {receptor_file}") ## Debugging.
+            print(f"[CHECK] fld_file: {fld_file}")
 
             # Convert receptor if needed
             if not os.path.exists(receptor_pdbqt):
@@ -59,10 +67,14 @@ def run_vs_for_kinase(kinase):
             if not os.path.exists(center_file):
                 print(f"[WARN] Missing center: {center_file}")
                 continue
+            
+            print(f"[OK] Found center for receptor_{receptor_idx}")
+            
             center = read_grid_center(center_file)
 
             # Generate GPF and Grid maps
             gpf_file = fld_file.replace(".maps.fld", ".gpf")
+            print(fld_file) ## for debugging.
             if not os.path.exists(fld_file):
                 ligand_path = os.path.join(lig_pdbqt_dir, ligand_names[0])
                 generate_gpf(ligand_path, receptor_pdbqt, gpf_file, center, GRID_SIZE)
