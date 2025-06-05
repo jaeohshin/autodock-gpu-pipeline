@@ -35,6 +35,24 @@ def remove_waters(pdb_in, pdb_out):
             if not (line.startswith(("ATOM", "HETATM")) and line[17:20].strip() == "HOH"):
                 fout.write(line)
 
+def extract_atom_types_from_dir(ligand_dir):
+    atom_types = set()
+    for fname in os.listdir(ligand_dir):
+        if not fname.endswith(".pdbqt"):
+            continue
+        path = os.path.join(ligand_dir, fname)
+        with open(path) as f:
+            for line in f:
+                if line.startswith(("ATOM", "HETATM")):
+                    if len(line) >= 78:
+                        atom_type = line[77:79].strip()
+                        if atom_type:
+                            atom_types.add(atom_type)
+
+                    
+    return sorted(atom_types)
+
+
 def read_grid_center(path):
     with open(path, 'r') as f:
         return tuple(map(float, f.readline().strip().split()))
@@ -71,9 +89,50 @@ def prepare_ligand(pdb_file, output_pdbqt):
     output_pdbqt_abs = os.path.abspath(output_pdbqt)
     run_cmd(f"cd {lig_dir} && {PREPARE_LIGAND} -l {lig_name} -o {output_pdbqt_abs} -A hydrogens")
 
-def generate_gpf(ligand_pdbqt, receptor_pdbqt, output_gpf, center, size):
+
+def patch_gpf_center(gpf_path, center): ## This code is need to fix problem with prepare_gpf4.py function's problem with setting grid center.
+    with open(gpf_path, 'r') as f:
+        lines = f.readlines()
+
+    center_line = f"gridcenter {center[0]:.3f} {center[1]:.3f} {center[2]:.3f}\n"
+
+    with open(gpf_path, 'w') as f:
+        for line in lines:
+            if line.strip().startswith("gridcenter"):
+                f.write(center_line)
+            else:
+                f.write(line)
+                
+
+def get_receptor_idx(gpf_path):
+    # Extract receptor index like 0001 from receptor_0001.gpf
+    base = os.path.basename(gpf_path)
+    return base.split("_")[1].split(".")[0]
+
+def patch_gpf_maps(gpf_path, atom_types):
+    with open(gpf_path, 'r') as f:
+        lines = f.readlines()
+
+    patched_lines = []
+    receptor_idx = get_receptor_idx(gpf_path)
+    map_lines = [f"map receptor_{receptor_idx}.{atom}.map\n" for atom in atom_types if atom not in ['e', 'd']]
+
+    for line in lines:
+        patched_lines.append(line)
+        if line.strip().startswith("ligand_types"):
+            patched_lines.append(" ".join(["ligand_types"] + atom_types) + "\n")
+        if line.strip().startswith("gridcenter"):
+            patched_lines.extend(map_lines)
+
+    with open(gpf_path, 'w') as f:
+        f.writelines(patched_lines)
+
+
+                
+def generate_gpf(ligand_pdbqt, receptor_pdbqt, output_gpf, center, size, atom_types):
     output_dir = os.path.dirname(output_gpf)
     os.makedirs(output_dir, exist_ok=True)
+    types_str = " ".join(atom_types)
 
     # === Prepare Ligand ===
     ligand_src = os.path.abspath(ligand_pdbqt)
@@ -93,12 +152,17 @@ def generate_gpf(ligand_pdbqt, receptor_pdbqt, output_gpf, center, size):
     gpf_name = os.path.basename(output_gpf)
     center_str = ",".join(map(str, center))
     size_str = ",".join(map(str, size))
-
+    
+    types_str = " ".join(atom_types)
     run_cmd(
         f"cd {output_dir} && {PREPARE_GPF} "
         f"-l {ligand_name} -r {receptor_name} -y -o {gpf_name} "
-        f"-p npts={size_str} -p gridcenter={center_str}"
+        f"-p npts={size_str} -p gridcenter={center_str} -p types={types_str}"
     )
+    patch_gpf_center(output_gpf, center)
+    patch_gpf_maps(output_gpf, atom_types)
+
+
 
 
 def run_autogrid(gpf_file):
@@ -111,7 +175,7 @@ def run_docking(lig_pdbqt, fld_file, output_basename):
         f"{AUTODOCK_GPU_BIN} "
         f"--ffile {fld_file} "
         f"--lfile {lig_pdbqt} "
-        f"--nrun 50 --nev 2500000 "
+        f"--nrun 20 --nev 2500000 "
         f"--ngen 42000 --heuristics 1 --autostop 1 --lsrat 100 "
         f"--resnam {output_basename}"
     )

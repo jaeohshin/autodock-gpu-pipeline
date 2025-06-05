@@ -12,7 +12,13 @@ import sys
 import argparse
 
 from docking_utils import (
-    prepare_receptor, generate_gpf, run_autogrid, run_docking, read_grid_center, GRID_SIZE
+    prepare_receptor,
+    generate_gpf,
+    run_autogrid,
+    run_docking,
+    read_grid_center,
+    GRID_SIZE,
+    extract_atom_types_from_dir
 )
 
 INPUT_DIR = "../virtual_screening/input"
@@ -33,61 +39,86 @@ def run_vs_for_kinase(kinase):
     os.makedirs(fld_dir, exist_ok=True)
     os.makedirs(out_dir, exist_ok=True)
 
+    # --- Extract ligand atom types once ---
+    atom_types = set()
+    for mode in ["actives", "decoys"]:
+        mode_dir = os.path.join(kinase_lig_dir, mode)
+        if os.path.isdir(mode_dir):
+            atom_types.update(extract_atom_types_from_dir(mode_dir))
+    atom_types = sorted(atom_types)
+    
+    
+    print(f"[INFO] Atom types for {kinase}: {atom_types}")    
+    
+    # --- PRE-GENERATE fld/gpf files ---
+
+    # Use first ligand found across actives/decoys
+    example_ligand_path = None
+    for mode in ["actives", "decoys"]:
+        mode_dir = os.path.join(kinase_lig_dir, mode)
+        if not os.path.isdir(mode_dir):
+            continue
+        ligands = [f for f in os.listdir(mode_dir) if f.endswith(".pdbqt")]
+        if ligands:
+            example_ligand_path = os.path.join(mode_dir, ligands[0])
+            break
+
+    if example_ligand_path is None:
+        raise RuntimeError(f"No ligand files found in actives/decoys for {kinase}")
+
+
+
+    for receptor_file in sorted(os.listdir(receptor_pdb_dir)):
+
+        print(f"[CHECK] Scanning: {receptor_file}")
+        if not receptor_file.endswith(".pdb"):
+            continue
+
+        receptor_idx = os.path.splitext(receptor_file)[0].split("_")[-1]
+
+        receptor_pdb = os.path.join(receptor_pdb_dir, receptor_file)
+        receptor_pdbqt = os.path.join(receptor_pdbqt_dir, f"receptor_{receptor_idx}.pdbqt")
+        center_file = os.path.join(grid_center_dir, f"receptor_{receptor_idx}.txt")
+        fld_file = os.path.join(fld_dir, f"receptor_{receptor_idx}.maps.fld")
+        gpf_file = fld_file.replace(".maps.fld", ".gpf")
+
+        if not os.path.exists(center_file):
+            print(f"[WARN] Missing center: {center_file}")
+            continue
+
+        if not os.path.exists(receptor_pdbqt):
+            prepare_receptor(receptor_pdb, receptor_pdbqt)
+
+
+
+        if not os.path.exists(fld_file):
+            center = read_grid_center(center_file)
+            generate_gpf(example_ligand_path, receptor_pdbqt, gpf_file, center, GRID_SIZE, atom_types)
+            run_autogrid(gpf_file)
+            print(f"[GEN] Created fld for receptor_{receptor_idx}")
+
+    # --- DOCKING ---
     for mode in ["actives", "decoys"]:
         list_path = os.path.join(kinase_lig_dir, f"ligands_{mode}.list")
         lig_pdbqt_dir = os.path.join(kinase_lig_dir, mode)
 
         with open(list_path) as f:
             ligand_names = [x.strip() for x in f if x.strip()]
-            
-        receptor_files = sorted(os.listdir(receptor_pdb_dir))
-        print("[DEBUG] Receptor files found:")
-        for f in receptor_files:
-            print(" →", f)
 
         for receptor_file in sorted(os.listdir(receptor_pdb_dir)):
             if not receptor_file.endswith(".pdb"):
                 continue
 
             receptor_idx = os.path.splitext(receptor_file)[0].split("_")[-1]
-
-            receptor_pdb = os.path.join(receptor_pdb_dir, receptor_file)
-            receptor_pdbqt = os.path.join(receptor_pdbqt_dir, f"receptor_{receptor_idx}.pdbqt")
-            center_file = os.path.join(grid_center_dir, f"receptor_{receptor_idx}.txt")
             fld_file = os.path.join(fld_dir, f"receptor_{receptor_idx}.maps.fld")
-            
-            print(f"[CHECK] Receptor: {receptor_file}") ## Debugging.
-            print(f"[CHECK] fld_file: {fld_file}")
-
-            # Convert receptor if needed
-            if not os.path.exists(receptor_pdbqt):
-                prepare_receptor(receptor_pdb, receptor_pdbqt)
-
-            # Read grid center
-            if not os.path.exists(center_file):
-                print(f"[WARN] Missing center: {center_file}")
-                continue
-            
-            print(f"[OK] Found center for receptor_{receptor_idx}")
-            
-            center = read_grid_center(center_file)
-
-            # Generate GPF and Grid maps
-            gpf_file = fld_file.replace(".maps.fld", ".gpf")
-            print(fld_file) ## for debugging.
-            if not os.path.exists(fld_file):
-                ligand_path = os.path.join(lig_pdbqt_dir, ligand_names[0])
-                generate_gpf(ligand_path, receptor_pdbqt, gpf_file, center, GRID_SIZE)
-                run_autogrid(gpf_file)
+            out_subdir = os.path.join(out_dir, f"receptor_{receptor_idx}")
+            os.makedirs(out_subdir, exist_ok=True)
 
             for ligand_name in ligand_names:
                 ligand_pdbqt = os.path.join(lig_pdbqt_dir, ligand_name)
                 if not os.path.exists(ligand_pdbqt):
                     print(f"[WARN] Missing ligand: {ligand_pdbqt}")
                     continue
-
-                out_subdir = os.path.join(out_dir, f"receptor_{receptor_idx}")
-                os.makedirs(out_subdir, exist_ok=True)
 
                 out_prefix = os.path.join(out_subdir, os.path.splitext(ligand_name)[0])
                 dlg_file = out_prefix + ".dlg"

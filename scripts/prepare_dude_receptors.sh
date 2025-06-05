@@ -13,7 +13,7 @@ while read -r kinase _; do
     mkdir -p "$dst_dir"
     > "$receptor_list"
 
-    for i in $(seq 1 100); do
+    for i in $(seq 1 20); do
         src="${SRC_ROOT}/${kinase_lower}/run_1/frame_re_${i}.pdb"
         dst_filename="receptor_$(printf "%04d" $i).pdb"
         dst="${dst_dir}/${dst_filename}"
