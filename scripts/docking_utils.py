@@ -48,7 +48,6 @@ def extract_atom_types_from_dir(ligand_dir):
                         atom_type = line[77:79].strip()
                         if atom_type:
                             atom_types.add(atom_type)
-
                     
     return sorted(atom_types)
 

@@ -9,7 +9,9 @@ python run_vs.py --all
 """
 import os
 import sys
+import re
 import argparse
+import multiprocessing
 
 from docking_utils import (
     prepare_receptor,
@@ -25,6 +27,42 @@ INPUT_DIR = "../virtual_screening/input"
 PREPROCESS_DIR = "../virtual_screening/preprocessed"
 GRID_DIR = "../virtual_screening/grids"
 OUT_DIR = "../virtual_screening/docking_output"
+
+def dock_ligand_wrapper(args):
+    ligand_name, lig_pdbqt_dir, fld_file, out_subdir, receptor_idx, kinase = args
+
+    ligand_pdbqt = os.path.join(lig_pdbqt_dir, ligand_name)
+    if not os.path.exists(ligand_pdbqt):
+        print(f"[WARN] Missing ligand: {ligand_pdbqt}")
+        return
+
+    out_prefix = os.path.join(out_subdir, os.path.splitext(ligand_name)[0])
+    dlg_file = out_prefix + ".dlg"
+
+    if os.path.exists(dlg_file):
+        print(f"[SKIP] Already docked: {dlg_file}")
+        return
+
+    print(f"[DOCK] {kinase} | receptor_{receptor_idx} | {ligand_name}")
+    run_docking(ligand_pdbqt, fld_file, out_prefix)
+
+
+def is_valid_map(map_path, nx, ny, nz):
+    expected_lines = (nx + 1) * (ny + 1) * (nz + 1) + 6
+    try:
+        with open(map_path) as f:
+            lines = f.readlines()
+            if len(lines) != expected_lines:
+                print(f"[ERROR] Invalid line count in {map_path}: {len(lines)} (expected {expected_lines})")
+                return False
+            for i, line in enumerate(lines[6:], 7):  # skip header
+                if not re.match(r'^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$', line.strip()):
+                    print(f"[ERROR] Malformed float in {map_path} at line {i}: {line.strip()}")
+                    return False
+    except Exception as e:
+        print(f"[ERROR] Failed reading {map_path}: {e}")
+        return False
+    return True
 
 
 def run_vs_for_kinase(kinase):
@@ -66,8 +104,6 @@ def run_vs_for_kinase(kinase):
     if example_ligand_path is None:
         raise RuntimeError(f"No ligand files found in actives/decoys for {kinase}")
 
-
-
     for receptor_file in sorted(os.listdir(receptor_pdb_dir)):
 
         print(f"[CHECK] Scanning: {receptor_file}")
@@ -75,7 +111,6 @@ def run_vs_for_kinase(kinase):
             continue
 
         receptor_idx = os.path.splitext(receptor_file)[0].split("_")[-1]
-
         receptor_pdb = os.path.join(receptor_pdb_dir, receptor_file)
         receptor_pdbqt = os.path.join(receptor_pdbqt_dir, f"receptor_{receptor_idx}.pdbqt")
         center_file = os.path.join(grid_center_dir, f"receptor_{receptor_idx}.txt")
@@ -86,16 +121,35 @@ def run_vs_for_kinase(kinase):
             print(f"[WARN] Missing center: {center_file}")
             continue
 
-        if not os.path.exists(receptor_pdbqt):
-            prepare_receptor(receptor_pdb, receptor_pdbqt)
+        nx, ny, nz = GRID_SIZE
 
+        missing_or_invalid_maps = False
+        for atom_type in atom_types:
+            map_path = os.path.join(fld_dir, f"receptor_{receptor_idx}.{atom_type}.map")
+            if not is_valid_map(map_path, nx, ny, nz):
+                missing_or_invalid_maps = True
+                break
 
-
-        if not os.path.exists(fld_file):
+        if missing_or_invalid_maps:
             center = read_grid_center(center_file)
-            generate_gpf(example_ligand_path, receptor_pdbqt, gpf_file, center, GRID_SIZE, atom_types)
-            run_autogrid(gpf_file)
-            print(f"[GEN] Created fld for receptor_{receptor_idx}")
+            
+            shifts = [(0.0, 0.0, 0.0), (0.1, 0.1, 0.1), (-0.1, -0.1, -0.1), (0.05, -0.05, 0.05)]
+            for attempt_idx, shift in enumerate(shifts):
+                current_center = [c + s for c, s in zip(center, shift)]
+                generate_gpf(example_ligand_path, receptor_pdbqt, gpf_file, current_center, GRID_SIZE, atom_types)
+                run_autogrid(gpf_file)
+
+                maps_ok = all(
+                    is_valid_map(os.path.join(fld_dir, f"receptor_{receptor_idx}.{t}.map"), nx, ny, nz)
+                    for t in atom_types
+                )
+                if maps_ok:
+                    print(f"[GEN] Created fld for receptor_{receptor_idx} (attempt {attempt_idx}, shift={shift})")
+                    break
+            else:
+                print(f"[FAIL] receptor_{receptor_idx}: All {len(shifts)} center shifts failed to yield valid maps.")
+                    
+                    
 
     # --- DOCKING ---
     for mode in ["actives", "decoys"]:
@@ -114,21 +168,13 @@ def run_vs_for_kinase(kinase):
             out_subdir = os.path.join(out_dir, f"receptor_{receptor_idx}")
             os.makedirs(out_subdir, exist_ok=True)
 
-            for ligand_name in ligand_names:
-                ligand_pdbqt = os.path.join(lig_pdbqt_dir, ligand_name)
-                if not os.path.exists(ligand_pdbqt):
-                    print(f"[WARN] Missing ligand: {ligand_pdbqt}")
-                    continue
+            tasks = [
+                (ligand_name, lig_pdbqt_dir, fld_file, out_subdir, receptor_idx, kinase)
+                for ligand_name in ligand_names
+            ]
 
-                out_prefix = os.path.join(out_subdir, os.path.splitext(ligand_name)[0])
-                dlg_file = out_prefix + ".dlg"
-
-                if os.path.exists(dlg_file):
-                    print(f"[SKIP] Already docked: {dlg_file}")
-                    continue
-
-                print(f"[DOCK] {kinase} | receptor_{receptor_idx} | {ligand_name}")
-                run_docking(ligand_pdbqt, fld_file, out_prefix)
+            with multiprocessing.Pool(processes=1) as pool:
+                pool.map(dock_ligand_wrapper, tasks)
 
 
 def main():
