@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REFERENCE_LIST="/data/work/dock/virtual_screening/input/abl1.txt"
+REFERENCE_LIST="/data/work/dock/virtual_screening/input/kinase_list.txt"
 SRC_ROOT="/data/work/flowpacker/samples"
 DST_ROOT="/data/work/dock/virtual_screening/input/receptors"
 
@@ -13,7 +13,7 @@ while read -r kinase _; do
     mkdir -p "$dst_dir"
     > "$receptor_list"
 
-    for i in $(seq 1 20); do
+    for i in $(seq 1 10); do
         src="${SRC_ROOT}/${kinase_lower}/new_relaxation/frame_re_${i}.pdb"
         dst_filename="receptor_$(printf "%04d" $i).pdb"
         dst="${dst_dir}/${dst_filename}"

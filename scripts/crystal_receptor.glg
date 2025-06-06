@@ -1,0 +1,308 @@
+
+       _______________________________________________________
+
+__________//____________________________/////_________________/________
+_________/__/____________/_____________/______________/_______/________
+________/____/___________/_____________/______________________/________
+________/____/__/_____/_/////___/////__/__////_/_///__/__////_/________
+_______/______/_/_____/__/_____/_____/_/_____/_//___/_/_/____//________
+_______////////_/_____/__/_____/_____/_/_____/_/______/_/_____/________
+_______/______/_/____//__/___/_/_____/_/_____/_/______/_/____//________
+_______/______/__////_/___///___/////___/////__/______/__////_/________
+
+       _______________________________________________________
+
+                                ______
+                               /      \
+                              /        \
+                             /          \
+                             \    /\    /
+                              \  /  \  /
+                               \/ /\ \/
+                                 /  \
+                                /____\
+
+
+                ______________________________________ 
+               |                                      |
+               |            AutoGrid 4.2.7.x          |
+               |                                      |
+               |        Garrett M. Morris, TSRI       |
+               |            Ruth Huey, TSRI           |
+               |        David S. Goodsell, TSRI       |
+               |         Arthur J. Olson, TSRI        |
+               |                                      |
+               |        (C) 1989-2020, TSRI           |
+               |   The Scripps Research Institute     |
+               |______________________________________|
+
+                ______________________________________ 
+               |                                      |
+               | Calculation of van der Waals, H-Bond,|
+               |   Electrostatic Potential Energy, &  |
+               |   Desolvation Free Energy Grid Maps  |
+               |             for AutoDock             |
+               | For help, email autodock@scripps.edu |
+               |______________________________________|
+
+
+
+
+                           $Revision: 1.160 $
+Compilation parameters:  NUM_RECEPTOR_TYPES=20 NEINT=1024
+  AG_MAX_ATOMS=100000  AG_MAX_NBONDS=4 MAX_MAPS=128 NDIEL=8192 MAX_ATOM_TYPES=126
+        e_vdW_Hb table allows    15876 entries of size 1024
+Maximum number of maps that can be computed = 128 (defined by MAX_MAPS in "autocomm.h").
+  Non-bond cutoff for internal energy calculation (SOFTNBC): 8.00
+  Optimize internal energy scoring (USE_8A_NBCUTOFF):  yes
+  Faster search for nearby atoms (USE_BHTREE):  no
+  Run calculations in parallel if possible (_OPENMP):  yes
+  Maximum number of parallel threads (MAXTHREADS): 32
+This file was created at:			4:55 14" p.m., 06/06/2025
+                   using:			"unknown_host"
+
+
+GPF> npts 40 40 40                        # num.grid points in xyz
+
+Number of grid points in x-direction:	41
+Number of grid points in y-direction:	41
+Number of grid points in z-direction:	41
+
+GPF> gridfld AKT.maps.fld                 # grid_data_file
+
+Creating (AVS-readable) grid maps file : AKT.maps.fld
+
+Creating (AVS-readable) grid-coordinates extrema file : AKT.maps.xyz
+
+GPF> spacing 0.375                        # spacing(A)
+Grid Spacing :			0.375 Angstrom
+
+GPF> receptor_types A C NA OA N SA        # receptor atom types
+GPF> ligand_types A C NA OA N HD          # ligand atom types
+0 'A' ->'A' vdW/Hb/cov
+1 'C' ->'C' vdW/Hb/cov
+2 'NA' ->'NA' vdW/Hb/cov
+3 'OA' ->'OA' vdW/Hb/cov
+4 'N' ->'N' vdW/Hb/cov
+5 'HD' ->'HD' vdW/Hb/cov
+Allocated space for 8 gridmap objects
+16 CPU threads will be used for calculation
+
+Atom type names for ligand atom types 1-6 used for ligand-atom affinity grid maps:
+
+			Atom type number 1 corresponds to atom type name "A".
+			Atom type number 2 corresponds to atom type name "C".
+			Atom type number 3 corresponds to atom type name "NA".
+			Atom type number 4 corresponds to atom type name "OA".
+			Atom type number 5 corresponds to atom type name "N".
+			Atom type number 6 corresponds to atom type name "HD".
+
+
+GPF> receptor AKT.pdbqt                   # macromolecule
+
+Receptor Input File :	AKT.pdbqt
+
+Receptor Atom Type Assignments:
+
+
+Maximum partial atomic charge found = +0.782 e
+Minimum partial atomic charge found = -0.647 e
+
+Atom	Atom	Number of this Type
+Type	 ID 	 in Receptor
+____	____	___________________
+ 0	 A		   273
+ 1	 C		  1440
+ 2	 NA		   355
+ 3	 OA		   489
+ 4	 N		   101
+ 5	 SA		    15
+
+Total number of atoms :		2673 atoms 
+Total charge :			2.07 e
+
+
+Receptor coordinates fit within the following volume:
+
+                   _______(25.9, 23.2, 56.3)
+                  /|     /|
+                 / |    / |
+                /______/  |
+                |  |___|__| Midpoint = (1.8, -0.7, 24.6)
+                |  /   |  /
+                | /    | /
+                |/_____|/
+(-22.3, -24.6, -7.1)      
+
+Maximum coordinates :		(25.891, 23.153, 56.274)
+Minimum coordinates :		(-22.300, -24.648, -7.089)
+
+
+GPF> gridcenter auto                      # xyz-coordinates or auto
+Grid maps will be centered on the center of mass.
+Coordinates of center of mass : (2.994, -0.785, 25.032)
+
+Grid maps will cover the following volume:
+
+                   _______(10.5, 6.7, 32.5)
+                  /|     /|
+                 / |    / |
+                /______/  |
+                |  |___|__| Midpoint = (3.0, -0.8, 25.0)
+                |  /   |  /
+                | /    | /
+                |/_____|/
+(-4.5, -8.3, 17.5)      
+
+Grid map x-dimension :		15.0 Angstroms
+Grid map y-dimension :		15.0 Angstroms
+Grid map z-dimension :		15.0 Angstroms
+
+Maximum coordinates :		(10.494, 6.715, 32.532)
+Minimum coordinates :		(-4.506, -8.285, 17.532)
+
+GPF> smooth 0.5                           # store minimum energy w/in rad(A)
+
+Potentials will be smoothed by: 0.500 Angstrom
+
+GPF> map AKT.A.map                        # atom-specific affinity map
+
+Output Grid Map 1:   AKT.A.map
+
+GPF> map AKT.C.map                        # atom-specific affinity map
+
+Output Grid Map 2:   AKT.C.map
+
+GPF> map AKT.NA.map                       # atom-specific affinity map
+
+Output Grid Map 3:   AKT.NA.map
+
+GPF> map AKT.OA.map                       # atom-specific affinity map
+
+Output Grid Map 4:   AKT.OA.map
+
+GPF> map AKT.N.map                        # atom-specific affinity map
+
+Output Grid Map 5:   AKT.N.map
+
+GPF> map AKT.HD.map                       # atom-specific affinity map
+
+Output Grid Map 6:   AKT.HD.map
+
+GPF> elecmap AKT.e.map                    # electrostatic potential map
+
+Output Electrostatic Potential Energy Grid Map: AKT.e.map
+
+GPF> dsolvmap AKT.d.map              # desolvation potential map
+
+Output Desolvation Free Energy Grid Map: AKT.d.map
+
+GPF> dielectric -0.1465                   # <0, AD4 distance-dep.diel;>0, constant
+
+Using *distance-dependent* dielectric function of Mehler and Solmajer, Prot.Eng.4, 903-910.
+
+
+>>> Closing the grid parameter file (GPF)... <<<
+
+________________________________________________________________________________
+
+
+
+No Floating Grid was requested.
+
+
+No Constriction Grid was requested.
+
+
+Calculating Pairwise Interaction Energies
+
+autogrid4: WARNING:  Found an H-bonding O atom with three bonded atoms, atom serial number 40
+
+
+
+autogrid4: WARNING:  Found an H-bonding O atom with three bonded atoms, atom serial number 41
+
+
+
+autogrid4: WARNING:  Found an H-bonding O atom with three bonded atoms, atom serial number 324
+
+
+
+autogrid4: WARNING:  Found an H-bonding O atom with three bonded atoms, atom serial number 325
+
+
+
+autogrid4: WARNING:  Found an H-bonding O atom with three bonded atoms, atom serial number 517
+
+
+
+autogrid4: WARNING:  Found an H-bonding O atom with three bonded atoms, atom serial number 518
+
+
+
+autogrid4: WARNING:  Found an H-bonding O atom with three bonded atoms, atom serial number 652
+
+
+
+autogrid4: WARNING:  Found an H-bonding O atom with three bonded atoms, atom serial number 653
+
+
+
+autogrid4: WARNING:  Found an H-bonding O atom with three bonded atoms, atom serial number 757
+
+
+
+autogrid4: WARNING:  Found an H-bonding O atom with three bonded atoms, atom serial number 758
+
+
+
+autogrid4: WARNING:  Found an H-bonding O atom with three bonded atoms, atom serial number 1246
+
+
+
+autogrid4: WARNING:  Found an H-bonding O atom with three bonded atoms, atom serial number 1247
+
+
+
+autogrid4: WARNING:  Found an H-bonding O atom with three bonded atoms, atom serial number 1988
+
+
+
+autogrid4: WARNING:  Found an H-bonding O atom with three bonded atoms, atom serial number 1989
+
+
+
+autogrid4: WARNING:  Found an H-bonding O atom with three bonded atoms, atom serial number 2164
+
+
+
+autogrid4: WARNING:  Found an H-bonding O atom with three bonded atoms, atom serial number 2165
+
+
+Beginning grid calculations.
+
+Calculating 8 grids over 68921 elements, around 2673 receptor atoms.
+
+                    Percent   Estimated Time  Time/this plane
+XY-plane  Z-coord   Done      Remaining       Real, User, System
+            /Ang              /sec            /sec
+________  ________  ________  ______________  __________________________
+
+
+autogrid4: ERROR:  no closestH atom was found
+
+
+autogrid4: ERROR:  no closestH atom was found
+
+
+autogrid4: Unsuccessful Completion.
+
+autogrid4: ERROR:  no closestH atom was found
+
+
+autogrid4: Unsuccessful Completion.
+
+autogrid4: ERROR:  no closestH atom was found
+
+
+autogrid4: ERROR:  no closestH atom was found

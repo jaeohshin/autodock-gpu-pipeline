@@ -9,7 +9,7 @@ import sys
 from pymol import cmd
 
 INPUT_DIR = "../virtual_screening/input"
-REF_LIST = os.path.join(INPUT_DIR, "abl1.txt")
+REF_LIST = os.path.join(INPUT_DIR, "kinase_list.txt")
 RECEPTOR_DIR = os.path.join(INPUT_DIR, "receptors")
 REFERENCE_PDB_DIR = os.path.join(INPUT_DIR, "references")
 GRID_OUT_DIR = "../virtual_screening/preprocessed/grid_centers"

@@ -136,6 +136,10 @@ def run_vs_for_kinase(kinase):
             shifts = [(0.0, 0.0, 0.0), (0.1, 0.1, 0.1), (-0.1, -0.1, -0.1), (0.05, -0.05, 0.05)]
             for attempt_idx, shift in enumerate(shifts):
                 current_center = [c + s for c, s in zip(center, shift)]
+                if not os.path.exists(receptor_pdbqt):
+                    print(f"[INFO] Preparing receptor: {receptor_pdb} → {receptor_pdbqt}")
+                    prepare_receptor(receptor_pdb, receptor_pdbqt)
+                    
                 generate_gpf(example_ligand_path, receptor_pdbqt, gpf_file, current_center, GRID_SIZE, atom_types)
                 run_autogrid(gpf_file)
 
