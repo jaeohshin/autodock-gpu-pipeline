@@ -28,7 +28,6 @@ PREPROCESS_DIR = "../virtual_screening/preprocessed"
 GRID_DIR = "../virtual_screening/grids"
 OUT_DIR = "../virtual_screening/docking_output"
 
-
 def dock_ligand_wrapper(args):
     ligand_name, lig_pdbqt_dir, fld_file, out_subdir, receptor_idx, kinase = args
 
@@ -111,16 +110,9 @@ def run_vs_for_kinase(kinase):
         if not receptor_file.endswith(".pdb"):
             continue
 
-        # receptor pdb to pdbqt
         receptor_idx = os.path.splitext(receptor_file)[0].split("_")[-1]
         receptor_pdb = os.path.join(receptor_pdb_dir, receptor_file)
         receptor_pdbqt = os.path.join(receptor_pdbqt_dir, f"receptor_{receptor_idx}.pdbqt")
-        
-        
-        # Ligands are already in pdbqt format. Nothing to do.
-        
-        
-        #Make gpf file for docking: this is rather complicated.
         center_file = os.path.join(grid_center_dir, f"receptor_{receptor_idx}.txt")
         fld_file = os.path.join(fld_dir, f"receptor_{receptor_idx}.maps.fld")
         gpf_file = fld_file.replace(".maps.fld", ".gpf")
@@ -187,7 +179,6 @@ def run_vs_for_kinase(kinase):
 
             with multiprocessing.Pool(processes=4) as pool:
                 pool.map(dock_ligand_wrapper, tasks)
-
 
 
 def main():

@@ -206,6 +206,16 @@ def main():
     receptor_pdbqt = os.path.join(OUTPUT_DIR, "receptor.pdbqt")
     prepare_receptor(RECEPTOR_PDB, receptor_pdbqt)
 
+
+## Either use pdbqt or pdb
+
+    ligand_pdbqts = []
+    for lig_pdbqt in sorted(glob(os.path.join(LIGAND_PDB_DIR, "*.pdbqt"))):
+        name = os.path.splitext(os.path.basename(lig_pdbqt))[0]
+        ligand_pdbqts.append((lig_pdbqt, name))
+
+
+"""
     ligand_pdbs = glob(os.path.join(LIGAND_PDB_DIR, "*.pdb"))
     ligand_pdbqts = []
 
@@ -214,6 +224,11 @@ def main():
         lig_pdbqt = os.path.join(OUTPUT_DIR, f"{name}.pdbqt")
         prepare_ligand(lig_pdb, lig_pdbqt)
         ligand_pdbqts.append((lig_pdbqt, name))
+"""
+
+
+
+
 
     gpf_file = os.path.join(OUTPUT_DIR, "grid.gpf")
     generate_gpf(

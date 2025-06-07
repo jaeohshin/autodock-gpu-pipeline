@@ -10,7 +10,8 @@ from docking_utils import (
     GRID_SIZE,
     prepare_receptor, prepare_ligand,
     calc_ligand_center, read_grid_center,
-    generate_gpf, run_autogrid, run_docking
+    generate_gpf, run_autogrid, run_docking,
+    get_atom_types_from_ligand
 )
 
 ROOT_DIR = "../cognate"
@@ -51,7 +52,9 @@ def run_cognate_docking(kinase_dir):
         raise RuntimeError(f"[ERROR] Ligand PDBQT not generated: {ligand_pdbqt}")
 
     gpf_file = os.path.join(output_dir, "grid.gpf")
-    generate_gpf(ligand_pdbqt, receptor_pdbqt, gpf_file, grid_center, GRID_SIZE)
+    atom_types = get_atom_types_from_ligand(ligand_pdbqt)
+    generate_gpf(ligand_pdbqt, receptor_pdbqt, gpf_file, grid_center, GRID_SIZE, atom_types)
+
 
     run_autogrid(gpf_file)
     fld_file = os.path.join(output_dir, "receptor.maps.fld")

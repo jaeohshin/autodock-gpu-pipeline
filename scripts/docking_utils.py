@@ -51,6 +51,16 @@ def extract_atom_types_from_dir(ligand_dir):
                     
     return sorted(atom_types)
 
+def get_atom_types_from_ligand(pdbqt_path):
+    atom_types = set()
+    with open(pdbqt_path) as f:
+        for line in f:
+            if line.startswith("ATOM") or line.startswith("HETATM"):
+                atom_type = line[77:79].strip()  # correct fixed-width column for type
+                if atom_type:
+                    atom_types.add(atom_type)
+    return sorted(atom_types)
+
 
 def read_grid_center(path):
     with open(path, 'r') as f:
@@ -131,7 +141,7 @@ def patch_gpf_maps(gpf_path, atom_types):
 def generate_gpf(ligand_pdbqt, receptor_pdbqt, output_gpf, center, size, atom_types):
     output_dir = os.path.dirname(output_gpf)
     os.makedirs(output_dir, exist_ok=True)
-    types_str = " ".join(atom_types)
+    types_str = ",".join(atom_types)
 
     # === Prepare Ligand ===
     ligand_src = os.path.abspath(ligand_pdbqt)
@@ -155,13 +165,15 @@ def generate_gpf(ligand_pdbqt, receptor_pdbqt, output_gpf, center, size, atom_ty
     types_str = " ".join(atom_types)
     run_cmd(
         f"cd {output_dir} && {PREPARE_GPF} "
-        f"-l {ligand_name} -r {receptor_name} -y -o {gpf_name} "
-        f"-p npts={size_str} -p gridcenter={center_str} -p types={types_str}"
-    )
-    patch_gpf_center(output_gpf, center)
-    patch_gpf_maps(output_gpf, atom_types)
+        f"-l {ligand_name} -r {receptor_name} -o {gpf_name} "
+        f"-p npts={size_str} "
+        f"-p gridcenter={center_str} "
+        f" -p ligand_types=Br,A,C,Cl,F,HD,I,N,NA,OA,P,S,SA "
+        )
+    #patch_gpf_center(output_gpf, center)
+    #patch_gpf_maps(output_gpf, atom_types)
 
-
+#f"-p ligand_types={types_str}"
 
 
 def run_autogrid(gpf_file):
@@ -175,7 +187,6 @@ def run_docking(lig_pdbqt, fld_file, output_basename):
         f"--ffile {fld_file} "
         f"--lfile {lig_pdbqt} "
         f"--nrun 20 --nev 2500000 "
-        f"--ngen 42000 --heuristics 1 --lsrat 100 "
-        #f"--ngen 42000 --heuristics 1 --autostop 1 --lsrat 100 "
+        f"--ngen 42000 --heuristics 1 --autostop 1 --lsrat 25 "
         f"--resnam {output_basename}"
     )
