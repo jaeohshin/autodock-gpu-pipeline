@@ -84,19 +84,6 @@ virtual_screening/
 - [RDKit](https://www.rdkit.org/)
 - [Meeko](https://github.com/forlilab/Meeko)
 
-### ✅ Installation
-
-To install Meeko and RDKit:
-
-To install Meeko and RDKit:
-
-conda install -c conda-forge meeko rdkit
-
-
-
-🧠 Notes on Ligand Preparation
-
-### Ligands are first processed using Meeko. If Meeko fails (e.g., due to malformed PDB input), the pipeline automatically falls back to MGLTools' prepare_ligand4.py.
 
 🧪 Receptor & Grid Preparation
 
