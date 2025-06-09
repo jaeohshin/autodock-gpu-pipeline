@@ -2,9 +2,9 @@
 2025/06/04
 Jaeoh Shin, Korea Institute for Advanced Study.
 
-python run_vs.py --kinase abl1 
+python run_vs_refactor.py --kinase abl1 
 or
-python run_vs.py --all
+python run_vs_refactor.py --all
     
 """
 import os
