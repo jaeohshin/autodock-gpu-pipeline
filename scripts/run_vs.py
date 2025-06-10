@@ -2,9 +2,9 @@
 2025/06/04
 Jaeoh Shin, Korea Institute for Advanced Study.
 
-python run_vs_refactor.py --kinase abl1 
+python run_vs.py --kinase abl1 
 or
-python run_vs_refactor.py --all
+python run_vs.py --all
     
 """
 import os
@@ -186,7 +186,7 @@ def run_vs_for_kinase(kinase):
                 (ligand_name, lig_pdbqt_dir, fld_file, out_subdir, receptor_idx, kinase)
                 for ligand_name in ligand_names
             ]
-            with multiprocessing.Pool(processes=4) as pool:
+            with multiprocessing.Pool(processes=8) as pool:
                 pool.map(dock_ligand_wrapper, tasks)
 
 

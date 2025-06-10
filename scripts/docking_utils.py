@@ -186,7 +186,7 @@ def run_docking(lig_pdbqt, fld_file, output_basename):
         f"{AUTODOCK_GPU_BIN} "
         f"--ffile {fld_file} "
         f"--lfile {lig_pdbqt} "
-        f"--nrun 20 --nev 2500000 "
-        f"--ngen 42000 --heuristics 1 --autostop 1 --lsrat 25 "
+        f"--nrun 50 --nev 2500000 "
+        f"--ngen 42000 --heuristics 1 --autostop 0 --lsrat 50 "
         f"--resnam {output_basename}"
     )
