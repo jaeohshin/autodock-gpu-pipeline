@@ -1,3 +1,12 @@
+"""
+Analyze the docking output file (.dlg).
+How to Run:
+e.g.,
+
+python script.py --kinase abl1 --max_receptor 100
+
+"""
+
 import os
 import re
 import argparse
