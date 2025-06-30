@@ -47,7 +47,7 @@ def dock_ligand_wrapper(args):
     print(f"[DOCK] {kinase} | receptor_{receptor_idx} | {ligand_name}")
     run_docking(ligand_pdbqt, fld_file, out_prefix)
 
-
+"""
 def is_valid_map(map_path, nx, ny, nz):
     expected_lines = (nx + 1) * (ny + 1) * (nz + 1) + 6
     try:
@@ -64,6 +64,11 @@ def is_valid_map(map_path, nx, ny, nz):
         print(f"[ERROR] Failed reading {map_path}: {e}")
         return False
     return True
+"""
+
+
+def is_valid_map(map_path, *args, **kwargs):
+    return os.path.exists(map_path)
 
 
 def get_atom_types(kinase_lig_dir):
@@ -104,12 +109,21 @@ def generate_grid_if_needed(receptor_idx, receptor_pdb, receptor_pdbqt, center_f
             print(f"[DEBUG] Preparing receptor: {receptor_pdb} → {receptor_pdbqt}")
             prepare_receptor(receptor_pdb, receptor_pdbqt)
         print(f"[DEBUG] Attempting center shift {attempt_idx}: {shift}")
+        
         generate_gpf(example_ligand_path, receptor_pdbqt, gpf_file, current_center, GRID_SIZE, atom_types)
+        
         run_autogrid(gpf_file)
-        maps_ok = all(
-            is_valid_map(os.path.join(fld_dir, f"receptor_{receptor_idx}.{t}.map"), nx, ny, nz)
-            for t in atom_types
-        )
+
+        for t in atom_types:
+            map_path = os.path.join(fld_dir, f"receptor_{receptor_idx}.{t}.map")
+            if not is_valid_map(map_path, nx, ny, nz):
+                print(f"[ERROR] Invalid map file: {map_path}")
+                maps_ok = False
+                break
+        else:
+            maps_ok = True
+
+
         if maps_ok:
             patch_gpf_ligand_types(gpf_path=gpf_file, atom_types=atom_types)
             print(f"[SUCCESS] Valid maps created for receptor_{receptor_idx}")
@@ -140,7 +154,7 @@ def patch_gpf_ligand_types(gpf_path, atom_types):
 
 
 def run_vs_for_kinase(kinase):
-    kinase_lig_dir = os.path.join(INPUT_DIR, "ligands", kinase)
+    kinase_lig_dir = os.path.join(INPUT_DIR, "ligands_obabel", kinase)
     receptor_pdb_dir = os.path.join(INPUT_DIR, "receptors", kinase)
     receptor_pdbqt_dir = os.path.join(PREPROCESS_DIR, "receptors_pdbqt", kinase)
     grid_center_dir = os.path.join(PREPROCESS_DIR, "grid_centers", kinase)

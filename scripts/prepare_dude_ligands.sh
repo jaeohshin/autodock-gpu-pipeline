@@ -1,12 +1,32 @@
 #!/bin/bash
+## Process only a specific target (e.g., "abl1")
+#./convert_ligands.sh abl1
 
-ROOT="/data/work/dock/dude_raw"
-OUT_ROOT="/data/work/dock/virtual_screening/input/ligands"
+# Process all targets (default behavior)
+#./convert_ligands.sh
+
+ROOT="/store/jaeohshin/work/dock/dude_raw"
+OUT_ROOT="/store/jaeohshin/work/dock/virtual_screening/input/ligands_obabel"
+
+# === Handle optional argument ===
+if [ $# -eq 1 ]; then
+    TARGET_FILTER="$1"
+    echo "[INFO] Only processing target: $TARGET_FILTER"
+else
+    TARGET_FILTER=""
+    echo "[INFO] Processing all targets."
+fi
 
 echo "[INFO] Starting SDF-based .pdbqt conversion with CHEMBL ID naming..."
 
 for target_path in "$ROOT"/*/; do
     target=$(basename "${target_path%/}")
+
+    # Skip if filter is set and target doesn't match
+    if [[ -n "$TARGET_FILTER" && "$target" != "$TARGET_FILTER" ]]; then
+        continue
+    fi
+
     echo "[TARGET] $target"
 
     for type in actives decoys; do
@@ -46,3 +66,4 @@ for target_path in "$ROOT"/*/; do
 done
 
 echo "[DONE] Conversion and renaming finished."
+

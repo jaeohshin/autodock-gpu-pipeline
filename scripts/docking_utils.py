@@ -168,6 +168,7 @@ def generate_gpf(ligand_pdbqt, receptor_pdbqt, output_gpf, center, size, atom_ty
         f"-l {ligand_name} -r {receptor_name} -o {gpf_name} "
         f"-p npts={size_str} "
         f"-p gridcenter={center_str} "
+#        f"-p ligand_types={types_str} "
         f" -p ligand_types=Br,A,C,Cl,F,HD,I,N,NA,OA,P,S,SA "
         )
     #patch_gpf_center(output_gpf, center)
@@ -186,7 +187,7 @@ def run_docking(lig_pdbqt, fld_file, output_basename):
         f"{AUTODOCK_GPU_BIN} "
         f"--ffile {fld_file} "
         f"--lfile {lig_pdbqt} "
-        f"--nrun 50 --nev 2500000 "
+        f"--nrun 25 --nev 2500000 "
         f"--ngen 42000 --heuristics 1 --autostop 0 --lsrat 50 "
         f"--resnam {output_basename}"
     )
