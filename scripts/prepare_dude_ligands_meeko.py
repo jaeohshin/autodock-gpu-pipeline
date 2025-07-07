@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 import sys
 import warnings
 import os
@@ -8,12 +9,12 @@ from rdkit import Chem
 from meeko import MoleculePreparation
 from meeko import PDBQTWriterLegacy
 
-ROOT = "/store/jaeohshin/work/dock/dude_raw"
-OUT_ROOT = "/store/jaeohshin/work/dock/virtual_screening/input/ligands_meeko"
+
+ROOT = "/data/work/dock_local/dude_raw"
+OUT_ROOT = "/data/work/dock_local/virtual_screening/input/ligands_sdf2meeko"
 
 print("[INFO] Starting Meeko-based SDF to PDBQT conversion...")
 
-# Suppress specific stderr messages from RDKit
 class CleanStderr:
     def write(self, msg):
         if ("get_symmetries_for_rmsd" not in msg and 
@@ -23,6 +24,8 @@ class CleanStderr:
         pass
 
 sys.stderr = CleanStderr()
+
+
 
 for target in sorted(os.listdir(ROOT)):
     target_path = os.path.join(ROOT, target)
@@ -56,11 +59,7 @@ for target in sorted(os.listdir(ROOT)):
         prep.add_hydrogens = False
         prep.ignore_protonation_states = True
         prep.generate_tautomers = False
-        prep = MoleculePreparation(
-            load_atom_params="ad4_types",  # AutoDock4 atom types 사용
-            add_atom_types=[],             # 추가 SMARTS 없음
-        )
-
+        prep.rigid_macrocycles = True
 
         with open(list_out, 'w') as list_f, open(error_log, 'w') as err_f:
             for i, mol in enumerate(suppl, start=1):
