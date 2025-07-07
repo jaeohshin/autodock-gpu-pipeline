@@ -32,6 +32,43 @@ def label_ligand(filename):
         return "decoy"
     return "unknown"
 
+
+def collect_best_scores(base_dir):
+    from collections import defaultdict
+
+    energy_dict = defaultdict(list)
+    label_dict = {}
+
+    if not os.path.isdir(base_dir):
+        raise FileNotFoundError(f"[ERROR] Directory not found: {base_dir}")
+
+    for fname in tqdm(os.listdir(base_dir), desc="Parsing ligands"):
+        if not fname.endswith(".dlg"):
+            continue
+        match = re.search(r'REMARKName=(ZINC\d+|CHEMBL\d+)', fname)
+        if not match:
+            continue  # Skip malformed files
+        ligand_id = match.group(1)  # Could be ZINC or CHEMBL
+        fpath = os.path.join(base_dir, fname)
+        energy = extract_best_energy_from_dlg(fpath)
+        if energy is not None:
+            energy_dict[ligand_id].append(energy)
+            if ligand_id not in label_dict:
+                label_dict[ligand_id] = label_ligand(fname)
+    
+    records = []
+    for zinc_id, energies in energy_dict.items():
+        best_energy = min(energies)
+        label = label_dict.get(zinc_id, "unknown")
+        records.append((zinc_id, best_energy, label))
+
+    df = pd.DataFrame(records, columns=["Ligand", "Energy", "Label"])
+    df["Best_Receptor"] = "crystal"
+    return df
+
+
+
+"""
 def collect_best_scores(base_dir):
     records = []
     if not os.path.isdir(base_dir):
@@ -49,6 +86,7 @@ def collect_best_scores(base_dir):
     df = pd.DataFrame(records, columns=["Ligand", "Energy", "Label"])
     df["Best_Receptor"] = "crystal"  # fixed value
     return df
+"""
 
 def calculate_ef(df, top_percent):
     df_sorted = df.sort_values("Energy")

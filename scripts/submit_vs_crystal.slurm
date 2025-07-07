@@ -6,7 +6,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=16
 #SBATCH --time=120:00:00
-#SBATCH --array=0-17%9  # 18 kinases total, max 9 concurrent jobs
+#SBATCH --array=0-17%12  # 18 kinases total, max 9 concurrent jobs
 
 KINASES=(abl1 akt1 akt2 braf egfr fgfr1 igf1r jak2 kit lck mapk1 mapk10 mapkapk2 met prkcb tgfbr1 wee1)
 
