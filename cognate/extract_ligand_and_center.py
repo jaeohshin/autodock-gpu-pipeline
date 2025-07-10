@@ -3,7 +3,7 @@ from Bio.PDB import PDBParser, PDBIO, Select
 import numpy as np
 from collections import defaultdict
 
-KINASE_LIST = "kinase.list"
+KINASE_LIST = "kinase.txt"
 
 EXCLUDED = {"HOH", "WAT", "SO4", "CL", "NA", "K", "MG", "GOL", "CA", "ZN", "PO4", "PEG"}
 
@@ -33,9 +33,9 @@ def find_largest_ligand_in_chainA(structure):
 
 def process_kinase(kinase):
     folder = kinase
-    original_pdb = os.path.join(folder, "original.pdb")
-    ligand_pdb = os.path.join(folder, "ligand.pdb")
-    center_txt = os.path.join(folder, "grid_center.txt")
+    original_pdb = os.path.join(folder, "receptor", "original.pdb")
+    ligand_pdb = os.path.join(folder, "ligands", "ligand.pdb")
+    center_txt = os.path.join(folder, "grid", "grid_center.txt")
 
     if not os.path.isfile(original_pdb):
         print(f"[WARNING] {original_pdb} not found. Skipping.")
