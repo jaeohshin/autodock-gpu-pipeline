@@ -6,9 +6,9 @@
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=16
 #SBATCH --time=120:00:00
-#SBATCH --array=0-17%12  # 18 kinases total, max 9 concurrent jobs
+#SBATCH --array=0-25%12  # 18 kinases total, max 9 concurrent jobs
 
-KINASES=(abl1 akt1 akt2 braf egfr fgfr1 igf1r jak2 kit lck mapk1 mapk10 mapkapk2 met prkcb tgfbr1 wee1)
+KINASES=(abl1 akt1 akt2 braf cdk2 csf1r egfr fak1 fgfr1 igf1r jak2 kit kpcb lck mapk2 met mk01 mk10 mk14 mp2k1 plk1 rock1 src tgfr1 vgfr2 wee1)
 
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate dock

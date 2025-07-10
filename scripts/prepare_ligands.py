@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-
+# July 8th 2025
+# Prepare ligands from Dud-E kinase dataset. 
+# Use sdf files to generate pdbqt file
+# There could be multiple sdf files for a SMILES file, I take only the first one.
 import sys
 import warnings
 import os
@@ -10,8 +13,8 @@ from meeko import MoleculePreparation
 from meeko import PDBQTWriterLegacy
 
 
-ROOT = "/data/work/dock_local/dude_raw"
-OUT_ROOT = "/data/work/dock_local/virtual_screening/input/ligands_sdf2meeko"
+ROOT = "/store/jaeohshin/work/dock/dude_raw"
+OUT_ROOT = "/store/jaeohshin/work/dock/virtual_screening/input/ligands_sdf2meeko"
 
 print("[INFO] Starting Meeko-based SDF to PDBQT conversion...")
 
@@ -62,28 +65,32 @@ for target in sorted(os.listdir(ROOT)):
         prep.rigid_macrocycles = True
 
         with open(list_out, 'w') as list_f, open(error_log, 'w') as err_f:
+            seen_ids = set()
+            ligand_index = 0
             for i, mol in enumerate(suppl, start=1):
                 if mol is None:
                     continue
 
                 chembl_id = mol.GetProp("_Name").strip() if mol.HasProp("_Name") else f"ligand_{i:05d}"
+
+                if chembl_id in seen_ids:
+                    continue
+                seen_ids.add(chembl_id)
+                ligand_index += 1
+
                 mol.SetProp("_Name", chembl_id)
-                newname = f"{type_}_{i:05d}_REMARKName={chembl_id}.pdbqt"
+                newname = f"{type_}_{ligand_index:05d}_REMARKName={chembl_id}.pdbqt"
                 out_path = os.path.join(out_dir, newname)
 
                 try:
-                    # Recast to strip query features and avoid HasQuery errors
                     mol_clean = Chem.Mol(mol)
                     mol_setups = prep.prepare(mol_clean)
                     writer = PDBQTWriterLegacy()
                     pdbqt_string = writer.write_string(mol_setups[0])[0]
                     with open(out_path, "w") as f:
                         f.write(pdbqt_string)
-                    
-
                     list_f.write(f"{newname}\n")
                 except Exception as e:
                     print(f"[ERROR] {chembl_id}: {e}")
                     err_f.write(f"{chembl_id}\t{e}\n")
-
 print("[DONE] Meeko-based conversion finished.")

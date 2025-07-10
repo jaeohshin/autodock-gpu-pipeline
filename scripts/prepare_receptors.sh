@@ -1,6 +1,7 @@
 #!/bin/bash
+# Make structures using BioEmu etc. then copy them to dock directory
 
-REFERENCE_LIST="/store/jaeohshin/work/dock/virtual_screening/input/kinase_list.txt"
+REFERENCE_LIST="/store/jaeohshin/work/dock/kinase.txt"
 SRC_ROOT="/store/jaeohshin/work/kine/output"
 DST_ROOT="/store/jaeohshin/work/dock/virtual_screening/input/receptors"
 
@@ -15,7 +16,7 @@ while read -r kinase _; do
     mkdir -p "$dst_dir"
     > "$receptor_list"
 
-    for i in $(seq 1 20); do
+    for i in $(seq 1 50); do
 	padded_i=$(printf "%03d" $i)
         src="${SRC_ROOT}/${kinase_lower}/final_str/receptor_${padded_i}.pdb"
         dst_filename="receptor_${padded_i}.pdb"
