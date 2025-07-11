@@ -1,12 +1,31 @@
 """
-2025/06/04
-Jaeoh Shin, Korea Institute for Advanced Study.
+2025/07/10
+Unified Virtual Screening Script
+Author: Jaeoh Shin, Korea Institute for Advanced Study
 
-python run_vs.py --kinase abl1 
-or
-python run_vs.py --all
-    
+Supports two use cases with one script:
+  1. Crystal structure docking (vs_crystal/) with one receptor per kinase
+  2. Ensemble docking (virtual_screening/) using multiple BioEmu-generated structures
+
+Usage:
+  python run_vs.py --project vs_crystal --mode crystal --kinase abl1
+  python run_vs.py --project virtual_screening --mode ensemble --all --nprocs 16
+
+Required Directory Layout:
+  ../{project}/input/
+    ├── receptors/<kinase>/receptor.pdb (crystal) or receptor_*.pdb (ensemble)
+    ├── ligands/ or ligands_sdf2meeko/<kinase>/{actives,decoys}/
+    └── kinase_list.txt
+
+  ../{project}/preprocessed/
+    ├── receptors_pdbqt/<kinase>/receptor_*.pdbqt
+    ├── ligands_pdbqt/<kinase>/{actives,decoys}/
+    └── grid_centers/<kinase>/receptor_*.txt
+
+  ../{project}/grids/<kinase>/ → contains .map files and .fld
+  ../{project}/docking_output/<kinase>/ → docking results
 """
+
 import os
 import sys
 import re
@@ -22,12 +41,6 @@ from docking_utils import (
     GRID_SIZE,
     extract_atom_types_from_dir
 )
-
-INPUT_DIR = "../virtual_screening/input"
-PREPROCESS_DIR = "../virtual_screening/preprocessed"
-GRID_DIR = "../virtual_screening/grids"
-OUT_DIR = "../virtual_screening/docking_output"
-
 
 def dock_ligand_wrapper(args):
     ligand_name, lig_pdbqt_dir, fld_file, out_subdir, receptor_idx, kinase = args
@@ -47,29 +60,8 @@ def dock_ligand_wrapper(args):
     print(f"[DOCK] {kinase} | receptor_{receptor_idx} | {ligand_name}")
     run_docking(ligand_pdbqt, fld_file, out_prefix)
 
-"""
-def is_valid_map(map_path, nx, ny, nz):
-    expected_lines = (nx + 1) * (ny + 1) * (nz + 1) + 6
-    try:
-        with open(map_path) as f:
-            lines = f.readlines()
-            if len(lines) != expected_lines:
-                print(f"[ERROR] Invalid line count in {map_path}: {len(lines)} (expected {expected_lines})")
-                return False
-            for i, line in enumerate(lines[6:], 7):  # skip header
-                if not re.match(r'^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$', line.strip()):
-                    print(f"[ERROR] Malformed float in {map_path} at line {i}: {line.strip()}")
-                    return False
-    except Exception as e:
-        print(f"[ERROR] Failed reading {map_path}: {e}")
-        return False
-    return True
-"""
-
-
 def is_valid_map(map_path, *args, **kwargs):
     return os.path.exists(map_path)
-
 
 def get_atom_types(kinase_lig_dir):
     print(f"[DEBUG] Scanning ligand directory: {kinase_lig_dir}")
@@ -83,63 +75,15 @@ def get_atom_types(kinase_lig_dir):
     return result
 
 def find_example_ligand(kinase_lig_dir):
-    print(f"[DEBUG] Searching for example ligand in: {kinase_lig_dir}")
     for mode in ["actives", "decoys"]:
         mode_dir = os.path.join(kinase_lig_dir, mode)
         if os.path.isdir(mode_dir):
             ligands = [f for f in os.listdir(mode_dir) if f.endswith(".pdbqt")]
             if ligands:
-                path = os.path.join(mode_dir, ligands[0])
-                print(f"[DEBUG] Found example ligand: {path}")
-                return path
+                return os.path.join(mode_dir, ligands[0])
     raise RuntimeError("No ligand files found in actives/decoys")
 
-
-def generate_grid_if_needed(receptor_idx, receptor_pdb, receptor_pdbqt, center_file, fld_dir, gpf_file, example_ligand_path, atom_types):
-    if not os.path.exists(center_file):
-        print(f"[WARN] Missing center: {center_file}")
-        return False
-
-    center = read_grid_center(center_file)
-    nx, ny, nz = GRID_SIZE
-    shifts = [(0.0, 0.0, 0.0), (0.1, 0.1, 0.1), (-0.1, -0.1, -0.1), (0.05, -0.05, 0.05)]
-    for attempt_idx, shift in enumerate(shifts):
-        current_center = [c + s for c, s in zip(center, shift)]
-        if not os.path.exists(receptor_pdbqt):
-            print(f"[DEBUG] Preparing receptor: {receptor_pdb} → {receptor_pdbqt}")
-            prepare_receptor(receptor_pdb, receptor_pdbqt)
-        print(f"[DEBUG] Attempting center shift {attempt_idx}: {shift}")
-        
-        generate_gpf(example_ligand_path, receptor_pdbqt, gpf_file, current_center, GRID_SIZE, atom_types)
-        
-        run_autogrid(gpf_file)
-
-        for t in atom_types:
-            map_path = os.path.join(fld_dir, f"receptor_{receptor_idx}.{t}.map")
-            if not is_valid_map(map_path, nx, ny, nz):
-                print(f"[ERROR] Invalid map file: {map_path}")
-                maps_ok = False
-                break
-        else:
-            maps_ok = True
-
-
-        if maps_ok:
-            patch_gpf_ligand_types(gpf_path=gpf_file, atom_types=atom_types)
-            print(f"[SUCCESS] Valid maps created for receptor_{receptor_idx}")
-            return True
-    print(f"[ERROR] receptor_{receptor_idx}: All {len(shifts)} center shifts failed")
-    return False
-
-
 def patch_gpf_ligand_types(gpf_path, atom_types):
-    """
-    Overwrite the 'ligand_types' line in a .gpf file with a full list of atom types.
-
-    Parameters:
-    - gpf_path (str): Path to the .gpf file.
-    - atom_types (list of str): Atom types to include, e.g., ['C', 'N', 'O', 'F', ...]
-    """
     patched_lines = []
     with open(gpf_path, 'r') as f:
         for line in f:
@@ -152,73 +96,119 @@ def patch_gpf_ligand_types(gpf_path, atom_types):
         f.writelines(patched_lines)
     print(f"[INFO] Patched ligand_types in {gpf_path} with: {atom_str}")
 
+def generate_grid_if_needed(receptor_idx, receptor_pdb, receptor_pdbqt, center_file, fld_dir, gpf_file, example_ligand_path, atom_types):
+    if not os.path.exists(center_file):
+        print(f"[WARN] Missing center: {center_file}")
+        return False
 
-def run_vs_for_kinase(kinase):
-    kinase_lig_dir = os.path.join(INPUT_DIR, "ligands_obabel", kinase)
-    receptor_pdb_dir = os.path.join(INPUT_DIR, "receptors", kinase)
-    receptor_pdbqt_dir = os.path.join(PREPROCESS_DIR, "receptors_pdbqt", kinase)
-    grid_center_dir = os.path.join(PREPROCESS_DIR, "grid_centers", kinase)
-    fld_dir = os.path.join(GRID_DIR, kinase)
-    out_dir = os.path.join(OUT_DIR, kinase)
+    center = read_grid_center(center_file)
+    nx, ny, nz = GRID_SIZE
+    shifts = [(0.0, 0.0, 0.0), (0.1, 0.1, 0.1), (-0.1, -0.1, -0.1), (0.05, -0.05, 0.05)]
+    for attempt_idx, shift in enumerate(shifts):
+        current_center = [c + s for c, s in zip(center, shift)]
+        if not os.path.exists(receptor_pdbqt):
+            prepare_receptor(receptor_pdb, receptor_pdbqt)
+        generate_gpf(example_ligand_path, receptor_pdbqt, gpf_file, current_center, GRID_SIZE, atom_types)
+        run_autogrid(gpf_file)
+        maps_ok = all(is_valid_map(os.path.join(fld_dir, f"receptor_{receptor_idx}.{t}.map")) for t in atom_types)
+        if maps_ok:
+            patch_gpf_ligand_types(gpf_path=gpf_file, atom_types=atom_types)
+            print(f"[SUCCESS] Valid maps created for receptor_{receptor_idx}")
+            return True
+    print(f"[ERROR] receptor_{receptor_idx}: All {len(shifts)} center shifts failed")
+    return False
+
+def run_vs_for_kinase(kinase, args, INPUT_DIR, PREPROCESS_DIR, GRID_DIR, OUT_DIR):
+    ROOT = f"../{args.project}"
+    input_dir = os.path.join(ROOT, "input")
+    pre_dir = os.path.join(ROOT, "preprocessed")
+    grid_dir = os.path.join(ROOT, "grids")
+    out_dir = os.path.join(ROOT, "docking_output")
+
+    lig_dir = os.path.join(pre_dir, "ligands_pdbqt", kinase)
+    receptor_dir = os.path.join(input_dir, "receptors", kinase)
+    receptor_pdbqt_dir = os.path.join(pre_dir, "receptors_pdbqt", kinase)
+    center_dir = os.path.join(pre_dir, "grid_centers", kinase)
+    fld_dir = os.path.join(grid_dir, kinase)
+    out_dir = os.path.join(out_dir, kinase)
+
     os.makedirs(receptor_pdbqt_dir, exist_ok=True)
     os.makedirs(fld_dir, exist_ok=True)
     os.makedirs(out_dir, exist_ok=True)
 
-    atom_types = get_atom_types(kinase_lig_dir)
-    print(f"[INFO] Atom types for {kinase}: {atom_types}")
-    example_ligand_path = find_example_ligand(kinase_lig_dir)
+    atom_types = get_atom_types(lig_dir)
+    print(f"[DEBUG] Looking for ligands in: {lig_dir}")
+    for mode in ["actives", "decoys"]:
+        mode_dir = os.path.join(lig_dir, mode)
+        print(f"→ Checking: {mode_dir}")
+        if not os.path.isdir(mode_dir):
+            print(f"[WARN] Missing dir: {mode_dir}")
+        else:
+            print(f"[OK] Found {len(os.listdir(mode_dir))} files in {mode_dir}")
 
-    for receptor_file in sorted(os.listdir(receptor_pdb_dir)):
-        if not receptor_file.endswith(".pdb"):
-            continue
-        receptor_idx = os.path.splitext(receptor_file)[0].split("_")[-1]
-        receptor_pdb = os.path.join(receptor_pdb_dir, receptor_file)
-        receptor_pdbqt = os.path.join(receptor_pdbqt_dir, f"receptor_{receptor_idx}.pdbqt")
-        center_file = os.path.join(grid_center_dir, f"receptor_{receptor_idx}.txt")
+    example_ligand = find_example_ligand(lig_dir)
+
+    receptor_files = sorted(f for f in os.listdir(receptor_dir) if f.endswith(".pdb"))
+    for receptor_file in receptor_files:
+        receptor_pdb = os.path.join(receptor_dir, receptor_file)
+        
+        if args.mode == "crystal":
+            receptor_idx = "crystal"
+            receptor_pdbqt = os.path.join(receptor_pdbqt_dir, "receptor.pdbqt")
+        else:
+            receptor_idx = os.path.splitext(receptor_file)[0].split("_")[-1]
+            receptor_pdbqt = os.path.join(receptor_pdbqt_dir, f"receptor_{receptor_idx}.pdbqt")
+
+
+        center_file = os.path.join(center_dir, f"receptor_{receptor_idx}.txt")
         fld_file = os.path.join(fld_dir, f"receptor_{receptor_idx}.maps.fld")
         gpf_file = fld_file.replace(".maps.fld", ".gpf")
-                # Example use
-        generate_grid_if_needed(receptor_idx, receptor_pdb, receptor_pdbqt, center_file, fld_dir, gpf_file, example_ligand_path, atom_types)
-        
-        
-        
+
+        generate_grid_if_needed(receptor_idx, receptor_pdb, receptor_pdbqt, center_file, fld_dir, gpf_file, example_ligand, atom_types)
 
     for mode in ["actives", "decoys"]:
-        list_path = os.path.join(kinase_lig_dir, f"ligands_{mode}.list")
-        lig_pdbqt_dir = os.path.join(kinase_lig_dir, mode)
+        list_path = os.path.join(lig_dir, f"ligands_{mode}.list")
+        lig_pdbqt_dir = os.path.join(lig_dir, mode)
         with open(list_path) as f:
             ligand_names = [x.strip() for x in f if x.strip()]
-        for receptor_file in sorted(os.listdir(receptor_pdb_dir)):
-            if not receptor_file.endswith(".pdb"):
-                continue
-            receptor_idx = os.path.splitext(receptor_file)[0].split("_")[-1]
+        for receptor_file in receptor_files:
+            receptor_idx = "crystal" if args.mode == "crystal" else os.path.splitext(receptor_file)[0].split("_")[-1]
             fld_file = os.path.join(fld_dir, f"receptor_{receptor_idx}.maps.fld")
-            out_subdir = os.path.join(out_dir, f"receptor_{receptor_idx}")
+            out_subdir = out_dir if args.mode == "crystal" else os.path.join(out_dir, f"receptor_{receptor_idx}")
             os.makedirs(out_subdir, exist_ok=True)
-            print(f"[INFO] Starting docking for receptor_{receptor_idx} with {len(ligand_names)} ligands")
             tasks = [
                 (ligand_name, lig_pdbqt_dir, fld_file, out_subdir, receptor_idx, kinase)
                 for ligand_name in ligand_names
             ]
-            with multiprocessing.Pool(processes=8) as pool:
+            with multiprocessing.Pool(processes=args.nprocs) as pool:
                 pool.map(dock_ligand_wrapper, tasks)
 
-
 def main():
+    
     parser = argparse.ArgumentParser()
+    parser.add_argument("--project", type=str, default="virtual_screening", choices=["virtual_screening", "vs_crystal"])
+    parser.add_argument("--mode", type=str, default="ensemble", choices=["ensemble", "crystal"])
+    parser.add_argument("--nprocs", type=int, default=8)
     group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument("--kinase", type=str, help="Run virtual screening for a single kinase (e.g., abl1)")
-    group.add_argument("--all", action="store_true", help="Run for all kinases in kinase_list.txt")
+    group.add_argument("--kinase", type=str)
+    group.add_argument("--all", action="store_true")
     args = parser.parse_args()
+    
+    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "vs_crystal"))
+    INPUT_DIR = os.path.join(BASE_DIR, "input")
+    PREPROCESS_DIR = os.path.join(BASE_DIR, "preprocessed")
+    GRID_DIR = os.path.join(BASE_DIR, "grids")
+    OUT_DIR = os.path.join(BASE_DIR, "docking_output")
+
 
     if args.kinase:
-        run_vs_for_kinase(args.kinase.lower())
+        run_vs_for_kinase(args.kinase.lower(), args, INPUT_DIR, PREPROCESS_DIR, GRID_DIR, OUT_DIR)
     elif args.all:
-        kinase_list = os.path.join(INPUT_DIR, "kinase_list.txt")
-        with open(kinase_list) as f:
+        kinase_list_path = os.path.join(f"../{args.project}", "input", "kinase_list.txt")
+        with open(kinase_list_path) as f:
             kinases = [x.strip().lower() for x in f if x.strip()]
         for kinase in kinases:
-            run_vs_for_kinase(kinase)
+            run_vs_for_kinase(kinase, args, INPUT_DIR, PREPROCESS_DIR, GRID_DIR, OUT_DIR)
 
 if __name__ == "__main__":
     main()
