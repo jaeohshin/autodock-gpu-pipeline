@@ -8,11 +8,11 @@ import requests
 import sys
 from pymol import cmd
 
-INPUT_DIR = "../virtual_screening/input"
+INPUT_DIR = "virtual_screening/input"
 REF_LIST = os.path.join(INPUT_DIR, "kinase.txt")
 RECEPTOR_DIR = os.path.join(INPUT_DIR, "receptors")
 REFERENCE_PDB_DIR = os.path.join(INPUT_DIR, "references")
-GRID_OUT_DIR = "../virtual_screening/preprocessed/grid_centers"
+GRID_OUT_DIR = "virtual_screening/preprocessed/grid_centers"
 
 def download_pdb(pdb_id, save_path):
     url = f"https://files.rcsb.org/download/{pdb_id.upper()}.pdb"

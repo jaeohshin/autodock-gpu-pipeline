@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=vs_met
-#SBATCH --output=logs/slurm_vs_met.out
-#SBATCH --error=logs/slurm_vs_met.err
+#SBATCH --job-name=vs_met_ens
+#SBATCH --output=logs/slurm_vs_met_ens.out
+#SBATCH --error=logs/slurm_vs_met_ens.err
 #SBATCH --partition=normal
 #SBATCH --gres-flags=enforce-binding
 #SBATCH --nodes=1
@@ -13,12 +13,12 @@
 source ~/.bashrc
 conda activate dock
 
-echo "[INFO] Starting virtual screening for met on $(hostname)"
+echo "[INFO] Starting ensemble docking for met on $(hostname)"
 start_time=$(date +%s)
 
 python run_vs.py \
-  --project vs_crystal \
-  --mode crystal \
+  --project virtual_screening \
+  --mode ensemble \
   --kinase met \
   --nprocs 8
 
@@ -27,7 +27,7 @@ end_time=$(date +%s)
 duration=$((end_time - start_time))
 
 if [ $status -eq 0 ]; then
-    echo -e "met\tcrystal\tSUCCESS\t${duration} sec" >> logs/vs_status.tsv
+    echo -e "met\tensemble\tSUCCESS\t${duration} sec" >> logs/vs_status.tsv
 else
-    echo -e "met\tcrystal\tFAIL\t${duration} sec" >> logs/vs_status.tsv
+    echo -e "met\tensemble\tFAIL\t${duration} sec" >> logs/vs_status.tsv
 fi

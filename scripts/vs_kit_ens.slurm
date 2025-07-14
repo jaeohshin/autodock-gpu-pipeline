@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=vs_kit
-#SBATCH --output=logs/slurm_vs_kit.out
-#SBATCH --error=logs/slurm_vs_kit.err
+#SBATCH --job-name=vs_kit_ens
+#SBATCH --output=logs/slurm_vs_kit_ens.out
+#SBATCH --error=logs/slurm_vs_kit_ens.err
 #SBATCH --partition=normal
 #SBATCH --gres-flags=enforce-binding
 #SBATCH --nodes=1
@@ -13,12 +13,12 @@
 source ~/.bashrc
 conda activate dock
 
-echo "[INFO] Starting virtual screening for kit on $(hostname)"
+echo "[INFO] Starting ensemble docking for kit on $(hostname)"
 start_time=$(date +%s)
 
 python run_vs.py \
-  --project vs_crystal \
-  --mode crystal \
+  --project virtual_screening \
+  --mode ensemble \
   --kinase kit \
   --nprocs 8
 
@@ -27,7 +27,7 @@ end_time=$(date +%s)
 duration=$((end_time - start_time))
 
 if [ $status -eq 0 ]; then
-    echo -e "kit\tcrystal\tSUCCESS\t${duration} sec" >> logs/vs_status.tsv
+    echo -e "kit\tensemble\tSUCCESS\t${duration} sec" >> logs/vs_status.tsv
 else
-    echo -e "kit\tcrystal\tFAIL\t${duration} sec" >> logs/vs_status.tsv
+    echo -e "kit\tensemble\tFAIL\t${duration} sec" >> logs/vs_status.tsv
 fi

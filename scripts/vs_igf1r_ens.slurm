@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=vs_igf1r
-#SBATCH --output=logs/slurm_vs_igf1r.out
-#SBATCH --error=logs/slurm_vs_igf1r.err
+#SBATCH --job-name=vs_igf1r_ens
+#SBATCH --output=logs/slurm_vs_igf1r_ens.out
+#SBATCH --error=logs/slurm_vs_igf1r_ens.err
 #SBATCH --partition=normal
 #SBATCH --gres-flags=enforce-binding
 #SBATCH --nodes=1
@@ -13,12 +13,12 @@
 source ~/.bashrc
 conda activate dock
 
-echo "[INFO] Starting virtual screening for igf1r on $(hostname)"
+echo "[INFO] Starting ensemble docking for igf1r on $(hostname)"
 start_time=$(date +%s)
 
 python run_vs.py \
-  --project vs_crystal \
-  --mode crystal \
+  --project virtual_screening \
+  --mode ensemble \
   --kinase igf1r \
   --nprocs 8
 
@@ -27,7 +27,7 @@ end_time=$(date +%s)
 duration=$((end_time - start_time))
 
 if [ $status -eq 0 ]; then
-    echo -e "igf1r\tcrystal\tSUCCESS\t${duration} sec" >> logs/vs_status.tsv
+    echo -e "igf1r\tensemble\tSUCCESS\t${duration} sec" >> logs/vs_status.tsv
 else
-    echo -e "igf1r\tcrystal\tFAIL\t${duration} sec" >> logs/vs_status.tsv
+    echo -e "igf1r\tensemble\tFAIL\t${duration} sec" >> logs/vs_status.tsv
 fi

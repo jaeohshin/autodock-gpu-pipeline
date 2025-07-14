@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=vs_mk14
-#SBATCH --output=logs/slurm_vs_mk14.out
-#SBATCH --error=logs/slurm_vs_mk14.err
+#SBATCH --job-name=vs_mk14_ens
+#SBATCH --output=logs/slurm_vs_mk14_ens.out
+#SBATCH --error=logs/slurm_vs_mk14_ens.err
 #SBATCH --partition=normal
 #SBATCH --gres-flags=enforce-binding
 #SBATCH --nodes=1
@@ -13,12 +13,12 @@
 source ~/.bashrc
 conda activate dock
 
-echo "[INFO] Starting virtual screening for mk14 on $(hostname)"
+echo "[INFO] Starting ensemble docking for mk14 on $(hostname)"
 start_time=$(date +%s)
 
 python run_vs.py \
-  --project vs_crystal \
-  --mode crystal \
+  --project virtual_screening \
+  --mode ensemble \
   --kinase mk14 \
   --nprocs 8
 
@@ -27,7 +27,7 @@ end_time=$(date +%s)
 duration=$((end_time - start_time))
 
 if [ $status -eq 0 ]; then
-    echo -e "mk14\tcrystal\tSUCCESS\t${duration} sec" >> logs/vs_status.tsv
+    echo -e "mk14\tensemble\tSUCCESS\t${duration} sec" >> logs/vs_status.tsv
 else
-    echo -e "mk14\tcrystal\tFAIL\t${duration} sec" >> logs/vs_status.tsv
+    echo -e "mk14\tensemble\tFAIL\t${duration} sec" >> logs/vs_status.tsv
 fi

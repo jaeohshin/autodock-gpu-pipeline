@@ -125,7 +125,7 @@ def run_vs_for_kinase(kinase, args, INPUT_DIR, PREPROCESS_DIR, GRID_DIR, OUT_DIR
     grid_dir = os.path.join(ROOT, "grids")
     out_dir = os.path.join(ROOT, "docking_output")
 
-    lig_dir = os.path.join(pre_dir, "ligands_pdbqt", kinase)
+    # Define receptor directories
     receptor_dir = os.path.join(input_dir, "receptors", kinase)
     receptor_pdbqt_dir = os.path.join(pre_dir, "receptors_pdbqt", kinase)
     center_dir = os.path.join(pre_dir, "grid_centers", kinase)
@@ -136,7 +136,34 @@ def run_vs_for_kinase(kinase, args, INPUT_DIR, PREPROCESS_DIR, GRID_DIR, OUT_DIR
     os.makedirs(fld_dir, exist_ok=True)
     os.makedirs(out_dir, exist_ok=True)
 
+
+    # Ligand directory logic (fallback for ensemble mode)
+    if args.mode == "crystal":
+        lig_dir = os.path.join(pre_dir, "ligands_pdbqt", kinase)
+    else:  # ensemble mode
+        lig_dir = os.path.join(pre_dir, "ligands_pdbqt", kinase)
+        if not os.path.isdir(lig_dir):
+            fallback_dir = os.path.join(ROOT, "input", "ligands_sdf2meeko", kinase)
+            if os.path.isdir(fallback_dir):
+                lig_dir = fallback_dir
+                print(f"[INFO] [ensemble] Using fallback ligand path: {lig_dir}")
+            else:
+                raise FileNotFoundError(f"No ligand directory found for {kinase}")
+
+    # Automatically create ligand list files if missing
+    if args.mode == "ensemble":
+        for mode in ["actives", "decoys"]:
+            mode_dir = os.path.join(lig_dir, mode)
+            list_path = os.path.join(lig_dir, f"ligands_{mode}.list")
+            if not os.path.exists(list_path) and os.path.isdir(mode_dir):
+                ligand_names = sorted(f for f in os.listdir(mode_dir) if f.endswith(".pdbqt"))
+                with open(list_path, "w") as f:
+                    f.write("\n".join(ligand_names) + "\n")
+                print(f"[INFO] Created ligand list: {list_path}")
+
+    # Atom types for grid map generation
     atom_types = get_atom_types(lig_dir)
+
     print(f"[DEBUG] Looking for ligands in: {lig_dir}")
     for mode in ["actives", "decoys"]:
         mode_dir = os.path.join(lig_dir, mode)
@@ -159,13 +186,14 @@ def run_vs_for_kinase(kinase, args, INPUT_DIR, PREPROCESS_DIR, GRID_DIR, OUT_DIR
             receptor_idx = os.path.splitext(receptor_file)[0].split("_")[-1]
             receptor_pdbqt = os.path.join(receptor_pdbqt_dir, f"receptor_{receptor_idx}.pdbqt")
 
-
         center_file = os.path.join(center_dir, f"receptor_{receptor_idx}.txt")
         fld_file = os.path.join(fld_dir, f"receptor_{receptor_idx}.maps.fld")
         gpf_file = fld_file.replace(".maps.fld", ".gpf")
 
         generate_grid_if_needed(receptor_idx, receptor_pdb, receptor_pdbqt, center_file, fld_dir, gpf_file, example_ligand, atom_types)
 
+
+    # Run docking
     for mode in ["actives", "decoys"]:
         list_path = os.path.join(lig_dir, f"ligands_{mode}.list")
         lig_pdbqt_dir = os.path.join(lig_dir, mode)
@@ -188,7 +216,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--project", type=str, default="virtual_screening", choices=["virtual_screening", "vs_crystal"])
     parser.add_argument("--mode", type=str, default="ensemble", choices=["ensemble", "crystal"])
-    parser.add_argument("--nprocs", type=int, default=8)
+    parser.add_argument("--nprocs", type=int, default=6)
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--kinase", type=str)
     group.add_argument("--all", action="store_true")
@@ -204,7 +232,7 @@ def main():
     if args.kinase:
         run_vs_for_kinase(args.kinase.lower(), args, INPUT_DIR, PREPROCESS_DIR, GRID_DIR, OUT_DIR)
     elif args.all:
-        kinase_list_path = os.path.join(f"../{args.project}", "input", "kinase_list.txt")
+        kinase_list_path = os.path.join(f"../{args.project}", "input", "kinase.txt")
         with open(kinase_list_path) as f:
             kinases = [x.strip().lower() for x in f if x.strip()]
         for kinase in kinases:

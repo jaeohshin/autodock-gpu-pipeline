@@ -7,11 +7,11 @@ KINASES=(
 )
 
 for kinase in "${KINASES[@]}"; do
-cat <<EOF > vs_${kinase}.slurm
+cat <<EOF > vs_${kinase}_ens.slurm
 #!/bin/bash
-#SBATCH --job-name=vs_${kinase}
-#SBATCH --output=logs/slurm_vs_${kinase}.out
-#SBATCH --error=logs/slurm_vs_${kinase}.err
+#SBATCH --job-name=vs_${kinase}_ens
+#SBATCH --output=logs/slurm_vs_${kinase}_ens.out
+#SBATCH --error=logs/slurm_vs_${kinase}_ens.err
 #SBATCH --partition=normal
 #SBATCH --gres-flags=enforce-binding
 #SBATCH --nodes=1
@@ -23,12 +23,12 @@ cat <<EOF > vs_${kinase}.slurm
 source ~/.bashrc
 conda activate dock
 
-echo "[INFO] Starting virtual screening for ${kinase} on \$(hostname)"
+echo "[INFO] Starting ensemble docking for ${kinase} on \$(hostname)"
 start_time=\$(date +%s)
 
 python run_vs.py \\
-  --project vs_crystal \\
-  --mode crystal \\
+  --project virtual_screening \\
+  --mode ensemble \\
   --kinase ${kinase} \\
   --nprocs 8
 
@@ -37,12 +37,12 @@ end_time=\$(date +%s)
 duration=\$((end_time - start_time))
 
 if [ \$status -eq 0 ]; then
-    echo -e "${kinase}\tcrystal\tSUCCESS\t\${duration} sec" >> logs/vs_status.tsv
+    echo -e "${kinase}\tensemble\tSUCCESS\t\${duration} sec" >> logs/vs_status.tsv
 else
-    echo -e "${kinase}\tcrystal\tFAIL\t\${duration} sec" >> logs/vs_status.tsv
+    echo -e "${kinase}\tensemble\tFAIL\t\${duration} sec" >> logs/vs_status.tsv
 fi
 EOF
 done
 
-echo "[✓] All SLURM scripts generated: vs_<kinase>.slurm"
+echo "[✓] All ensemble SLURM scripts generated: vs_<kinase>_ens.slurm"
 
