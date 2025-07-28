@@ -216,7 +216,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--project", type=str, default="virtual_screening", choices=["virtual_screening", "vs_crystal"])
     parser.add_argument("--mode", type=str, default="ensemble", choices=["ensemble", "crystal"])
-    parser.add_argument("--nprocs", type=int, default=6)
+    parser.add_argument("--nprocs", type=int, default=4)
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--kinase", type=str)
     group.add_argument("--all", action="store_true")

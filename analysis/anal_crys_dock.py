@@ -1,10 +1,11 @@
 """
-Analyze the docking output file (.dlg).
+Analyze the docking output file (.dlg) for a single crystal structure.
+
 How to Run:
 
-python script.py --kinase abl1 --max_receptor 100
-
+python script.py --kinase abl1
 """
+
 import os
 import re
 import json
@@ -12,7 +13,6 @@ import argparse
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from multiprocessing import Pool
 from tqdm import tqdm
 
 def extract_best_energy_from_dlg(filepath):
@@ -33,53 +33,60 @@ def label_ligand(filename):
     return "unknown"
 
 
-# === 1. 먼저 parse_receptor_dir 정의 ===
-def parse_receptor_dir(args):
-    receptor_path, receptor_name = args
+def collect_best_scores(base_dir):
+    from collections import defaultdict
+
+    energy_dict = defaultdict(list)
+    label_dict = {}
+
+    if not os.path.isdir(base_dir):
+        raise FileNotFoundError(f"[ERROR] Directory not found: {base_dir}")
+
+    for fname in tqdm(os.listdir(base_dir), desc="Parsing ligands"):
+        if not fname.endswith(".dlg"):
+            continue
+        match = re.search(r'REMARKName=(ZINC\d+|CHEMBL\d+)', fname)
+        if not match:
+            continue  # Skip malformed files
+        ligand_id = match.group(1)  # Could be ZINC or CHEMBL
+        fpath = os.path.join(base_dir, fname)
+        energy = extract_best_energy_from_dlg(fpath)
+        if energy is not None:
+            energy_dict[ligand_id].append(energy)
+            if ligand_id not in label_dict:
+                label_dict[ligand_id] = label_ligand(fname)
+    
     records = []
-    for fname in os.listdir(receptor_path):
+    for zinc_id, energies in energy_dict.items():
+        best_energy = min(energies)
+        label = label_dict.get(zinc_id, "unknown")
+        records.append((zinc_id, best_energy, label))
+
+    df = pd.DataFrame(records, columns=["Ligand", "Energy", "Label"])
+    df["Best_Receptor"] = "crystal"
+    return df
+
+
+
+"""
+def collect_best_scores(base_dir):
+    records = []
+    if not os.path.isdir(base_dir):
+        raise FileNotFoundError(f"[ERROR] Directory not found: {base_dir}")
+
+    for fname in tqdm(os.listdir(base_dir), desc="Parsing ligands"):
         if not fname.endswith(".dlg"):
             continue
         ligand = fname[:-4]
-        fpath = os.path.join(receptor_path, fname)
+        fpath = os.path.join(base_dir, fname)
         energy = extract_best_energy_from_dlg(fpath)
         if energy is not None:
-            records.append((ligand, energy, label_ligand(fname), receptor_name))
-    return records
+            records.append((ligand, energy, label_ligand(fname)))
 
-
-# --- 꼭 상단에 위치시켜야 합니다 ---
-def safe_parse(args):
-    try:
-        return parse_receptor_dir(args)
-    except Exception as e:
-        print(f"[ERROR] Failed to parse {args}: {e}")
-        return []
-
-
-# --- collect_best_scores 내부 ---
-def collect_best_scores(base_dir, max_receptor=100, checkpoint_file=None):
-    receptor_args = []
-    for i in range(1, max_receptor + 1):
-        receptor_name = f"receptor_{i:03d}"  # ← 혹시 0001이면 04d로
-        receptor_path = os.path.join(base_dir, receptor_name)
-        if os.path.isdir(receptor_path):
-            receptor_args.append((receptor_path, receptor_name))
-
-    print(f"[INFO] Parsing {len(receptor_args)} receptors with multiprocessing...")
-
-    best_scores = {}
-
-    with Pool(processes=4) as pool:
-        for result in tqdm(pool.imap(safe_parse, receptor_args), total=len(receptor_args), desc="Receptors"):
-            for ligand, energy, label, receptor in result:
-                if (ligand not in best_scores) or (energy < best_scores[ligand][0]):
-                    best_scores[ligand] = (energy, label, receptor)
-
-    df = pd.DataFrame([(lig, en, lbl, rec) for lig, (en, lbl, rec) in best_scores.items()],
-                      columns=["Ligand", "Energy", "Label", "Best_Receptor"])
+    df = pd.DataFrame(records, columns=["Ligand", "Energy", "Label"])
+    df["Best_Receptor"] = "crystal"  # fixed value
     return df
-
+"""
 
 def calculate_ef(df, top_percent):
     df_sorted = df.sort_values("Energy")
@@ -94,7 +101,6 @@ def calculate_ef(df, top_percent):
     actives_top = (df_sorted.head(top_n)["Label"] == "active").sum()
     ef = (actives_top / top_n) / (actives_total / total)
     return ef
-
 
 def plot_score_histogram(df, out_path):
     if df.empty:
@@ -125,22 +131,17 @@ def per_receptor_ef(df, top_percent=1):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--kinase", required=True, help="Kinase target name (e.g., abl1)")
-    parser.add_argument("--max_receptor", type=int, default=100,
-                        help="Max receptor conformation index to include (default: 100)")
     args = parser.parse_args()
 
     kinase = args.kinase.lower()
-    max_r = args.max_receptor
-
-    docking_dir = f"../virtual_screening/docking_output/{kinase}"
-    output_dir = f"../virtual_screening/results/{kinase}_upto_{max_r:04d}"
+    docking_dir = f"../vs_crystal/docking_output/{kinase}"
+    output_dir = f"../vs_crystal/results/{kinase}"
     os.makedirs(output_dir, exist_ok=True)
-    checkpoint_path = os.path.join(output_dir, "checkpoint.json")
 
-    df = collect_best_scores(docking_dir, max_receptor=max_r, checkpoint_file=checkpoint_path)
-    print(f"[INFO] {kinase.upper()} up to receptor_{max_r:04d} — Ligands: {len(df)}, Actives: {(df['Label']=='active').sum()}, Decoys: {(df['Label']=='decoy').sum()}")
+    df = collect_best_scores(docking_dir)
+    print(f"[INFO] {kinase.upper()}  — Ligands: {len(df)}, Actives: {(df['Label']=='active').sum()}, Decoys: {(df['Label']=='decoy').sum()}")
 
-    df.to_csv(os.path.join(output_dir, "ensemble_docking_summary.csv"), index=False)
+    df.to_csv(os.path.join(output_dir, "crystal_docking_summary.csv"), index=False)
 
     ef_records = []
     for pct in [1, 5, 10]:
@@ -151,10 +152,5 @@ if __name__ == "__main__":
 
     plot_score_histogram(df, out_path=os.path.join(output_dir, "binding_energy_hist.png"))
 
-
     per_ef1 = per_receptor_ef(df, top_percent=1)
     per_ef1.to_csv(os.path.join(output_dir, "per_receptor_ef1.csv"))
-
-    print("\n[INFO] Top 10 receptors contributing to EF@1%:")
-    print(per_ef1.head(10))
-

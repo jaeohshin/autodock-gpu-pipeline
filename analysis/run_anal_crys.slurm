@@ -2,17 +2,16 @@
 #SBATCH --job-name=debug_analyze
 #SBATCH --output=logs/debug.out
 #SBATCH --error=logs/debug.err
-#SBATCH --time=2-23:00:00
+#SBATCH --time=24:00:00
 #SBATCH --partition=normal
-#SBATCH --nodelist=ada-004
 
 # === Load conda and activate the dock environment ===
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate dock
 
 # Define the list of kinase directories
-KINASES=(akt2 mapk1 mapk10 mapkapk2 jak2 prkcb tgfbr1 abl1 akt1 met kit lck)
-
+KINASES=(abl1 akt1 akt2 braf cdk2 csf1r egfr fak1 fgfr1 igf1r jak2 kpcb kit lck mapk2 met mk01 mk10 mk14 mp2k1 plk1 rock1 src tgfr1 vgfr2 wee1)
+#KINASES=(egfr fak1 fgfr1 igf1r jak2 kpcb kit lck mapk2 met mk01 mk10 mk14 mp2k1 plk1 rock1 src tgfr1 vgfr2 wee1)
 # Get kinase name for this array task
 KINASE=${KINASES[$SLURM_ARRAY_TASK_ID]}
 
