@@ -44,6 +44,10 @@ for target in sorted(os.listdir(ROOT)):
         error_log = os.path.join(OUT_ROOT, target, f"ligands_{type_}_errors.log")
         os.makedirs(out_dir, exist_ok=True)
 
+        if os.path.isdir(out_dir) and len(os.listdir(out_dir)) > 0:
+            print(f"  [SKIP] {type_} for {target} already converted.")
+            continue
+
         # Decompress if needed
         if os.path.isfile(sdf_gz):
             print(f"  → Decompressing {sdf_gz}")
