@@ -66,7 +66,7 @@ Follow these steps to run the full docking pipeline:
    Generate receptor `.pdb` files (e.g., from BioEmu or other sources), then:
 
    ```bash
-   bash scripts/prepare_dude_receptors.sh
+   python scripts/prepare_receptors.py
    ```
 
 2. **Prepare ligand files**
