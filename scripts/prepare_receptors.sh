@@ -16,7 +16,7 @@ while read -r kinase _; do
     mkdir -p "$dst_dir"
     > "$receptor_list"
 
-    for i in $(seq 1 50); do
+    for i in $(seq 0 50); do
 	padded_i=$(printf "%03d" $i)
         src="${SRC_ROOT}/${kinase_lower}/final_str/receptor_${padded_i}.pdb"
         dst_filename="receptor_${padded_i}.pdb"

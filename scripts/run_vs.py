@@ -10,6 +10,7 @@ Supports two use cases with one script:
 Usage:
   python run_vs.py --project vs_crystal --mode crystal --kinase abl1
   python run_vs.py --project virtual_screening --mode ensemble --all --nprocs 16
+  python run_vs.py --project vs_crystal --mode crystal --kinase abl1 --force-grid  # Force grid regeneration
 
 Required Directory Layout:
   ../{project}/input/
@@ -96,25 +97,74 @@ def patch_gpf_ligand_types(gpf_path, atom_types):
         f.writelines(patched_lines)
     print(f"[INFO] Patched ligand_types in {gpf_path} with: {atom_str}")
 
-def generate_grid_if_needed(receptor_idx, receptor_pdb, receptor_pdbqt, center_file, fld_dir, gpf_file, example_ligand_path, atom_types):
+def check_grid_files_exist(fld_dir, receptor_idx, atom_types):
+    """Check if all required grid files exist for a receptor"""
+    # Check for the main .fld file
+    fld_file = os.path.join(fld_dir, f"receptor_{receptor_idx}.maps.fld")
+    if not os.path.exists(fld_file):
+        return False
+    
+    # Check for the .gpf file
+    gpf_file = os.path.join(fld_dir, f"receptor_{receptor_idx}.gpf")
+    if not os.path.exists(gpf_file):
+        return False
+    
+    # Check for all required .map files
+    for atom_type in atom_types:
+        map_file = os.path.join(fld_dir, f"receptor_{receptor_idx}.{atom_type}.map")
+        if not os.path.exists(map_file):
+            return False
+    
+    # Check for electrostatic and desolvation maps
+    e_map = os.path.join(fld_dir, f"receptor_{receptor_idx}.e.map")
+    d_map = os.path.join(fld_dir, f"receptor_{receptor_idx}.d.map")
+    if not os.path.exists(e_map) or not os.path.exists(d_map):
+        return False
+    
+    return True
+
+def generate_grid_if_needed(receptor_idx, receptor_pdb, receptor_pdbqt, center_file, fld_dir, gpf_file, example_ligand_path, atom_types, force_grid=False):
+    """Generate grid files only if they don't exist or if force_grid is True"""
+    
     if not os.path.exists(center_file):
         print(f"[WARN] Missing center: {center_file}")
         return False
-
+    
+    # Check if grid files already exist
+    if not force_grid and check_grid_files_exist(fld_dir, receptor_idx, atom_types):
+        print(f"[SKIP] Grid files already exist for receptor_{receptor_idx}. Use --force-grid to regenerate.")
+        return True
+    
+    # If we reach here, either force_grid is True or files are missing
+    if force_grid:
+        print(f"[INFO] Force regenerating grid for receptor_{receptor_idx}")
+    else:
+        print(f"[INFO] Generating missing grid files for receptor_{receptor_idx}")
+    
     center = read_grid_center(center_file)
     nx, ny, nz = GRID_SIZE
     shifts = [(0.0, 0.0, 0.0), (0.1, 0.1, 0.1), (-0.1, -0.1, -0.1), (0.05, -0.05, 0.05)]
+    
     for attempt_idx, shift in enumerate(shifts):
         current_center = [c + s for c, s in zip(center, shift)]
+        
+        # Prepare receptor PDBQT if needed
         if not os.path.exists(receptor_pdbqt):
+            print(f"[INFO] Preparing receptor PDBQT: {receptor_pdbqt}")
             prepare_receptor(receptor_pdb, receptor_pdbqt)
+        
+        # Generate GPF and run autogrid
         generate_gpf(example_ligand_path, receptor_pdbqt, gpf_file, current_center, GRID_SIZE, atom_types)
         run_autogrid(gpf_file)
+        
+        # Check if all maps were created successfully
         maps_ok = all(is_valid_map(os.path.join(fld_dir, f"receptor_{receptor_idx}.{t}.map")) for t in atom_types)
+        
         if maps_ok:
             patch_gpf_ligand_types(gpf_path=gpf_file, atom_types=atom_types)
-            print(f"[SUCCESS] Valid maps created for receptor_{receptor_idx}")
+            print(f"[SUCCESS] Valid maps created for receptor_{receptor_idx} (attempt {attempt_idx + 1})")
             return True
+    
     print(f"[ERROR] receptor_{receptor_idx}: All {len(shifts)} center shifts failed")
     return False
 
@@ -135,7 +185,6 @@ def run_vs_for_kinase(kinase, args, INPUT_DIR, PREPROCESS_DIR, GRID_DIR, OUT_DIR
     os.makedirs(receptor_pdbqt_dir, exist_ok=True)
     os.makedirs(fld_dir, exist_ok=True)
     os.makedirs(out_dir, exist_ok=True)
-
 
     # Ligand directory logic (fallback for ensemble mode)
     if args.mode == "crystal":
@@ -190,8 +239,12 @@ def run_vs_for_kinase(kinase, args, INPUT_DIR, PREPROCESS_DIR, GRID_DIR, OUT_DIR
         fld_file = os.path.join(fld_dir, f"receptor_{receptor_idx}.maps.fld")
         gpf_file = fld_file.replace(".maps.fld", ".gpf")
 
-        generate_grid_if_needed(receptor_idx, receptor_pdb, receptor_pdbqt, center_file, fld_dir, gpf_file, example_ligand, atom_types)
-
+        # Pass the force_grid flag from args
+        generate_grid_if_needed(
+            receptor_idx, receptor_pdb, receptor_pdbqt, center_file, 
+            fld_dir, gpf_file, example_ligand, atom_types, 
+            force_grid=args.force_grid
+        )
 
     # Run docking
     for mode in ["actives", "decoys"]:
@@ -212,11 +265,12 @@ def run_vs_for_kinase(kinase, args, INPUT_DIR, PREPROCESS_DIR, GRID_DIR, OUT_DIR
                 pool.map(dock_ligand_wrapper, tasks)
 
 def main():
-    
     parser = argparse.ArgumentParser()
     parser.add_argument("--project", type=str, default="virtual_screening", choices=["virtual_screening", "vs_crystal"])
     parser.add_argument("--mode", type=str, default="ensemble", choices=["ensemble", "crystal"])
     parser.add_argument("--nprocs", type=int, default=4)
+    parser.add_argument("--force-grid", action="store_true", 
+                        help="Force regeneration of grid files even if they exist")
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--kinase", type=str)
     group.add_argument("--all", action="store_true")
@@ -227,7 +281,6 @@ def main():
     PREPROCESS_DIR = os.path.join(BASE_DIR, "preprocessed")
     GRID_DIR = os.path.join(BASE_DIR, "grids")
     OUT_DIR = os.path.join(BASE_DIR, "docking_output")
-
 
     if args.kinase:
         run_vs_for_kinase(args.kinase.lower(), args, INPUT_DIR, PREPROCESS_DIR, GRID_DIR, OUT_DIR)

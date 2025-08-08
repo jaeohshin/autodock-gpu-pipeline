@@ -5,7 +5,7 @@
 #  "igf1r" "jak2" "kpcb" "kit" "lck" "mapk2" "met" "mk01" "mk10"
 #  "mk14" "mp2k1" "plk1" "rock1" "src" "tgfr1" "vgfr2" "wee1"
 #)
-KINASES=("fgfr1")
+KINASES=("mk14")
 
 for kinase in "${KINASES[@]}"; do
 cat <<EOF > vs_${kinase}_ens.slurm

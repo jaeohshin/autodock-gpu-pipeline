@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=vs_fgfr1_ens
-#SBATCH --output=logs/slurm_vs_fgfr1_ens.out
-#SBATCH --error=logs/slurm_vs_fgfr1_ens.err
+#SBATCH --job-name=vs_mk14_ens
+#SBATCH --output=logs/slurm_vs_mk14_ens.out
+#SBATCH --error=logs/slurm_vs_mk14_ens.err
 #SBATCH --partition=normal
 #SBATCH --gres-flags=enforce-binding
 #SBATCH --nodes=1
@@ -13,21 +13,21 @@
 source ~/.bashrc
 conda activate dock
 
-echo "[INFO] Starting ensemble docking for fgfr1 on $(hostname)"
+echo "[INFO] Starting ensemble docking for mk14 on $(hostname)"
 start_time=$(date +%s)
 
 python run_vs.py \
   --project virtual_screening \
   --mode ensemble \
-  --kinase fgfr1 \
-  --nprocs 8
+  --kinase mk14 \
+  --nprocs 4 
 
 status=$?
 end_time=$(date +%s)
 duration=$((end_time - start_time))
 
 if [ $status -eq 0 ]; then
-    echo -e "fgfr1\tensemble\tSUCCESS\t${duration} sec" >> logs/vs_status.tsv
+    echo -e "mk14\tensemble\tSUCCESS\t${duration} sec" >> logs/vs_status.tsv
 else
-    echo -e "fgfr1\tensemble\tFAIL\t${duration} sec" >> logs/vs_status.tsv
+    echo -e "mk14\tensemble\tFAIL\t${duration} sec" >> logs/vs_status.tsv
 fi
