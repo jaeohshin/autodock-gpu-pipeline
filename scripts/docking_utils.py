@@ -191,3 +191,4 @@ def run_docking(lig_pdbqt, fld_file, output_basename):
         f"--ngen 27000 --heuristics 1 --autostop 1 --lsrat 50 "
         f"--resnam {output_basename}"
     )
+
