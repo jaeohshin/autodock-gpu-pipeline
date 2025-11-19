@@ -20,6 +20,10 @@ This repository contains a fully automated virtual screening pipeline using [Aut
 
 This modular structure supports scalable, resumable docking workflows, making it easy to manage thousands of ligands, protein conformations, and kinase targets.
 
+**Note on directory naming:** 
+- `analysis/` - Scripts and utilities for **running** docking jobs
+- `analisis/` - Scripts for **analyzing** docking results (yes, the spelling difference is intentional to avoid confusion!)
+
 ```text
 virtual_screening/
 ├── input/
