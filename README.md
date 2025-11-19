@@ -43,6 +43,8 @@ virtual_screening/
 ├── docking_output/
 ├── results/
 ├── logs/
+├── analysis/          # Docking execution scripts
+├── analisis/          # Result analysis scripts
 ├── scripts/
 │   ├── run_vs.py
 │   ├── align_ligands.py
